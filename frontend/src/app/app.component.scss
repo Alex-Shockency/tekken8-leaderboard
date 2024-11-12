@@ -1,0 +1,17 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+.footer {
+    display: flex;
+    justify-content: center;
+    background: black;
+    color: rgba(255, 255, 255, 0.655);
+  }
+
+  a{
+    color: rgba(255, 255, 255, 0.655);
+  }
+  
+  a:visited{
+    color: rgb(255, 255, 255, 0.655);
+  }
