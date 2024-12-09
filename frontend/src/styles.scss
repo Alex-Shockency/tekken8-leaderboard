@@ -6,5 +6,10 @@
     src: url('./assets/tarrgetcond.ttf')  format('truetype')
 }
 
+@font-face {
+    font-family: 'Tekken Outlined';
+    src: url('./assets/tarrgetacad.ttf')  format('truetype')
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

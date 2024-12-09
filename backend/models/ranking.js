@@ -21,6 +21,14 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: Number
     },
+    qualified: {
+        required: true,
+        type: Boolean
+    },
+    user_id: {
+        required: true,
+        type: Number
+    },
     date: {
         required: true,
         type: Date

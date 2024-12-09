@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
+    _id: {
+        required: true,
+        type: String
+    },
     battle_at: {
         required: true,
         type: Number
-    },
-    battle_id: {
-        required: true,
-        type: String
     },
     battle_type: {
         required: true,

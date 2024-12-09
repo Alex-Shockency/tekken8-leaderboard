@@ -1,8 +1,135 @@
-<div id="body" style="display: flex; height: 100vh; justify-content: center;
-        color: white;  transform: translate3d(0,0,0); ">
-    <mat-toolbar>
-        <img src = "../../../assets/colorado.svg" width="64px" style="padding: 1rem;"/>
-        <span style="font-family: Tekken;color: rgba(255, 255, 255, 0.87);font-size: 2.5rem;">Colorado Tekken <span style="color: rgb(255, 101, 127);">8</span> LeaderBoard</span>
-        <span class="example-spacer"></span>
-      </mat-toolbar>
+<app-top-nav></app-top-nav>
+<div
+  style="background: url(https://media.graphassets.com/3HxPBYAaQi6WQluLqETl) center center / cover no-repeat; position: absolute; height: 100vh; width: 100%;">
+</div>
+<div style="display: flex; min-height: 100vh; justify-content: center;">
+  <mat-tab-group style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="100">
+    <mat-tab label="Qualified">
+      <div class="inner-flex">
+        @if (isLoading) {
+        <div style="width: 100%;
+              height: 75vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;">
+          <mat-spinner></mat-spinner>
+        </div>
+        }
+        @else {
+        @if(players.length >0){
+        @for (player of qualifiedPlayers; track player; let idx = $index) {
+        <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
+          <div style="background: rgba(38, 86, 116, 1);
+            height: 100%;
+            min-width: 48px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            ">
+            <div style="display: inline-flex;align-items: center; justify-content: space-around;">
+              @if(idx+1==1){
+              <span style="font-size: 2rem;">🥇</span>
+              }@else if (idx+1 ==2) {
+              <span style="font-size: 2rem;">🥈</span>
+              }@else if (idx+1 ==3) {
+              <span style="font-size: 2rem;">🥉</span>
+              }
+              @else {
+              <div style="font-size: 1.5rem;font-family: Tekken;">{{idx+1}}</div>
+              }
+            </div>
+          </div>
+          <div style="display: inline-flex;justify-content: space-between;width: 100%;">
+            <div style="display: inline-flex;align-items: center; padding-left: 1rem;">
+              <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
+                width="42px" src="../../../assets/character-thumbnails/{{player.max_qual_chara}}.webp">
+              @if(screenWidth >1000){
+              <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.max_qual_rank}}.png">
+              }
+            </div>
+            <div style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
+              <div style="width: 25%;">
+                <span>{{player.name}}</span>
+              </div>
+              <div style="width: 25%;">
+                <span >Rating: {{player.max_qual_rating}}</span>
+              </div>
+              @if(screenWidth >1000){
+              <div style="width: 25%;">
+                <span>Updated: {{player.last_qual_seen}}</span>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+        }
+        }
+        }
+      </div>
+    </mat-tab>
+    <mat-tab label="All Time">
+      <div class="inner-flex">
+        @if (isLoading) {
+        <div style="width: 100%;
+              height: 75vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;">
+          <mat-spinner></mat-spinner>
+        </div>
+        }
+        @else {
+        @if(players.length >0){
+        @for (player of players; track player; let idx = $index) {
+        <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
+          <div style="background: rgba(38, 86, 116, 1);
+            height: 100%;
+            min-width: 48px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            ">
+            <div style="display: inline-flex;align-items: center; justify-content: space-around;">
+              @if(idx+1==1){
+              <span style="font-size: 2rem;">🥇</span>
+              }@else if (idx+1 ==2) {
+              <span style="font-size: 2rem;">🥈</span>
+              }@else if (idx+1 ==3) {
+              <span style="font-size: 2rem;">🥉</span>
+              }
+              @else {
+              <div style="font-size: 1.5rem;font-family: Tekken;">{{idx+1}}</div>
+              }
+            </div>
+          </div>
+          <div style="display: inline-flex;justify-content: space-between;width: 100%;">
+            <div style="display: inline-flex;align-items: center; padding-left: 1rem;">
+              <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
+                width="42px" src="../../../assets/character-thumbnails/{{player.max_chara}}.webp">
+              @if(screenWidth >1000){
+              <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.max_rank}}.png">
+              }
+            </div>
+            <div style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
+              <div style="width: 25%;">
+                <span>{{player.name}}</span>
+              </div>
+              <div style="width: 25%;">
+                <span >Rating: {{player.max_rating}}</span>
+              </div>
+              @if(screenWidth >1000){
+              <div style="width: 25%;">
+                <span>Updated: {{player.last_seen}}</span>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+        }
+        }
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
 </div>
