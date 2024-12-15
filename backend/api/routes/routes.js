@@ -15,6 +15,7 @@ const options = {
 module.exports = router;
 
 router.get("/rankings", async (req, res) => {
+  console.log("rankings")
   try {
     let data = await Ranking.find();
     let lowerBound = Math.floor(Date.now() / 1000) - (2629743)
