@@ -5,6 +5,14 @@ const mongoose = require('mongoose');
 const routes = require('./routes/routes.js');
 const mongoString = process.env.DATABASE_URL;
 const cors = require('cors');
+const options = [
+    cors({
+      origin: '*',
+      methods: '*',
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true,
+    })
+  ];
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
@@ -18,7 +26,7 @@ database.once('connected', () => {
 })
 
 const app = express();
-app.use(cors());
+app.use(options);
 
 app.use('/api', routes)
 

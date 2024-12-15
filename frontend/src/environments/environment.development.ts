@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://tekken8-leaderboard-a67j-oi8awczzb-alex-shockencys-projects.vercel.app/api/',
+  apiUrl: 'https://tekken8-leaderboard-ojdy-6epwl2gls-alex-shockencys-projects.vercel.app/api/',
 };
