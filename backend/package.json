@@ -9,11 +9,11 @@
     "nodemon": "^3.1.7"
   },
   "scripts": {
-    "start": "nodemon api/index.js"
+    "start": "nodemon index.js"
   },
   "name": "backend",
   "version": "1.0.0",
-  "main": "api/index.js",
+  "main": "index.js",
   "devDependencies": {},
   "keywords": [],
   "author": "",
