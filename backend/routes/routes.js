@@ -17,7 +17,6 @@ module.exports = router;
 router.get("/rankings", async (req, res) => {
   try {
     let data = await Ranking.find();
-    let lowerBound = Math.floor(Date.now() / 1000) - (2629743)
     let rankingsByPlayer = [];
 
     data.forEach((ranking) => {
@@ -25,24 +24,34 @@ router.get("/rankings", async (req, res) => {
         let maxRating = -1;
         let maxChara = -1;
         let maxRank = -1;
+        //That crazy number is the minimum date val
         let lastSeen = new Date(-8640000000000000);
         let maxQualRating = -1;
         let maxQualChara = -1;
         let maxQualRank = -1;
+        //That crazy number is the minimum date val
         let lastQualSeen = new Date(-8640000000000000);
         let tekkenId = ranking._id;
-        //That crazy number is the minimum date val
-        ranking.characters.forEach((char) =>{
-          console.log(char)
-          if(char.rating > maxRating){
-            maxRating = char.rating
-            maxChara = char._id
-            maxRank = char.maxRank
-            lastSeen = new Date(char.date).toLocaleDateString("en-us", options);
+        ranking.characters.forEach((char) => {
+          if (char.qualified) {
+            if (char.rating > maxQualRating) {
+              maxQualRating = char.rating
+              maxQualChara = char.id
+              maxQualRank = char.rank
+              lastQualSeen = new Date(char.date).toLocaleDateString("en-us", options);
+            }
+          } else {
+            if (char.rating > maxRating) {
+              maxRating = char.rating
+              maxChara = char.id
+              maxRank = char.rank
+              lastSeen = new Date(char.date).toLocaleDateString("en-us", options);
+            }
           }
+         
         })
 
-        
+
         rankingsByPlayer.push({
           name: ranking.name,
           tekken_id: tekkenId,
@@ -70,66 +79,27 @@ router.get("/rankings", async (req, res) => {
 
 router.get("/rankings/:tekkenId", async (req, res) => {
   try {
-    const data = await Ranking.find({ "_id.tekken_id": req.params.tekkenId });
+    const data = await Ranking.find({ "_id": req.params.tekkenId });
     let rankingsByPlayer = {};
-
 
     rankings = [];
     qualRankings = [];
-
-    let maxRating = 0;
-    let maxChara = 0;
-    let maxRank = 0;
-    let lastSeen = new Date(-8640000000000000);
-    let maxQualRating = -1;
-    let maxQualChara = -1;
-    let maxQualRank = -1;
-    let lastQualSeen = new Date(-8640000000000000);
-    let tekkenId = "";
-    let userId = "";
     //That crazy number is the minimum date val
 
 
-    data.forEach((tempRanking) => {
-      rankings.push(tempRanking);
-      if (tempRanking.qualified) {
-        qualRankings.push(tempRanking);
-        if (maxQualRating < tempRanking.rating) {
-          tekkenId = tempRanking._id.tekken_id;
-          maxQualRating = tempRanking.rating;
-          maxQualChara = tempRanking._id.chara_id;
-          if (maxQualRank < tempRanking.rank) {
-            maxQualRank = tempRanking.rank;
-          }
-          if (lastQualSeen < tempRanking.date) {
-            lastQualSeen = tempRanking.date.toLocaleDateString("en-us", options);
-          }
+    data.forEach((ranking) => {
+      //That crazy number is the minimum date val
+      ranking.characters.forEach((char) => {
+        if (char.qualified) {
+          qualRankings.push(char)
+        } else {
+          rankings.push(char)
         }
-      }
-      if (maxRating < tempRanking.rating) {
-        tekkenId = tempRanking._id.tekken_id;
-        maxRating = tempRanking.rating;
-        maxChara = tempRanking._id.chara_id;
-        maxRank = tempRanking.rank;
-        lastSeen = tempRanking.date.toLocaleDateString("en-us", options);
-      }
+      })
 
-
-
-      rankings.sort((p1, p2) => p2.rating - p1.rating)
-      qualRankings.sort((p1, p2) => p2.rating - p1.rating)
       rankingsByPlayer = ({
-        name: tempRanking.name,
-        tekken_id: tekkenId,
-        max_rating: maxRating,
-        max_chara: maxChara,
-        max_rank: maxRank,
-        max_qual_rating: maxQualRating,
-        max_qual_chara: maxQualChara,
-        max_qual_rank: maxQualRank,
-        last_seen: lastSeen,
-        last_qual_seen: lastQualSeen,
-        user_id: userId,
+        name: ranking.name,
+        tekken_id: req.params.tekkenId,
         rankings: rankings,
         qual_rankings: qualRankings
       });

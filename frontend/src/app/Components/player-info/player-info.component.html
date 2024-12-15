@@ -22,13 +22,13 @@
             <div style="padding: 1rem;">
               <div style="display: flex;flex-flow: column;align-items: center;">
                 <span>Rating: {{ranking.rating}}</span>
-                @if(battlesByChar.get(ranking._id.chara_id)){
-                <span> Battles: {{battlesByChar.get(ranking._id.chara_id)}}</span>
+                @if(battlesByChar.get(ranking.id)){
+                <span> Battles: {{battlesByChar.get(ranking.id)}}</span>
                 } @else {
                 <span> Battles: ---</span>
                 }
                 <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
-                  width="128px" height="194px" src="../../../assets/character-thumbnails/{{ranking._id.chara_id}}.webp">
+                  width="128px" height="194px" src="../../../assets/character-thumbnails/{{ranking.id}}.webp">
                 <span>Updated:</span>
                 <span style="font-size: .9rem;">{{ranking.date}}</span>
                 <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png">
@@ -51,13 +51,13 @@
             <div style="padding: 1rem;">
               <div style="display: flex;flex-flow: column;align-items: center;">
                 <span>Rating: {{ranking.rating}}</span>
-                @if(battlesByChar.get(ranking._id.chara_id)){
-                <span> Battles: {{battlesByChar.get(ranking._id.chara_id)}}</span>
+                @if(battlesByChar.get(ranking.id)){
+                <span> Battles: {{battlesByChar.get(ranking.id)}}</span>
                 } @else {
                 <span> Battles: ---</span>
                 }
                 <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
-                  width="128px" height="194px" src="../../../assets/character-thumbnails/{{ranking._id.chara_id}}.webp">
+                  width="128px" height="194px" src="../../../assets/character-thumbnails/{{ranking.id}}.webp">
                 <span>Updated:</span>
                 <span style="font-size: .9rem;">{{ranking.date}}</span>
                 <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png">

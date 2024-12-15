@@ -55,29 +55,6 @@ export class PlayerInfoComponent {
   ) {
     this.tekkenId = this.route.snapshot.params['tekkenId'];
     this.tekkenIdDashes = this.route.snapshot.params['tekkenId'].match(new RegExp('.{1,4}', 'g')).join("-");
-    rankingService.getRankingsById(this.tekkenId).subscribe((result) => {
-      result.rankings = result.rankings.map(data => {
-        data.date = new Date(data.date).toLocaleDateString("en", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        return data;
-      }).filter(data =>{
-        return !data.qualified
-      });
-
-      result.qual_rankings = result.qual_rankings.map(data => {
-        data.date = new Date(data.date).toLocaleDateString("en", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        return data;
-      });
-      this.playerData = result
-      this.isPlayerLoading = false;
-    });
     rankingService.getReplaysById(this.tekkenId).subscribe((result) => {
       this.dataSource = new MatTableDataSource<Replay>(result.map((replay) => {
         if (replay.p1_polaris_id == this.tekkenId) {
@@ -114,6 +91,30 @@ export class PlayerInfoComponent {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.isReplayLoading = false;
+    });
+    
+    rankingService.getRankingsById(this.tekkenId).subscribe((result) => {
+      result.rankings = result.rankings.map(data => {
+        data.date = new Date(data.date).toLocaleDateString("en", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return data;
+      }).filter(data =>{
+        return !data.qualified
+      });
+
+      result.qual_rankings = result.qual_rankings.map(data => {
+        data.date = new Date(data.date).toLocaleDateString("en", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return data;
+      });
+      this.playerData = result
+      this.isPlayerLoading = false;
     });
   }
   ngOnInit() {
