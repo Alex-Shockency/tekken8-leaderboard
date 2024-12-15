@@ -9,29 +9,9 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    rank: {
+    characters: {
         required: true,
-        type: Number
-    },
-    rating: {
-        required: true,
-        type: Number
-    },
-    power: {
-        required: true,
-        type: Number
-    },
-    qualified: {
-        required: true,
-        type: Boolean
-    },
-    user_id: {
-        required: true,
-        type: Number
-    },
-    date: {
-        required: true,
-        type: Date
+        type: Array
     },
 })
 
