@@ -3,7 +3,8 @@
   style="background: url(https://media.graphassets.com/3HxPBYAaQi6WQluLqETl) center center / cover no-repeat; position: absolute; height: 100vh; width: 100%;">
 </div>
 <div style="display: flex; min-height: 100vh; justify-content: center;">
-  <mat-tab-group style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="100">
+  <mat-tab-group style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="start"
+    animationDuration="100">
     <mat-tab label="Qualified">
       <div class="inner-flex">
         @if (isLoading) {
@@ -42,21 +43,22 @@
           <div style="display: inline-flex;justify-content: space-between;width: 100%;">
             <div style="display: inline-flex;align-items: center; padding-left: 1rem;">
               <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
-                width="42px" src="../../../assets/character-thumbnails/{{player.max_qual_chara}}.webp">
+                width="42px" src="../../../assets/character-thumbnails/{{player.id}}.webp">
               @if(screenWidth >1000){
-              <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.max_qual_rank}}.png">
+              <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.rank}}.png">
               }
             </div>
-            <div style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
+            <div
+              style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
               <div style="width: 25%;">
                 <span>{{player.name}}</span>
               </div>
               <div style="width: 25%;">
-                <span >Rating: {{player.max_qual_rating}}</span>
+                <span>Rating: {{player.rating}}</span>
               </div>
               @if(screenWidth >1000){
               <div style="width: 25%;">
-                <span>Updated: {{player.last_qual_seen}}</span>
+                <span>Updated: {{player.date}}</span>
               </div>
               }
             </div>
@@ -83,12 +85,12 @@
         @for (player of players; track player; let idx = $index) {
         <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
           <div style="background: rgba(38, 86, 116, 1);
-            height: 100%;
-            min-width: 48px;
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            ">
+              height: 100%;
+              min-width: 48px;
+              align-items: center;
+              display: flex;
+              justify-content: center;
+              ">
             <div style="display: inline-flex;align-items: center; justify-content: space-around;">
               @if(idx+1==1){
               <span style="font-size: 2rem;">🥇</span>
@@ -105,21 +107,22 @@
           <div style="display: inline-flex;justify-content: space-between;width: 100%;">
             <div style="display: inline-flex;align-items: center; padding-left: 1rem;">
               <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
-                width="42px" src="../../../assets/character-thumbnails/{{player.max_chara}}.webp">
+                width="42px" src="../../../assets/character-thumbnails/{{player.id}}.webp">
               @if(screenWidth >1000){
-              <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.max_rank}}.png">
+              <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.rank}}.png">
               }
             </div>
-            <div style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
+            <div
+              style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
               <div style="width: 25%;">
                 <span>{{player.name}}</span>
               </div>
               <div style="width: 25%;">
-                <span >Rating: {{player.max_rating}}</span>
+                <span>Rating: {{player.rating}}</span>
               </div>
               @if(screenWidth >1000){
               <div style="width: 25%;">
-                <span>Updated: {{player.last_seen}}</span>
+                <span>Updated: {{player.date}}</span>
               </div>
               }
             </div>

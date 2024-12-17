@@ -24,15 +24,47 @@ export class HomeComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  players: PlayerData[] = [];
-  qualifiedPlayers: PlayerData[] = [];
+  players: any[] = [];
+  qualifiedPlayers: any[] = [];
 
   constructor(private rankingService: RankingService, private router: Router) {
     rankingService.getRankings().subscribe((result) => {
-      this.players = result;
-      this.qualifiedPlayers = result.filter(ranking => {
-        return ranking.max_qual_chara > -1;
-      }).sort((a,b)=>b.max_qual_rating-a.max_qual_rating)
+      result.forEach(player => {
+        if (player.rankings.length > 0) {
+          //Rankings are ordered by rating so just get first
+          let playerData = player.rankings[0]
+          playerData.name = player.name
+          playerData.tekken_id = player.tekken_id
+          playerData.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+          this.players.push(playerData);
+        }
+
+        if (player.qual_rankings.length > 0) {
+          //Rankings are ordered by rating so just get first
+          let playerData = player.qual_rankings[0]
+          playerData.name = player.name
+          playerData.tekken_id = player.tekken_id
+          playerData.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+          this.qualifiedPlayers.push(playerData);
+        }
+      })
+
+      this.players.sort((player1, player2) => {
+        return player2.rating - player1.rating;
+      })
+      this.qualifiedPlayers.sort((player1, player2) => {
+        return player2.rating - player1.rating;
+      })
+
       this.isLoading = false;
     });
 
