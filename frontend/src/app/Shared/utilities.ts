@@ -43,5 +43,6 @@ export class Utilities {
         this.charaIdMap.set(38,'Eddy')
         this.charaIdMap.set(39,'Lidia')
         this.charaIdMap.set(40,'Heihachi')
+        this.charaIdMap.set(41,'Clive')
     }
 }

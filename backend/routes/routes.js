@@ -97,10 +97,7 @@ router.get("/lastEpochUpdate", async (req, res) => {
 router.get("/lastupdate", async (req, res) => {
   try {
     const data = await Replay.find().sort({ battle_at: -1 }).limit(1);
-    const date = new Date(data[0].battle_at * 1000).toLocaleDateString(
-      "en-us",
-      options
-    );
+    const date = data[0].battle_at * 1000
     res.json({ date: date });
   } catch (error) {
     res.status(500).json({ message: error.message });

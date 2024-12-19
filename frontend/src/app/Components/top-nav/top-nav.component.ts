@@ -15,6 +15,14 @@ export class TopNavComponent {
   screenWidth = 0;
   lastUpdate: any;
 
+  options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenHeight = window.innerHeight;
@@ -28,7 +36,7 @@ export class TopNavComponent {
   ngOnInit() {
     this.screenWidth = window.innerWidth;
     this.rankingService.getLastUpdate().subscribe((result) =>{
-      this.lastUpdate = result;
+      this.lastUpdate = new Date(result.date).toLocaleString("en-US");
     });
   }
 }
