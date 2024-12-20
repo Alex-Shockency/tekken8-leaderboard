@@ -133,6 +133,7 @@ export class PlayerInfoComponent {
   onPageChange(event: PageEvent) {
     this.pageNum = event.pageIndex + 1;
     this.pageSize = event.pageSize;
+    this.isReplayLoading = true;
     this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
       this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
 
@@ -164,6 +165,7 @@ export class PlayerInfoComponent {
 
         return replay
       }));
+      this.isReplayLoading =false;
     });
   }
 }
