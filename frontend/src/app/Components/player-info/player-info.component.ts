@@ -96,6 +96,7 @@ export class PlayerInfoComponent {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.isReplayLoading = false;
+      window.scrollTo(0, 0)
     });
 
     rankingService.getRankingsById(this.tekkenId).subscribe((result) => {
