@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Replay } from '../Models/replay';
 import { PlayerData } from '../Models/playerData';
+import { ReplayData } from '../Models/replayData';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +30,8 @@ export class RankingService {
     return this.http.get<PlayerData>(this.api + `rankings/${tekkenId}`);
   }
 
-  getReplaysById(tekkenId: string): Observable<Replay[]> {
-    return this.http.get<Replay[]>(this.api + `replays/${tekkenId}`);
+  getReplaysById(tekkenId: string,pageNum: number,pageSize: number): Observable<any> {
+    return this.http.get<any>(this.api + `replays/${tekkenId}?pageNum=${pageNum}&pageSize=${pageSize}`);
   }
 
   getQualifiedReplays(): Observable<Replay[]> {

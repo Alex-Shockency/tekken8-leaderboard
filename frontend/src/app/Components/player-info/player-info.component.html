@@ -82,7 +82,7 @@
         }
         @if (dataSource) {
         <div style="color:rgba(255, 255, 255, 0.871); padding: 1rem">
-          <span>Replays Found: {{this.dataSource.data.length}}</span>
+          <span>Replays Found: {{battleCount}}</span>
         </div>
         }
         <div>
@@ -155,7 +155,7 @@
           </div>
 
           <div [hidden]="isReplayLoading">
-            <mat-paginator [pageSizeOptions]="[15, 100]" aria-label="Select page of users"></mat-paginator>
+            <mat-paginator [length]="battleCount" (page)="onPageChange($event)" [pageSizeOptions]="[15, 100]" aria-label="Select page of users"></mat-paginator>
           </div>
         </div>
       </div>

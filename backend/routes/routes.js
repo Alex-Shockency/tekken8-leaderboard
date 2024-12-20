@@ -116,17 +116,26 @@ router.get("/replays", async (req, res) => {
 
 //Get by TekkenID Method
 router.get("/replays/:tekkenId", async (req, res) => {
+  let pageNum = req.query.pageNum;
+  let pageSize = parseInt(req.query.pageSize);
   try {
-    let data = await Replay.find({
-      $or: [
-        { p1_polaris_id: req.params.tekkenId },
-        { p2_polaris_id: req.params.tekkenId },
-      ],
-    })
-      .sort({ battle_at: "desc" })
-    // .limit(100);
+    let data = await Replay.aggregate([
+      {
+        $match: {
+          $or: [
+            { p1_polaris_id: req.params.tekkenId },
+            { p2_polaris_id: req.params.tekkenId },
+          ],
+        }
+      }, {
+        $facet: {
+          metadata: [{ $count: 'totalCount' }],
+          replays: [{ $skip: (pageNum - 1) * pageSize }, { $limit: pageSize }],
+        }
+      },
+    ]).sort({ battle_at: "desc" })
 
-    res.json(data);
+    res.json(data[0]);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
