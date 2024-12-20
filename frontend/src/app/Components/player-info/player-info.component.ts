@@ -61,23 +61,6 @@ export class PlayerInfoComponent {
     this.rankingService.getReplaysById(this.tekkenId, this.pageNum,this.pageSize).subscribe((result) => {
       this.battleCount = result.metadata[0].totalCount
       this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
-
-        // if (replay.p1_polaris_id == this.tekkenId) {
-        //   if (this.battlesByChar.get(replay.p1_chara_id)) {
-        //     let count: number = this.battlesByChar.get(replay.p1_chara_id) as number
-        //     this.battlesByChar.set(replay.p1_chara_id, count + 1)
-        //   } else {
-        //     this.battlesByChar.set(replay.p1_chara_id, 1)
-        //   }
-        // } else if (replay.p2_polaris_id == this.tekkenId) {
-        //   if (this.battlesByChar.get(replay.p2_chara_id)) {
-        //     let count: number = this.battlesByChar.get(replay.p2_chara_id) as number
-        //     this.battlesByChar.set(replay.p2_chara_id, count + 1)
-        //   } else {
-        //     this.battlesByChar.set(replay.p2_chara_id, 1)
-        //   }
-        // }
-
         let battleAtDate = new Date(replay.battle_at * 1000).toLocaleDateString("en-us", {
           year: "numeric",
           month: "long",
@@ -137,23 +120,6 @@ export class PlayerInfoComponent {
     this.isReplayLoading = true;
     this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
       this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
-
-        // if (replay.p1_polaris_id == this.tekkenId) {
-        //   if (this.battlesByChar.get(replay.p1_chara_id)) {
-        //     let count: number = this.battlesByChar.get(replay.p1_chara_id) as number
-        //     this.battlesByChar.set(replay.p1_chara_id, count + 1)
-        //   } else {
-        //     this.battlesByChar.set(replay.p1_chara_id, 1)
-        //   }
-        // } else if (replay.p2_polaris_id == this.tekkenId) {
-        //   if (this.battlesByChar.get(replay.p2_chara_id)) {
-        //     let count: number = this.battlesByChar.get(replay.p2_chara_id) as number
-        //     this.battlesByChar.set(replay.p2_chara_id, count + 1)
-        //   } else {
-        //     this.battlesByChar.set(replay.p2_chara_id, 1)
-        //   }
-        // }
-
         let battleAtDate = new Date(replay.battle_at * 1000).toLocaleDateString("en-us", {
           year: "numeric",
           month: "long",
