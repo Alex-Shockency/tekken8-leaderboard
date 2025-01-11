@@ -32,6 +32,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSliderModule} from '@angular/material/slider';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 
 const materialModules = [
@@ -67,7 +69,10 @@ const materialModules = [
   MatSlideToggleModule,
   MatRadioModule,
   MatTooltipModule,
-  MatSliderModule
+  MatSliderModule, 
+  FormsModule,
+  ReactiveFormsModule,
+  CommonModule
 ];
 
 @NgModule({

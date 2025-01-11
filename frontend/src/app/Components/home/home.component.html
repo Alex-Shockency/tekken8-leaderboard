@@ -2,7 +2,21 @@
 <div
   style="background: url(https://media.graphassets.com/3HxPBYAaQi6WQluLqETl) center center / cover no-repeat; position: absolute; height: 100vh; width: 100%;">
 </div>
-<div style="display: flex; min-height: 100vh; justify-content: center;">
+<div
+  style="display: flex; min-height: 100vh; justify-content: center; flex-flow: column; max-width: 1500px; margin: auto;">
+  <div style="margin-top: 1rem;">
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Players" aria-label="Search" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (option of filteredPlayers | async; track option) {
+          <mat-option [value]="option.name">{{option.name}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </div>
   <mat-tab-group style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="start"
     animationDuration="100">
     <mat-tab label="Qualified">
@@ -18,7 +32,7 @@
         }
         @else {
         @if(players.length >0){
-        @for (player of qualifiedPlayers; track player; let idx = $index) {
+        @for (player of filteredQualifiedPlayers| async; track player; let idx = $index) {
         <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
           <div style="background: rgba(38, 86, 116, 1);
             height: 100%;
@@ -28,15 +42,15 @@
             justify-content: center;
             ">
             <div style="display: inline-flex;align-items: center; justify-content: space-around;">
-              @if(idx+1==1){
+              @if(player.ranking+1==1){
               <span style="font-size: 2rem;">🥇</span>
-              }@else if (idx+1 ==2) {
+              }@else if (player.ranking+1 ==2) {
               <span style="font-size: 2rem;">🥈</span>
-              }@else if (idx+1 ==3) {
+              }@else if (player.ranking+1 ==3) {
               <span style="font-size: 2rem;">🥉</span>
               }
               @else {
-              <div style="font-size: 1.5rem;font-family: Tekken;">{{idx+1}}</div>
+              <div style="font-size: 1.5rem;font-family: Tekken;">{{player.ranking+1}}</div>
               }
             </div>
           </div>
@@ -82,7 +96,7 @@
         }
         @else {
         @if(players.length >0){
-        @for (player of players; track player; let idx = $index) {
+        @for (player of filteredPlayers | async; track player; let idx = $index) {
         <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
           <div style="background: rgba(38, 86, 116, 1);
               height: 100%;
@@ -92,15 +106,15 @@
               justify-content: center;
               ">
             <div style="display: inline-flex;align-items: center; justify-content: space-around;">
-              @if(idx+1==1){
+              @if(player.ranking+1==1){
               <span style="font-size: 2rem;">🥇</span>
-              }@else if (idx+1 ==2) {
+              }@else if (player.ranking+1 ==2) {
               <span style="font-size: 2rem;">🥈</span>
-              }@else if (idx+1 ==3) {
+              }@else if (player.ranking+1 ==3) {
               <span style="font-size: 2rem;">🥉</span>
               }
               @else {
-              <div style="font-size: 1.5rem;font-family: Tekken;">{{idx+1}}</div>
+              <div style="font-size: 1.5rem;font-family: Tekken;">{{player.ranking+1}}</div>
               }
             </div>
           </div>

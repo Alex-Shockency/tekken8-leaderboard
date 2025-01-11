@@ -11,7 +11,7 @@
     rgba(0, 0, 0, 0) 100%
   );
   overflow: auto;
-  margin: 0rem 1rem 2rem 1rem;
+  min-height: 100vh;
 }
 
 .player-card {
@@ -20,7 +20,7 @@
   color: rgba(255, 255, 255, 0.871);
   align-items: center;
   height: 72px;
-  margin: 0.25rem;
+  margin: 0rem 0rem 0.25rem 0rem;
 }
 
 .player-card:hover{
@@ -29,7 +29,7 @@
   color: rgba(255, 255, 255, 0.871);
   align-items: center;
   cursor: pointer;
-  margin: 0.25rem;
+  margin: 0rem 0rem 0.25rem 0rem;
 }
 
 .icon-button {

@@ -4,6 +4,8 @@ import { RankingService } from '../../Services/ranking.service';
 import { TopNavComponent } from "../top-nav/top-nav.component";
 import { Router } from '@angular/router';
 import { PlayerData } from '../../Models/playerData';
+import { FormControl } from '@angular/forms';
+import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +15,7 @@ import { PlayerData } from '../../Models/playerData';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  myControl = new FormControl('');
   screenHeight = 0;
   screenWidth = 0;
   lastUpdate: any;
@@ -25,10 +28,13 @@ export class HomeComponent {
   }
 
   players: any[] = [];
+  filteredPlayers!: Observable<any[]>;
   qualifiedPlayers: any[] = [];
+  filteredQualifiedPlayers!: Observable<any[]>;
 
-  constructor(private rankingService: RankingService, private router: Router) {
+  constructor(rankingService: RankingService, private router: Router) {
     rankingService.getRankings().subscribe((result) => {
+     
       result.forEach(player => {
         if (player.rankings.length > 0) {
           //Rankings are ordered by rating so just get first
@@ -41,6 +47,7 @@ export class HomeComponent {
             day: "numeric",
           });
           this.players.push(playerData);
+          
         }
 
         if (player.qual_rankings.length > 0) {
@@ -53,16 +60,22 @@ export class HomeComponent {
             month: "long",
             day: "numeric",
           });
-
           this.qualifiedPlayers.push(playerData);
         }
       })
-
+      let index= 0;
       this.players.sort((player1, player2) => {
         return player2.rating - player1.rating;
+      }).map(player =>{
+        player.ranking = index;
+        index++;
       })
+      let qualIndex= 0;
       this.qualifiedPlayers.sort((player1, player2) => {
         return player2.rating - player1.rating;
+      }).map(player =>{
+        player.ranking = qualIndex;
+        qualIndex++;
       })
 
       this.isLoading = false;
@@ -72,10 +85,28 @@ export class HomeComponent {
 
   ngOnInit() {
     this.screenWidth = window.innerWidth;
+    this.filteredQualifiedPlayers = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._qualFilter(value || ''))
+    )
+    this.filteredPlayers = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || ''))
+    )
   }
 
   routeToPlayerInfo(tekkenId: string) {
     tekkenId = tekkenId.replaceAll('-', '')
     this.router.navigate([`/playerInfo/${tekkenId}`])
+  }
+
+  private _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.players.filter(player => player.name.toLowerCase().includes(filterValue));
+  }
+
+  private _qualFilter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.qualifiedPlayers.filter(player => player.name.toLowerCase().includes(filterValue));
   }
 }

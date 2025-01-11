@@ -2,13 +2,15 @@
 <div
   style="display: flex; justify-content: center;min-height: 100vh; background: linear-gradient(180deg, #311122, transparent);">
   <div class="inner-flex" style="overflow: hidden;z-index: 1;">
-    @if(playerData){
     <div
-      style="color: rgba(255, 255, 255, 0.871); padding: 1rem; background: url(https://media.graphassets.com/hTZbojF7RfKctKFfrSK7) center center / cover no-repeat;">
-      <h1>{{playerData.name}}</h1>
-      <h2>{{tekkenIdDashes}} </h2>
+      style="color: rgba(255, 255, 255, 0.871); padding: 1rem; background: url(https://media.graphassets.com/hTZbojF7RfKctKFfrSK7) center center / cover no-repeat;height: 162px;">
+      @if(playerData){
+        <h1>{{playerData.name}}</h1>
+        <h2>{{tekkenIdDashes}} </h2>
+      }
     </div>
     <mat-divider></mat-divider>
+    @if(playerData){
     <div style="display: inline-flex;overflow-x: auto;margin: 0rem 1rem 1rem 1rem;">
       @if(playerData.qual_rankings.length > 0){
       <div>
@@ -37,7 +39,7 @@
           }
         </div>
       </div>
-      }
+      } 
       @if(playerData.rankings.length > 0){
       <div style="margin: 0rem 0rem 0rem 1rem;">
         <div style="color: rgba(255, 255, 255, 0.871);margin: 0rem 2rem;">
@@ -67,6 +69,13 @@
       </div>
       }
     </div>
+    } @else {
+      <div style="width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;">
+  <mat-spinner></mat-spinner>
+</div>
     }
 
     <mat-divider></mat-divider>
