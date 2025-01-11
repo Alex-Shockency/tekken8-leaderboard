@@ -121,6 +121,12 @@ export class PlayerInfoComponent {
       'rgb(201, 203, 207)',
       'rgb(35, 150, 0)'
     ];
+    let pointRadius = 6;
+    let pointHoverRadius = 7;
+    if(this.screenWidth < 800){
+      pointRadius = 3;
+      pointHoverRadius = 4
+    }
 
     let chartData: number[] = [];
     result.replays.forEach((replay:Replay) => {
@@ -184,8 +190,8 @@ export class PlayerInfoComponent {
           datasets: [
             {
               label: 'Your Rating',
-              pointRadius: 6,
-              pointHoverRadius: 7,
+              pointRadius: pointRadius,
+              pointHoverRadius: pointHoverRadius,
               data: chartData,
               borderColor: "rgba(255, 99, 133, 0.4)",
               backgroundColor: result.replays.map((replay: any) => {
