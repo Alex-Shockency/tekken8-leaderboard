@@ -128,9 +128,11 @@ export class PlayerInfoComponent {
       if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
         currChar = replay.p1_chara_id;
         rating = replay.p1_rating_before + replay.p1_rating_change;
+        chartData.push(rating)
       } else {
         currChar = replay.p2_chara_id;
         rating = replay.p2_rating_before + replay.p2_rating_change;
+        chartData.push(rating)
       }
 
       if (currChar !== prevChar && prevChar !== 0) {
@@ -143,7 +145,6 @@ export class PlayerInfoComponent {
         prevChar = replay.p2_chara_id;
       }
 
-      chartData.push(rating)
     });
 
     new Chart("ratings",
@@ -156,6 +157,10 @@ export class PlayerInfoComponent {
               ticks: {
                 display: false // This hides the x-axis labels
               }
+            },
+            y: {
+              min: Math.min(...chartData)-50,
+              max: Math.max(...chartData)+50
             }
           },
           plugins: {
