@@ -74,87 +74,7 @@ export class PlayerInfoComponent {
         return replay
       }));
 
-      let colorIndex = 0;
-      let prevOpp = "";
-      let currOpp = "";
-      let colorArray = ['rgb(255, 99, 133)',
-        'rgb(255, 160, 64)',
-        'rgb(255, 204, 86)',
-        'rgb(75, 192, 192)',
-        'rgb(54, 163, 235)',
-        'rgb(153, 102, 255)',
-        'rgb(201, 203, 207)',
-        'rgb(35, 150, 0)'
-      ]
-
-      new Chart("ratings",
-        {
-          type: 'line',
-          options: {
-            scales: {
-              x: {
-                reverse: true,
-                ticks: {
-                  display: false // This hides the x-axis labels
-                }
-              }
-            },
-            plugins: {
-              legend: {
-                display: false
-              },
-            }
-          },
-          data: {
-            labels: result.replays.map((replay: any) => {
-              if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
-                return "Opponent: " + replay.p2_name
-              } else {
-                return  "Opponent: " + replay.p1_name
-              }
-             
-          }),
-            datasets: [
-              {
-                label: 'Your Rating',
-                fill: false,
-                data: result.replays.map((replay: any) => {
-                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
-                    return replay.p1_rating_before + replay.p1_rating_change
-                  } else {
-                    return replay.p2_rating_before + replay.p2_rating_change
-                  }
-                }),
-                borderColor:"rgba(255, 99, 133, 0.4)",
-                backgroundColor: result.replays.map((replay: any) => {
-                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
-                    currOpp = replay.p2_polaris_id;
-                  } else {
-                    currOpp = replay.p1_polaris_id;
-                  }
-
-                  if (currOpp !== prevOpp && prevOpp !== "") {
-                    if (colorIndex >= colorArray.length-1) {
-                      colorIndex = 0
-                    } else {
-                      colorIndex++;
-                    }
-                  }
-                  
-                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
-                    prevOpp = replay.p2_polaris_id;
-                  } else {
-                    prevOpp = replay.p1_polaris_id;
-                  }
-                
-                  return colorArray[colorIndex]
-                })
-              }
-            ],
-
-          }
-        }
-      );
+      this.createChart(result);
 
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -186,6 +106,110 @@ export class PlayerInfoComponent {
       this.isPlayerLoading = false;
     });
   }
+  private createChart(result: any) {
+    let colorIndex = 0;
+    let prevChar = 0;
+    let currChar = 0;
+    let prevOppColor = "";
+    let currOppColor = "";
+    let colorArray = ['rgb(255, 99, 133)',
+      'rgb(255, 160, 64)',
+      'rgb(255, 204, 86)',
+      'rgb(75, 192, 192)',
+      'rgb(54, 163, 235)',
+      'rgb(153, 102, 255)',
+      'rgb(201, 203, 207)',
+      'rgb(35, 150, 0)'
+    ];
+
+    let chartData: number[] = [];
+    result.replays.forEach((replay:Replay) => {
+      let rating = 0;
+      if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+        currChar = replay.p1_chara_id;
+        rating = replay.p1_rating_before + replay.p1_rating_change;
+      } else {
+        currChar = replay.p2_chara_id;
+        rating = replay.p2_rating_before + replay.p2_rating_change;
+      }
+
+      if (currChar !== prevChar && prevChar !== 0) {
+        chartData.push(NaN)
+      }
+
+      if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+        prevChar = replay.p1_chara_id;
+      } else {
+        prevChar = replay.p2_chara_id;
+      }
+
+      chartData.push(rating)
+    });
+
+    new Chart("ratings",
+      {
+        type: 'line',
+        options: {
+          scales: {
+            x: {
+              reverse: true,
+              ticks: {
+                display: false // This hides the x-axis labels
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+          }
+        },
+        data: {
+          labels: result.replays.map((replay: any) => {
+            if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+              return "Opponent: " + replay.p2_name;
+            } else {
+              return "Opponent: " + replay.p1_name;
+            }
+
+          }),
+          datasets: [
+            {
+              label: 'Your Rating',
+              pointRadius: 6,
+              pointHoverRadius: 7,
+              data: chartData,
+              borderColor: "rgba(255, 99, 133, 0.4)",
+              backgroundColor: result.replays.map((replay: any) => {
+                if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                  currOppColor = replay.p2_polaris_id;
+                } else {
+                  currOppColor = replay.p1_polaris_id;
+                }
+
+                if (currOppColor !== prevOppColor && prevOppColor !== "") {
+                  if (colorIndex >= colorArray.length - 1) {
+                    colorIndex = 0;
+                  } else {
+                    colorIndex++;
+                  }
+                }
+
+                if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                  prevOppColor = replay.p2_polaris_id;
+                } else {
+                  prevOppColor = replay.p1_polaris_id;
+                }
+
+                return colorArray[colorIndex];
+              }),
+            }
+          ],
+        }
+      }
+    );
+  }
+
   ngOnInit() {
     this.screenWidth = window.innerWidth;
     window.scrollTo(0, 0)
