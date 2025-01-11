@@ -5,13 +5,13 @@
     <div
       style="color: rgba(255, 255, 255, 0.871); padding: 1rem; background: url(https://media.graphassets.com/hTZbojF7RfKctKFfrSK7) center center / cover no-repeat;height: 162px;">
       @if(playerData){
-        <h1>{{playerData.name}}</h1>
-        <h2>{{tekkenIdDashes}} </h2>
+      <h1>{{playerData.name}}</h1>
+      <h2>{{tekkenIdDashes}} </h2>
       }
     </div>
     <mat-divider></mat-divider>
     @if(playerData){
-    <div style="display: inline-flex;overflow-x: auto;margin: 0rem 1rem 1rem 1rem;">
+    <div style="display: inline-flex;overflow-x: auto;margin: 1rem 1rem 1rem 1rem;">
       @if(playerData.qual_rankings.length > 0){
       <div>
         <div style="color: rgba(255, 255, 255, 0.871);margin: 0rem 2rem;">
@@ -39,7 +39,7 @@
           }
         </div>
       </div>
-      } 
+      }
       @if(playerData.rankings.length > 0){
       <div style="margin: 0rem 0rem 0rem 1rem;">
         <div style="color: rgba(255, 255, 255, 0.871);margin: 0rem 2rem;">
@@ -70,28 +70,36 @@
       }
     </div>
     } @else {
-      <div style="width: 100%;
+    <div style="width: 100%;
       display: flex;
       justify-content: center;
-      align-items: center;">
-  <mat-spinner></mat-spinner>
-</div>
+      align-items: center; height: 428px;">
+      <mat-spinner></mat-spinner>
+    </div>
     }
 
     <mat-divider></mat-divider>
     <div style="margin: 1rem;overflow: auto; max-height: 100%;">
       <div>
-       @if (battleCount > 0) {
-         <div style="color:rgba(255, 255, 255, 0.871); padding: 1rem">
-           <span>Replays Found: {{battleCount}}</span>
-         </div>
-       }
         @if (isReplayLoading) {
-          <div style="width: 100%;
+        <div style="width: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;">
-            <mat-spinner></mat-spinner>
+          <mat-spinner></mat-spinner>
+        </div>
+        }
+        <div style="width: 100%; display: flex;justify-content: center;">
+          <h3 style="color:rgba(255, 255, 255, 0.871);">Rating Change</h3>
+        </div>
+        <div style="width: 100%; display: flex;justify-content: center; padding: 1rem;">
+          <div style="width: 820px;">
+            <canvas id="ratings"></canvas>
+          </div>
+        </div>
+        @if (battleCount > 0) {
+          <div style="color:rgba(255, 255, 255, 0.871); padding: 1rem">
+            <span>Replays Found: {{battleCount}}</span>
           </div>
           }
         <div>
@@ -119,12 +127,12 @@
                 <th mat-header-cell *matHeaderCellDef> Rating </th>
                 <td mat-cell *matCellDef="let element">
                   @if (element.p1_rating_before) {
-                    {{this.tekkenId == element.p1_polaris_id ?
-                    element.p1_rating_before+' '+ (element.p1_rating_change > 0 ? "+" +
-                    element.p1_rating_change:element.p1_rating_change) : element.p2_rating_before+'
-                    '+(element.p2_rating_change > 0 ? "+" + element.p2_rating_change:element.p2_rating_change)}}
+                  {{this.tekkenId == element.p1_polaris_id ?
+                  element.p1_rating_before+' '+ (element.p1_rating_change > 0 ? "+" +
+                  element.p1_rating_change:element.p1_rating_change) : element.p2_rating_before+'
+                  '+(element.p2_rating_change > 0 ? "+" + element.p2_rating_change:element.p2_rating_change)}}
                   } @else {
-                    TBD
+                  TBD
                   }
                 </td>
               </ng-container>
@@ -164,7 +172,8 @@
           </div>
 
           <div [hidden]="isReplayLoading">
-            <mat-paginator [length]="battleCount" (page)="onPageChange($event)" [pageSizeOptions]="[15, 50, 100]" aria-label="Select page of users"></mat-paginator>
+            <mat-paginator [length]="battleCount" (page)="onPageChange($event)" [pageSizeOptions]="[25, 50, 100]"
+              aria-label="Select page of users"></mat-paginator>
           </div>
         </div>
       </div>

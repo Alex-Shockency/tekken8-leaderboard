@@ -127,10 +127,16 @@ router.get("/replays/:tekkenId", async (req, res) => {
             { p2_polaris_id: req.params.tekkenId },
           ],
         }
-      }, {
+      },
+      {
+        $sort:{
+          battle_at: -1
+        }
+      },
+       {
         $facet: {
           metadata: [{ $count: 'totalCount' }],
-          replays: [{ $skip: (pageNum - 1) * pageSize }, { $limit: pageSize }],
+          replays: [{ $skip: (pageNum-1) * pageSize }, { $limit: pageSize }],
         }
       },
     ]).sort({ battle_at: "desc" })

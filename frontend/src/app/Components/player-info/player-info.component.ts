@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Replay } from '../../Models/replay';
 import { MatSort } from '@angular/material/sort';
 import { PlayerData } from '../../Models/playerData';
+import Chart from 'chart.js/auto';
 import { ReplayData } from '../../Models/replayData';
 
 
@@ -49,7 +50,7 @@ export class PlayerInfoComponent {
   tekkenIdDashes: string = '';
   battleCount = 0;
   pageNum = 1;
-  pageSize = 15;
+  pageSize = 25;
 
   constructor(
     private rankingService: RankingService,
@@ -58,7 +59,7 @@ export class PlayerInfoComponent {
   ) {
     this.tekkenId = this.route.snapshot.params['tekkenId'];
     this.tekkenIdDashes = this.route.snapshot.params['tekkenId'].match(new RegExp('.{1,4}', 'g')).join("-");
-    this.rankingService.getReplaysById(this.tekkenId, this.pageNum,this.pageSize).subscribe((result) => {
+    this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
       this.battleCount = result.metadata[0].totalCount
       this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
         let battleAtDate = new Date(replay.battle_at * 1000).toLocaleDateString("en-us", {
@@ -68,12 +69,91 @@ export class PlayerInfoComponent {
           hour: "numeric",
           minute: "numeric",
         });
-
         replay.battle_at_date = battleAtDate;
 
         return replay
-      })
+      }));
 
+      let colorIndex = 0;
+      let prevOpp = "";
+      let currOpp = "";
+      let colorArray = ['rgb(255, 99, 133)',
+        'rgb(255, 160, 64)',
+        'rgb(255, 204, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(54, 163, 235)',
+        'rgb(153, 102, 255)',
+        'rgb(201, 203, 207)',
+        'rgb(35, 150, 0)'
+      ]
+
+      new Chart("ratings",
+        {
+          type: 'line',
+          options: {
+            scales: {
+              x: {
+                reverse: true,
+                ticks: {
+                  display: false // This hides the x-axis labels
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+            }
+          },
+          data: {
+            labels: result.replays.map((replay: any) => {
+              if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                return "Opponent: " + replay.p2_name
+              } else {
+                return  "Opponent: " + replay.p1_name
+              }
+             
+          }),
+            datasets: [
+              {
+                label: 'Your Rating',
+                fill: false,
+                data: result.replays.map((replay: any) => {
+                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                    return replay.p1_rating_before + replay.p1_rating_change
+                  } else {
+                    return replay.p2_rating_before + replay.p2_rating_change
+                  }
+                }),
+                borderColor:"rgba(255, 99, 133, 0.4)",
+                backgroundColor: result.replays.map((replay: any) => {
+                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                    currOpp = replay.p2_polaris_id;
+                  } else {
+                    currOpp = replay.p1_polaris_id;
+                  }
+
+                  if (currOpp !== prevOpp && prevOpp !== "") {
+                    if (colorIndex >= colorArray.length-1) {
+                      colorIndex = 0
+                    } else {
+                      colorIndex++;
+                    }
+                  }
+                  
+                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                    prevOpp = replay.p2_polaris_id;
+                  } else {
+                    prevOpp = replay.p1_polaris_id;
+                  }
+                
+                  return colorArray[colorIndex]
+                })
+              }
+            ],
+
+          }
+        }
       );
 
       this.dataSource.paginator = this.paginator;
@@ -132,7 +212,7 @@ export class PlayerInfoComponent {
 
         return replay
       }));
-      this.isReplayLoading =false;
+      this.isReplayLoading = false;
     });
   }
 }
