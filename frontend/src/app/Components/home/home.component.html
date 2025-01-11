@@ -9,6 +9,7 @@
       <mat-form-field class="example-full-width">
         <input type="text" placeholder="Players" aria-label="Search" matInput [formControl]="myControl"
           [matAutocomplete]="auto">
+          <mat-icon style="color: white;" matPrefix>search</mat-icon>
         <mat-autocomplete #auto="matAutocomplete">
           @for (option of filteredPlayers | async; track option) {
           <mat-option [value]="option.name">{{option.name}}</mat-option>
