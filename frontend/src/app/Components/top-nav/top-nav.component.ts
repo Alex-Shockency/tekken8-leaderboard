@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 export class TopNavComponent {
   screenHeight = 0;
   screenWidth = 0;
-  lastUpdate: any;
+  lastUpdate: string = new Date().toLocaleString("en-US");;
 
   options = {
     year: "numeric",
