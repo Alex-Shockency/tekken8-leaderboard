@@ -7,7 +7,7 @@ const mongoString = process.env.DATABASE_URL;
 const cors = require('cors');
 const options = [
     cors({
-      origin: '*',
+      origin: ['http://localhost:4200','https://tekkenleaderboard.com'],
       methods: '*',
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,

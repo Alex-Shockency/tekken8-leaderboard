@@ -28,6 +28,7 @@ export class PlayerInfoComponent {
   lastUpdate: any;
   isPlayerLoading = true;
   isReplayLoading = true;
+  isMatchupLoading = true;
 
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['when', 'char', 'score', 'rating', 'opponent', 'opponentChar', 'opponentrating'];
@@ -37,6 +38,7 @@ export class PlayerInfoComponent {
 
   @ViewChild(MatSort)
   sort!: MatSort;
+  Math = Math;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -45,12 +47,13 @@ export class PlayerInfoComponent {
   }
 
   playerData!: PlayerData;
-  battlesByChar: Map<number, number> = new Map();
+  matchupMap: Map<number, { wins: number, losses: number }> = new Map();
   tekkenId: string = '';
   tekkenIdDashes: string = '';
   battleCount = 0;
   pageNum = 1;
   pageSize = 25;
+  overallWinPercent = 0;
 
   constructor(
     private rankingService: RankingService,
@@ -59,6 +62,59 @@ export class PlayerInfoComponent {
   ) {
     this.tekkenId = this.route.snapshot.params['tekkenId'];
     this.tekkenIdDashes = this.route.snapshot.params['tekkenId'].match(new RegExp('.{1,4}', 'g')).join("-");
+    let overallWins = 0;
+    let overallLosses = 0;
+    rankingService.getAllReplaysById(this.tekkenId).subscribe((result) => {
+      result.forEach((replay:any) => {
+        if (replay.p1_polaris_id == this.tekkenId) {
+          if (replay.p1_rounds > replay.p2_rounds) {
+            if (this.matchupMap.has(replay.p2_chara_id)) {
+              let winsLosses = this.matchupMap.get(replay.p2_chara_id) ?? { wins: 0, losses: 0 };
+              this.matchupMap.set(replay.p2_chara_id, { wins: winsLosses.wins + 1, losses: winsLosses.losses })
+              overallWins +=1
+            } else {
+              this.matchupMap.set(replay.p2_chara_id, { wins: 1, losses: 0 })
+              overallWins +=1
+            }
+          } else {
+            if (this.matchupMap.has(replay.p2_chara_id)) {
+              let winsLosses = this.matchupMap.get(replay.p2_chara_id) ?? { wins: 0, losses: 0 };
+              this.matchupMap.set(replay.p2_chara_id, { wins: winsLosses.wins, losses: winsLosses.losses + 1 })
+              overallLosses+=1
+            } else {
+              this.matchupMap.set(replay.p2_chara_id, { wins: 0, losses: 1 })
+              overallLosses+=1
+            }
+          }
+        } 
+        else {
+          if (replay.p2_rounds > replay.p1_rounds) {
+            if (this.matchupMap.has(replay.p1_chara_id)) {
+              let winsLosses = this.matchupMap.get(replay.p1_chara_id) ?? { wins: 0, losses: 0 };
+              this.matchupMap.set(replay.p1_chara_id, { wins: winsLosses.wins + 1, losses: winsLosses.losses })
+              overallWins +=1
+            } else {
+              this.matchupMap.set(replay.p1_chara_id, { wins: 1, losses: 0 })
+              overallWins +=1
+            }
+          } else {
+            if (this.matchupMap.has(replay.p1_chara_id)) {
+              let winsLosses = this.matchupMap.get(replay.p1_chara_id) ?? { wins: 0, losses: 0 };
+              this.matchupMap.set(replay.p1_chara_id, { wins: winsLosses.wins, losses: winsLosses.losses + 1 })
+              overallLosses+=1
+            } else {
+              this.matchupMap.set(replay.p1_chara_id, { wins: 0, losses: 1 })
+              overallLosses+=1
+            }
+          }
+        }
+      })
+      this.matchupMap = new Map([...this.matchupMap.entries()].sort((matchup1,matchup2)=>{
+        return matchup2[1].wins/(matchup2[1].wins+matchup2[1].losses) - matchup1[1].wins/(matchup1[1].wins+matchup1[1].losses);
+      }))
+      this.overallWinPercent = Number.parseFloat((overallWins/(overallWins+overallLosses)*100).toFixed(2))
+      this.isMatchupLoading = false;
+    });
     this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
       this.battleCount = result.metadata[0].totalCount
       this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
@@ -101,10 +157,13 @@ export class PlayerInfoComponent {
           day: "numeric",
         });
         return data;
+        
       });
       this.playerData = result
       this.isPlayerLoading = false;
     });
+
+    
   }
   private createChart(result: any) {
     let colorIndex = 0;
@@ -123,13 +182,13 @@ export class PlayerInfoComponent {
     ];
     let pointRadius = 6;
     let pointHoverRadius = 7;
-    if(this.screenWidth < 800){
+    if (this.screenWidth < 800) {
       pointRadius = 3;
       pointHoverRadius = 4
     }
 
     let chartData: number[] = [];
-    result.replays.forEach((replay:Replay) => {
+    result.replays.forEach((replay: Replay) => {
       let rating = 0;
       if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
         currChar = replay.p1_chara_id;
@@ -166,10 +225,10 @@ export class PlayerInfoComponent {
             y: {
               min: Math.min(...chartData.filter(number => {
                 return !isNaN(number)
-              }))-50,
+              })) - 50,
               max: Math.max(...chartData.filter(number => {
                 return !isNaN(number)
-              }))+50
+              })) + 50
             }
           },
           plugins: {
@@ -235,7 +294,6 @@ export class PlayerInfoComponent {
   onPageChange(event: PageEvent) {
     this.pageNum = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.isReplayLoading = true;
     this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
       this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
         let battleAtDate = new Date(replay.battle_at * 1000).toLocaleDateString("en-us", {
@@ -250,7 +308,6 @@ export class PlayerInfoComponent {
 
         return replay
       }));
-      this.isReplayLoading = false;
     });
   }
 }

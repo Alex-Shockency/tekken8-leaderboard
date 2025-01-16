@@ -34,6 +34,10 @@ export class RankingService {
     return this.http.get<any>(this.api + `replays/${tekkenId}?pageNum=${pageNum}&pageSize=${pageSize}`);
   }
 
+  getAllReplaysById(tekkenId: string): Observable<any> {
+    return this.http.get<any>(this.api + `allReplays/${tekkenId}`);
+  }
+
   getQualifiedReplays(): Observable<Replay[]> {
     return this.http.get<Replay[]>(this.api + `qualifiedReplays`);
   }

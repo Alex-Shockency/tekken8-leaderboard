@@ -1,87 +1,111 @@
 .example-full-width {
-    width: 100%;
+  width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .matchup-grid {
+    display: grid;
+    margin: 1rem;
+    column-gap: 1rem;
+    row-gap: 1rem;
+    color: rgba(255, 255, 255, 0.87);
+    justify-content: center;
   }
-  
-  .inner-flex {
-    display: flex;
-    flex-flow: column nowrap;
-    max-width: 1500px;
-    min-height: 100vh;
-    width: 100%;
-    background: rgb(16, 37, 50);
-    overflow: auto;
-    margin: 2rem 1rem 6rem 1rem;
-    border: 1px solid rgba(255,255,255, 0.3);
+}
+
+@media only screen and (width >=768px) {
+  .matchup-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin: 1rem;
+    column-gap: 1rem;
+    row-gap: 1rem;
+    color: rgba(255, 255, 255, 0.87);
+    justify-content: center;
   }
-  
-  .player-card {
-    display: inline-flex;
-    background: rgba(38, 86, 116, 0.29);
-    color: rgba(255, 255, 255, 0.871);
-    align-items: center;
-    height: 72px;
-    margin: 0.25rem;
+}
+
+.inner-flex {
+  display: flex;
+  flex-flow: column nowrap;
+  max-width: 1500px;
+  min-height: 100vh;
+  width: 100%;
+  background: rgb(16, 37, 50);
+  overflow: auto;
+  margin: 2rem 1rem 6rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.player-card {
+  display: inline-flex;
+  background: rgba(38, 86, 116, 0.29);
+  color: rgba(255, 255, 255, 0.871);
+  align-items: center;
+  height: 72px;
+  margin: 0.25rem;
+}
+
+.player-card:hover {
+  display: inline-flex;
+  background: rgba(70, 161, 217, 0.29);
+  color: rgba(255, 255, 255, 0.871);
+  align-items: center;
+  cursor: pointer;
+  margin: 0.25rem;
+}
+
+.icon-button {
+  margin: 0.25rem;
+}
+
+.new-badge {
+  margin: 0.5rem;
+}
+
+.dark-background {
+  background: linear-gradient(180deg, #1cb5e0 0%, #000851 100%);
+}
+
+.light-background {
+  background: linear-gradient(180deg, #1cb5e0 0%, #000851 100%);
+}
+
+.link {
+  color: rgb(86, 138, 170) !important;
+}
+
+.announcement {
+  animation: pulse;
+  animation-duration: 1.25s;
+  animation-delay: 0.25s;
+}
+
+.announcement-feature {
+  animation: pulse;
+  animation-duration: 1.25s;
+  animation-delay: 1.25s;
+}
+
+@media (prefers-color-scheme: light) {
+  .search-button {
+    color: rgba(0, 0, 0, 0.87);
   }
-  
-  .player-card:hover{
-    display: inline-flex;
-    background: rgba(70, 161, 217, 0.29);
-    color: rgba(255, 255, 255, 0.871);
-    align-items: center;
-    cursor: pointer;
-    margin: 0.25rem;
+
+  .example-full-width {
+    color: rgba(255, 255, 255, 0.87);
+    background: white;
+    border-radius: 0.3rem;
   }
-  
+
   .icon-button {
-    margin: 0.25rem;
+    color: rgba(255, 255, 255, 0.87);
+    border-color: var(--mdc-outlined-button-outline-color,
+        rgba(255, 255, 255, 0.87)) !important;
   }
-  
-  .new-badge {
-    margin: 0.5rem;
+
+  .button-label {
+    color: white !important;
   }
-  
-  .dark-background {
-    background: linear-gradient(180deg, #1cb5e0 0%, #000851 100%);
-  }
-  
-  .light-background {
-    background: linear-gradient(180deg, #1cb5e0 0%, #000851 100%);
-  }
-  
-  .link {
-    color: rgb(86, 138, 170) !important;
-  }
-  
-  .announcement {
-    animation: pulse;
-    animation-duration: 1.25s;
-    animation-delay: 0.25s;
-  }
-  
-  .announcement-feature {
-    animation: pulse;
-    animation-duration: 1.25s;
-    animation-delay: 1.25s;
-  }
-  
-  @media (prefers-color-scheme: light) {
-    .search-button {
-      color: rgba(0, 0, 0, 0.87);
-    }
-    .example-full-width {
-      color: rgba(255, 255, 255, 0.87);
-      background: white;
-      border-radius: 0.3rem;
-    }
-    .icon-button {
-      color: rgba(255, 255, 255, 0.87);
-      border-color: var(
-        --mdc-outlined-button-outline-color,
-        rgba(255, 255, 255, 0.87)
-      ) !important;
-    }
-    .button-label {
-      color: white !important;
-    }
-  }
-  
+}

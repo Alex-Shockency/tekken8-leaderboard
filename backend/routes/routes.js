@@ -114,6 +114,22 @@ router.get("/replays", async (req, res) => {
   }
 });
 
+router.get("/allReplays/:tekkenId", async (req, res) => {
+  try {
+    let data = await Replay.find({
+      $or: [
+        { p1_polaris_id: req.params.tekkenId },
+        { p2_polaris_id: req.params.tekkenId },
+      ],
+    },{p1_polaris_id:1,p1_chara_id:1,p2_chara_id:1,p1_rounds:1,p2_rounds:1})
+    // .limit(100);
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //Get by TekkenID Method
 router.get("/replays/:tekkenId", async (req, res) => {
   let pageNum = req.query.pageNum;
@@ -133,14 +149,14 @@ router.get("/replays/:tekkenId", async (req, res) => {
           battle_at: -1
         }
       },
-       {
+      {
         $facet: {
           metadata: [{ $count: 'totalCount' }],
-          replays: [{ $skip: (pageNum-1) * pageSize }, { $limit: pageSize }],
+          replays: [{ $skip: (pageNum - 1) * pageSize }, { $limit: pageSize }],
         }
       },
-    ]).sort({ battle_at: "desc" })
-
+    ])
+    
     res.json(data[0]);
   } catch (error) {
     res.status(500).json({ message: error.message });
