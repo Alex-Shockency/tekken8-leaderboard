@@ -1,0 +1,185 @@
+<app-top-nav></app-top-nav>
+<div
+  style="background: url(https://media.graphassets.com/3HxPBYAaQi6WQluLqETl) center center / cover no-repeat; position: absolute; height: 100vh; width: 100%;">
+</div>
+<div
+  style="display: flex; min-height: 100vh; justify-content: center; flex-flow: column; max-width: 1500px; margin: auto; padding: .5rem;">
+  <!-- <div>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Search Players" aria-label="Search" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
+        <mat-icon style="color: white;" matPrefix>search</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (option of filteredPlayers | async; track option) {
+          <mat-option [value]="option.name">{{option.name}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </div> -->
+  <mat-tab-group style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="start"
+    animationDuration="100">
+    <mat-tab label="Qualified">
+      <div class="inner-flex">
+        <div style="margin: 1rem 1rem 0rem 1rem;">
+          <form class="example-form">
+            <mat-form-field class="example-full-width">
+              <input type="text" placeholder="Filter" aria-label="Search" matInput [formControl]="myControl"
+                [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                @for (option of filteredPlayers | async; track option) {
+                <mat-option [value]="option.name">{{option.name}}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+        </div>
+        @if (isLoading) {
+        <div style="width: 100%;
+              height: 75vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;">
+          <mat-spinner></mat-spinner>
+        </div>
+        }
+        @else {
+        @if(players.length >0){
+        <div style="display: flex;flex-flow: column;max-height: 100vh;overflow: auto;">
+          @for (player of filteredQualifiedPlayers| async; track player; let idx = $index) {
+          <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
+            <div style="background: rgba(38, 86, 116, 1);
+            height: 100%;
+            min-width: 48px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            ">
+              <div style="display: inline-flex;align-items: center; justify-content: space-around;">
+                @if(player.ranking+1==1){
+                <span style="font-size: 2rem;">🥇</span>
+                }@else if (player.ranking+1 ==2) {
+                <span style="font-size: 2rem;">🥈</span>
+                }@else if (player.ranking+1 ==3) {
+                <span style="font-size: 2rem;">🥉</span>
+                }
+                @else {
+                <div style="font-size: 1.5rem;font-family: Tekken;">{{player.ranking+1}}</div>
+                }
+              </div>
+            </div>
+            <div style="display: inline-flex;justify-content: space-between;width: 100%;">
+              <div style="display: inline-flex;align-items: center; padding-left: 1rem;">
+                <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
+                  width="42px" src="../../../assets/character-thumbnails/{{player.id}}.webp">
+                @if(screenWidth >1000){
+                <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.rank}}.png">
+                }
+              </div>
+              <div
+                style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
+                <div style="width: 25%;">
+                  <span>{{player.name}}</span>
+                </div>
+                <div style="width: 25%;">
+                  <span>Rating: {{player.rating}}</span>
+                </div>
+                @if(screenWidth >1000){
+                <div style="width: 25%;">
+                  <span>Updated: {{player.date}}</span>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+        }
+
+      </div>
+    </mat-tab>
+    <mat-tab label="All Time">
+      <div class="inner-flex">
+        <div style="margin: 1rem 1rem 0rem 1rem;">
+          <form class="example-form">
+            <mat-form-field class="example-full-width">
+              <input type="text" placeholder="Filter" aria-label="Search" matInput [formControl]="myControl"
+                [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                @for (option of filteredPlayers | async; track option) {
+                <mat-option [value]="option.name">{{option.name}}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+        </div>
+        @if (isLoading) {
+        <div style="width: 100%;
+              height: 75vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;">
+          <mat-spinner></mat-spinner>
+        </div>
+        }
+        @else {
+        @if(players.length >0){
+        <div style="display: flex;flex-flow: column;max-height: 100vh;overflow: auto;">
+          @for (player of filteredPlayers| async; track player; let idx = $index) {
+          <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
+            <div style="background: rgba(38, 86, 116, 1);
+            height: 100%;
+            min-width: 48px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            ">
+              <div style="display: inline-flex;align-items: center; justify-content: space-around;">
+                @if(player.ranking+1==1){
+                <span style="font-size: 2rem;">🥇</span>
+                }@else if (player.ranking+1 ==2) {
+                <span style="font-size: 2rem;">🥈</span>
+                }@else if (player.ranking+1 ==3) {
+                <span style="font-size: 2rem;">🥉</span>
+                }
+                @else {
+                <div style="font-size: 1.5rem;font-family: Tekken;">{{player.ranking+1}}</div>
+                }
+              </div>
+            </div>
+            <div style="display: inline-flex;justify-content: space-between;width: 100%;">
+              <div style="display: inline-flex;align-items: center; padding-left: 1rem;">
+                <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
+                  width="42px" src="../../../assets/character-thumbnails/{{player.id}}.webp">
+                @if(screenWidth >1000){
+                <img style="padding-left: 1rem;" width="100px" src="../../../assets/ranks/{{player.rank}}.png">
+                }
+              </div>
+              <div
+                style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;flex-wrap: w;">
+                <div style="width: 25%;">
+                  <span>{{player.name}}</span>
+                </div>
+                <div style="width: 25%;">
+                  <span>Rating: {{player.rating}}</span>
+                </div>
+                @if(screenWidth >1000){
+                <div style="width: 25%;">
+                  <span>Updated: {{player.date}}</span>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+        }
+
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

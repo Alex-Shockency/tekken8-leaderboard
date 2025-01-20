@@ -64,6 +64,55 @@ export class PlayerInfoComponent {
     this.tekkenIdDashes = this.route.snapshot.params['tekkenId'].match(new RegExp('.{1,4}', 'g')).join("-");
     let overallWins = 0;
     let overallLosses = 0;
+
+    this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
+      this.battleCount = result.metadata[0].totalCount
+      this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
+        let battleAtDate = new Date(replay.battle_at * 1000).toLocaleDateString("en-us", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        });
+        replay.battle_at_date = battleAtDate;
+
+        return replay
+      }));
+
+      this.createChart(result);
+
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.isReplayLoading = false;
+      window.scrollTo(0, 0)
+    });
+
+    rankingService.getRankingsById(this.tekkenId).subscribe((result) => {
+      result.rankings = result.rankings.map(data => {
+        data.date = new Date(data.date).toLocaleDateString("en", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return data;
+      }).filter(data => {
+        return !data.qualified
+      });
+
+      result.qual_rankings = result.qual_rankings.map(data => {
+        data.date = new Date(data.date).toLocaleDateString("en", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        return data;
+        
+      });
+      this.playerData = result
+      this.isPlayerLoading = false;
+    });
+
     rankingService.getAllReplaysById(this.tekkenId).subscribe((result) => {
       result.forEach((replay:any) => {
         if (replay.p1_polaris_id == this.tekkenId) {
@@ -115,54 +164,6 @@ export class PlayerInfoComponent {
       this.overallWinPercent = Number.parseFloat((overallWins/(overallWins+overallLosses)*100).toFixed(2))
       this.isMatchupLoading = false;
     });
-    this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
-      this.battleCount = result.metadata[0].totalCount
-      this.dataSource = new MatTableDataSource<Replay>(result.replays.map((replay: any) => {
-        let battleAtDate = new Date(replay.battle_at * 1000).toLocaleDateString("en-us", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-        });
-        replay.battle_at_date = battleAtDate;
-
-        return replay
-      }));
-
-      this.createChart(result);
-
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.isReplayLoading = false;
-      window.scrollTo(0, 0)
-    });
-
-    rankingService.getRankingsById(this.tekkenId).subscribe((result) => {
-      result.rankings = result.rankings.map(data => {
-        data.date = new Date(data.date).toLocaleDateString("en", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        return data;
-      }).filter(data => {
-        return !data.qualified
-      });
-
-      result.qual_rankings = result.qual_rankings.map(data => {
-        data.date = new Date(data.date).toLocaleDateString("en", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        return data;
-        
-      });
-      this.playerData = result
-      this.isPlayerLoading = false;
-    });
-
     
   }
   private createChart(result: any) {

@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const Replay = require("../models/replay");
-const Ranking = require("../models/ranking");
+const Player = require("../models/player");
 
 const options = {
   year: "numeric",
@@ -16,35 +16,50 @@ module.exports = router;
 
 router.get("/rankings", async (req, res) => {
   try {
-    let data = await Ranking.find();
+    let data = await Player.find({"max_qual_chara.id": { $exists: true }}).sort({"max_qual_chara.rating":-1}).limit(500);
     let rankingsByPlayer = [];
 
-    data.forEach((ranking) => {
+    data.forEach((player) => {
       rankings = [];
       qualRankings = [];
 
-      ranking.characters.forEach((char) => {
-        if (char.qualified) {
-          qualRankings.push(char)
-          rankings.push(char)
-        } else {
-          rankings.push(char)
-        }
-      })
+      // console.log(player)
 
+      rankings.push(player.max_chara)
+      if(!isEmpty(player.max_qual_chara))
+        qualRankings.push(player.max_qual_chara)
+      
       rankingsByPlayer.push({
-        name: ranking.name,
-        tekken_id: ranking._id,
-        rankings: rankings.sort((char1, char2) => {
-          return char2.rating - char1.rating;
-        }),
-        qual_rankings: qualRankings.sort((char1, char2) => {
-          return char2.rating - char1.rating;
-        })
-      })
+        name: player.name,
+        tekken_id: player._id,
+        rankings: rankings,
+        qual_rankings: qualRankings})
     });
+    res.json(rankingsByPlayer);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
+router.get("/stateRankings/:stateId", async (req, res) => {
+  try {
+    let data = await Player.find({"is_approved": true,"state_id":req.params.stateId});
+    let rankingsByPlayer = [];
 
+    data.forEach((player) => {
+      rankings = [];
+      qualRankings = [];
+
+      rankings.push(player.max_chara)
+      if(!isEmpty(player.max_qual_chara))
+        qualRankings.push(player.max_qual_chara)
+      
+      rankingsByPlayer.push({
+        name: player.name,
+        tekken_id: player._id,
+        rankings: rankings,
+        qual_rankings: qualRankings})
+    });
     res.json(rankingsByPlayer);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -53,7 +68,7 @@ router.get("/rankings", async (req, res) => {
 
 router.get("/rankings/:tekkenId", async (req, res) => {
   try {
-    const data = await Ranking.find({ "_id": req.params.tekkenId });
+    const data = await Player.find({ "_id": req.params.tekkenId });
     let rankingsByPlayer = {};
 
     rankings = [];
@@ -121,7 +136,7 @@ router.get("/allReplays/:tekkenId", async (req, res) => {
         { p1_polaris_id: req.params.tekkenId },
         { p2_polaris_id: req.params.tekkenId },
       ],
-    },{p1_polaris_id:1,p1_chara_id:1,p2_chara_id:1,p1_rounds:1,p2_rounds:1})
+    }, { p1_polaris_id: 1, p1_chara_id: 1, p2_chara_id: 1, p1_rounds: 1, p2_rounds: 1 })
     // .limit(100);
 
     res.json(data);
@@ -145,7 +160,7 @@ router.get("/replays/:tekkenId", async (req, res) => {
         }
       },
       {
-        $sort:{
+        $sort: {
           battle_at: -1
         }
       },
@@ -156,7 +171,7 @@ router.get("/replays/:tekkenId", async (req, res) => {
         }
       },
     ])
-    
+
     res.json(data[0]);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -173,3 +188,13 @@ router.get("/qualifiedReplays", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+function isEmpty(obj) {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
+}

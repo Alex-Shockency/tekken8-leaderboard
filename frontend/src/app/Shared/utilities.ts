@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 })
 
 export class Utilities {
-    charaIdMap = new Map()
+    charaIdMap = new Map();
+    regionIdMap = new Map();
     
     constructor() {
         this.charaIdMap.set(0,'Paul')
@@ -44,5 +45,8 @@ export class Utilities {
         this.charaIdMap.set(39,'Lidia')
         this.charaIdMap.set(40,'Heihachi')
         this.charaIdMap.set(41,'Clive')
+
+        this.regionIdMap.set(0,'Asia')
+        this.regionIdMap.set(3,'America')
     }
 }

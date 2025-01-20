@@ -1,0 +1,87 @@
+.example-full-width {
+    width: 100%;
+  }
+  
+  .inner-flex {
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 1500px;
+    background: linear-gradient(
+      rgba(16, 37, 50, 0.915) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    overflow: auto;
+    min-height: 100vh;
+  }
+  
+  .player-card {
+    display: inline-flex;
+    background: rgba(38, 86, 116, 0.29);
+    color: rgba(255, 255, 255, 0.871);
+    align-items: center;
+    height: 80px;
+    margin: 0rem 0rem 0.25rem 0rem;
+  }
+  
+  .player-card:hover{
+    display: inline-flex;
+    background: rgba(70, 161, 217, 0.29);
+    color: rgba(255, 255, 255, 0.871);
+    align-items: center;
+    cursor: pointer;
+    margin: 0rem 0rem 0.25rem 0rem;
+  }
+  
+  .icon-button {
+    margin: 0.25rem;
+  }
+  
+  .new-badge {
+    margin: 0.5rem;
+  }
+  
+  .dark-background {
+    background: linear-gradient(180deg, #1cb5e0 0%, #000851 100%);
+  }
+  
+  .light-background {
+    background: linear-gradient(180deg, #1cb5e0 0%, #000851 100%);
+  }
+  
+  .link {
+    color: rgb(86, 138, 170) !important;
+  }
+  
+  .announcement {
+    animation: pulse;
+    animation-duration: 1.25s;
+    animation-delay: 0.25s;
+  }
+  
+  .announcement-feature {
+    animation: pulse;
+    animation-duration: 1.25s;
+    animation-delay: 1.25s;
+  }
+  
+  @media (prefers-color-scheme: light) {
+    .search-button {
+      color: rgba(0, 0, 0, 0.87);
+    }
+    .example-full-width {
+      color: rgba(255, 255, 255, 0.87);
+      background: white;
+      border-radius: 0.3rem;
+    }
+    .icon-button {
+      color: rgba(255, 255, 255, 0.87);
+      border-color: var(
+        --mdc-outlined-button-outline-color,
+        rgba(255, 255, 255, 0.87)
+      ) !important;
+    }
+    .button-label {
+      color: white !important;
+    }
+  }
+  

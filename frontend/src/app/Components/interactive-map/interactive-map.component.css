@@ -1,0 +1,29 @@
+@namespace svg url(http://www.w3.org/2000/svg);
+/* Necessary to select only SVG <a> elements, and not also HTML's.
+   See warning below */
+
+svg|a:link,
+svg|a:visited {
+  cursor: pointer;
+}
+
+svg|a text,
+text svg|a {
+  fill: blue; /* Even for text, SVG uses fill over color */
+}
+
+svg|a:hover,
+svg|a:active {
+    cursor: pointer;
+    /* & path:hover{
+        fill:#f36a80;
+    } */
+}
+
+path{
+    pointer-events:all;
+}
+
+path:hover{
+    fill:#f36a80;
+}

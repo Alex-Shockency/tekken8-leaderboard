@@ -2,20 +2,18 @@ import { Component, HostListener } from '@angular/core';
 import { MaterialModule } from '../../Shared/material.module';
 import { RankingService } from '../../Services/ranking.service';
 import { TopNavComponent } from "../top-nav/top-nav.component";
-import { Router } from '@angular/router';
-import { PlayerData } from '../../Models/playerData';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
-import { InteractiveMapComponent } from "../interactive-map/interactive-map.component";
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-state-leaderboard',
   standalone: true,
-  imports: [MaterialModule, TopNavComponent, InteractiveMapComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  imports: [MaterialModule, TopNavComponent],
+  templateUrl: './state-leaderboard.component.html',
+  styleUrl: './state-leaderboard.component.css'
 })
-export class HomeComponent {
+export class StateLeaderboardComponent {
   myControl = new FormControl('');
   screenHeight = 0;
   screenWidth = 0;
@@ -33,9 +31,10 @@ export class HomeComponent {
   qualifiedPlayers: any[] = [];
   filteredQualifiedPlayers!: Observable<any[]>;
 
-  constructor(rankingService: RankingService, private router: Router) {
-    rankingService.getRankings().subscribe((result) => {
-     
+  constructor(rankingService: RankingService, private router: Router,private route:ActivatedRoute) {
+    let stateId = route.snapshot.params['stateId']
+    rankingService.getStateRankings(stateId).subscribe((result) => {
+
       result.forEach(player => {
         if (player.rankings.length > 0) {
           //Rankings are ordered by rating so just get first
@@ -48,7 +47,7 @@ export class HomeComponent {
             day: "numeric",
           });
           this.players.push(playerData);
-          
+
         }
 
         if (player.qual_rankings.length > 0) {
@@ -64,17 +63,17 @@ export class HomeComponent {
           this.qualifiedPlayers.push(playerData);
         }
       })
-      let index= 0;
+      let index = 0;
       this.players.sort((player1, player2) => {
         return player2.rating - player1.rating;
-      }).map(player =>{
+      }).map(player => {
         player.ranking = index;
         index++;
       })
-      let qualIndex= 0;
+      let qualIndex = 0;
       this.qualifiedPlayers.sort((player1, player2) => {
         return player2.rating - player1.rating;
-      }).map(player =>{
+      }).map(player => {
         player.ranking = qualIndex;
         qualIndex++;
       })
