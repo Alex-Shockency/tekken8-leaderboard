@@ -191,12 +191,15 @@ export class PlayerInfoComponent {
     let chartData: number[] = [];
     result.replays.forEach((replay: Replay) => {
       let rating = 0;
+      
       if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
         currChar = replay.p1_chara_id;
         rating = replay.p1_rating_before + replay.p1_rating_change;
-      } else {
+      } else if(replay.p2_rating_before){
         currChar = replay.p2_chara_id;
         rating = replay.p2_rating_before + replay.p2_rating_change;
+      } else{
+        chartData.push(NaN)
       }
 
       if (currChar !== prevChar && prevChar !== 0) {
@@ -205,10 +208,13 @@ export class PlayerInfoComponent {
 
       if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
         prevChar = replay.p1_chara_id;
-      } else {
+      } else if(replay.p2_rating_before){
         prevChar = replay.p2_chara_id;
+      } else{
+        chartData.push(NaN)
       }
 
+      if(rating >0)
       chartData.push(rating)
     });
 
