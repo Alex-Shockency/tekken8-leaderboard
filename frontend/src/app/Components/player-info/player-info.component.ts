@@ -202,7 +202,7 @@ export class PlayerInfoComponent {
         chartData.push(NaN)
       }
 
-      if (currChar !== prevChar && prevChar !== 0) {
+      if (currChar !== prevChar && prevChar !== -1) {
         chartData.push(NaN)
       }
 
