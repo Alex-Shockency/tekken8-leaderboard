@@ -5,11 +5,12 @@ import { TopNavComponent } from "../top-nav/top-nav.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
+import { SearchBarComponent } from "../search-bar/search-bar.component";
 
 @Component({
   selector: 'app-state-leaderboard',
   standalone: true,
-  imports: [MaterialModule, TopNavComponent],
+  imports: [MaterialModule, TopNavComponent, SearchBarComponent],
   templateUrl: './state-leaderboard.component.html',
   styleUrl: './state-leaderboard.component.css'
 })

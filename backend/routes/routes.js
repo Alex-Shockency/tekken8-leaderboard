@@ -41,6 +41,15 @@ router.get("/rankings", async (req, res) => {
   }
 });
 
+router.get("/players/:searchQuery", async (req, res) => {
+  try {    
+    let data = await Player.find({name: { $regex : `^${req.params.searchQuery}`, $options: 'i' }}).limit(500);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.get("/stateRankings/:stateId", async (req, res) => {
   try {
     let data = await Player.find({"is_approved": true,"state_id":req.params.stateId});

@@ -4,27 +4,14 @@
 </div>
 <div
   style="display: flex; min-height: 100vh; justify-content: center; flex-flow: column; max-width: 1500px; margin: auto; padding: .5rem;">
-  <!-- <div>
-    <form class="example-form">
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Search Players" aria-label="Search" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-icon style="color: white;" matPrefix>search</mat-icon>
-        <mat-autocomplete #auto="matAutocomplete">
-          @for (option of filteredPlayers | async; track option) {
-          <mat-option [value]="option.name">{{option.name}}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-  </div> -->
+  <app-search-bar></app-search-bar>
   <mat-tab-group style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="start"
     animationDuration="100">
     <mat-tab label="Qualified">
       <div class="inner-flex">
         <div style="margin: 1rem 1rem 0rem 1rem;">
           <form class="example-form">
-            <mat-form-field class="example-full-width">
+            <mat-form-field>
               <input type="text" placeholder="Filter" aria-label="Search" matInput [formControl]="myControl"
                 [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete">
@@ -104,7 +91,7 @@
       <div class="inner-flex">
         <div style="margin: 1rem 1rem 0rem 1rem;">
           <form class="example-form">
-            <mat-form-field class="example-full-width">
+            <mat-form-field>
               <input type="text" placeholder="Filter" aria-label="Search" matInput [formControl]="myControl"
                 [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete">

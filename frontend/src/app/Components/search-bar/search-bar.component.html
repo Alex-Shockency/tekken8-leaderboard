@@ -1,0 +1,16 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Search Players" aria-label="Search" matInput [formControl]="searchControl"
+            [matAutocomplete]="auto" (keyup)="searchPlayers()">
+        <mat-icon style="color: white;" matPrefix>search</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+            (optionSelected)="onSearchOptionSelected($event)">
+            @for (option of searchedPlayers; track option) {
+            <mat-option [value]="option">{{option.name}} ({{addDashestoTekkenId(option._id)}})</mat-option>
+            }
+        </mat-autocomplete>
+        @if(isSearching){
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+    </mat-form-field>
+</form>

@@ -45,4 +45,8 @@ export class RankingService {
   getQualifiedReplays(): Observable<Replay[]> {
     return this.http.get<Replay[]>(this.api + `qualifiedReplays`);
   }
+
+  searchPlayers(searchQuery: string): Observable<any[]> {
+    return this.http.get<any[]>(this.api + `players/${searchQuery}`);
+  }
 }

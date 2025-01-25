@@ -7,16 +7,19 @@ import { PlayerData } from '../../Models/playerData';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { InteractiveMapComponent } from "../interactive-map/interactive-map.component";
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { SearchBarComponent } from "../search-bar/search-bar.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MaterialModule, TopNavComponent, InteractiveMapComponent],
+  imports: [MaterialModule, TopNavComponent, InteractiveMapComponent, SearchBarComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   myControl = new FormControl('');
+
   screenHeight = 0;
   screenWidth = 0;
   lastUpdate: any;
@@ -35,7 +38,7 @@ export class HomeComponent {
 
   constructor(rankingService: RankingService, private router: Router) {
     rankingService.getRankings().subscribe((result) => {
-     
+
       result.forEach(player => {
         if (player.rankings.length > 0) {
           //Rankings are ordered by rating so just get first
@@ -48,7 +51,7 @@ export class HomeComponent {
             day: "numeric",
           });
           this.players.push(playerData);
-          
+
         }
 
         if (player.qual_rankings.length > 0) {
@@ -64,17 +67,17 @@ export class HomeComponent {
           this.qualifiedPlayers.push(playerData);
         }
       })
-      let index= 0;
+      let index = 0;
       this.players.sort((player1, player2) => {
         return player2.rating - player1.rating;
-      }).map(player =>{
+      }).map(player => {
         player.ranking = index;
         index++;
       })
-      let qualIndex= 0;
+      let qualIndex = 0;
       this.qualifiedPlayers.sort((player1, player2) => {
         return player2.rating - player1.rating;
-      }).map(player =>{
+      }).map(player => {
         player.ranking = qualIndex;
         qualIndex++;
       })
