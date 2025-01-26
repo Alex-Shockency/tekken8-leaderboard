@@ -1,50 +1,81 @@
-<mat-toolbar style="z-index: 2;justify-content: center;">
-    <div style="display: flex; align-items: center; justify-content: space-evenly;max-width: 1500px;width: 100%;">
-        <div>
-            @if(screenWidth > 1000){
-            <div style="display: flex;align-items: center;">
-                <a routerLink="/faq" routerLinkActive="active">
-                    <button mat-button> <mat-icon>help</mat-icon>Help</button>
-                </a>
-            </div>
-            }@else {
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-                <a routerLink="/faq" routerLinkActive="active">
-                    <button mat-menu-item>
-                        <mat-icon>help</mat-icon>
-                        <span>Help</span>
-                    </button>
-                </a>
-            </mat-menu>
-            }
-        </div>
-        <div style="display: flex;align-items: center;">
-            @if(screenWidth > 750){
-            <a routerLink="" routerLinkActive="active">
-                <img src="../../../assets/logo.svg" width="48px" style="padding: 1rem;" />
-            </a>
-            <a routerLink="" routerLinkActive="active">
-                <span style="font-family: Tekken;color: rgba(255, 255, 255, 0.87);font-size: 2.5rem;">Tekken
-                    <span style="color: rgb(255, 101, 127);">8</span> LeaderBoard</span>
-            </a>
-
-            } @else {
-            <a routerLink="" routerLinkActive="active"> <span
-                    style="font-family: Tekken;color: rgba(255, 255, 255, 0.87);font-size: 1.5rem;">
-                    <span style="color: rgb(255, 101, 127);">T8</span> LeaderBoard</span>
-            </a>
-            }
-        </div>
-
-        @if(screenWidth > 1000){
-        <div>
-            <span style="font-size: .75rem;">Updated: {{lastUpdate}}</span>
-        </div>
-        } @else {
-        <span></span>
-        }
+<mat-toolbar style="z-index: 2; justify-content: center">
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      max-width: 1500px;
+      width: 100%;
+    "
+  >
+    <div>
+      @if(screenWidth > 1000){
+      <div style="display: flex; align-items: center">
+        <a routerLink="/faq" routerLinkActive="active">
+          <button mat-button><mat-icon>help</mat-icon>Help</button>
+        </a>
+        <app-auth-button></app-auth-button>
+      </div>
+      }@else {
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <a routerLink="/faq" routerLinkActive="active">
+          <button mat-menu-item>
+            <mat-icon>help</mat-icon>
+            <span>Help</span>
+          </button>
+        </a>
+      </mat-menu>
+      }
     </div>
+    <div style="display: flex; align-items: center">
+      @if(screenWidth > 750){
+      <a routerLink="" routerLinkActive="active">
+        <img
+          src="../../../assets/logo.svg"
+          width="48px"
+          style="padding: 1rem"
+        />
+      </a>
+      <a routerLink="" routerLinkActive="active">
+        <span
+          style="
+            font-family: Tekken;
+            color: rgba(255, 255, 255, 0.87);
+            font-size: 2.5rem;
+          "
+          >Tekken
+          <span style="color: rgb(255, 101, 127)">8</span> LeaderBoard</span
+        >
+      </a>
+
+      } @else {
+      <a routerLink="" routerLinkActive="active">
+        <span
+          style="
+            font-family: Tekken;
+            color: rgba(255, 255, 255, 0.87);
+            font-size: 1.5rem;
+          "
+        >
+          <span style="color: rgb(255, 101, 127)">T8</span> LeaderBoard</span
+        >
+      </a>
+      }
+    </div>
+
+    @if(screenWidth > 1000){
+    <div>
+      <span style="font-size: 0.75rem">Updated: {{ lastUpdate }}</span>
+    </div>
+    } @else {
+    <span></span>
+    }
+  </div>
 </mat-toolbar>
