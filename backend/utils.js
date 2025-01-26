@@ -6,10 +6,10 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://dev-6qq2es4t3n3j10sm.us.auth0.com/.well-known/jwks.json`,
+    jwksUri: `https://dev-1u3mkawux2yfhfx8.us.auth0.com/.well-known/jwks.json`,
   }),
-  audience: "https://dev-6qq2es4t3n3j10sm.us.auth0.com/api/v2/",
-  issuer: `https://dev-6qq2es4t3n3j10sm.us.auth0.com/`,
+  audience: "https://dev-1u3mkawux2yfhfx8.us.auth0.com/api/v2/",
+  issuer: `https://dev-1u3mkawux2yfhfx8.us.auth0.com/`,
   algorithms: ["RS256"],
 });
 
