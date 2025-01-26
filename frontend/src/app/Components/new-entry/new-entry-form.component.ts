@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MaterialModule } from '../../Shared/material.module';
+import { UserService } from '../../Services/user/user.service';
 
 @Component({
   selector: 'app-new-entry-form',
@@ -64,18 +70,27 @@ export class NewEntryFormComponent {
   ];
   entryForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this.entryForm = this.fb.group({
-      tekkenId: ['', Validators.required],
-      displayName: ['', [Validators.required, Validators.min(0)]],
-      platform: ['', Validators.required],
+  constructor(private userService: UserService) {
+    this.entryForm = new FormGroup({
+      tekkenId: new FormControl(''),
+      displayName: new FormControl(''),
+      platform: new FormControl(''),
+      state: new FormControl(''),
+      platformId: new FormControl(''),
     });
   }
 
+  // TODO: more form validation on id lengths
   onSubmit() {
     if (this.entryForm.valid) {
-      console.log('Form Submitted!', this.entryForm.value);
-      // Handle form submission logic here
+      this.userService.createUserData(this.entryForm.value).subscribe(
+        (response: any) => {
+          console.log('User data created successfully', response);
+        },
+        (error: any) => {
+          console.error('Error creating user data', error);
+        }
+      );
     }
   }
 }
