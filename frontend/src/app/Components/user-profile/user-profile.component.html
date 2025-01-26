@@ -1,0 +1,23 @@
+<app-top-nav></app-top-nav>
+<div
+  style="
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 165px);
+    background: linear-gradient(180deg, #311122, transparent);
+  "
+>
+  <div class="inner-flex">
+    <div style="display: flex; padding-left: 1rem; color: white">
+      <h1>User Profile</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="color: white; margin: 1rem">
+      <ul *ngIf="auth.user$ | async as user">
+        <li>{{ user.name }}</li>
+        <li>{{ user.email }}</li>
+      </ul>
+      <app-new-entry-form></app-new-entry-form>
+    </div>
+  </div>
+</div>

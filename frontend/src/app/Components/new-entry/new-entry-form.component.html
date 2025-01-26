@@ -1,0 +1,96 @@
+<form class="new-entry-form" #entryForm="ngForm">
+  <h2>New Entry Form</h2>
+  <p>
+    If you would like to be added to the Tekken 8 Leaderboard for your State,
+    please provide some information below.
+  </p>
+  <div class="form-fields">
+    <mat-form-field appearance="fill" class="new-entry-form-field">
+      <mat-label>Tekken ID</mat-label>
+      <input
+        matInput
+        placeholder="Enter your Tekken ID"
+        name="tekkenId"
+        ngModel
+        required
+      />
+      <mat-error *ngIf="entryForm.controls['tekkenId']?.invalid"
+        >Tekken ID is required</mat-error
+      >
+      <mat-hint
+        >a.k.a. Polaris ID, should be in a similar format to this:
+        "5bHF-gfBL-3NyG",<br />Should be able to find it in-game on your in-game
+        Player Profile next to the "TEKKEN ID" field</mat-hint
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="new-entry-form-field">
+      <mat-label>In-Game Display Name (Most Recent)</mat-label>
+      <input
+        matInput
+        placeholder="Enter your In-Game Display Name"
+        name="displayName"
+        ngModel
+        required
+      />
+      <mat-error *ngIf="entryForm.controls['displayName']?.invalid"
+        >Display Name is required</mat-error
+      >
+      <mat-hint
+        >Please provide your current in-game display name, this is how we will
+        look you up. This is case-sensitive information.</mat-hint
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="new-entry-form-field">
+      <mat-label>Platform</mat-label>
+      <mat-select name="platform" ngModel required>
+        <mat-option value="steam">Steam</mat-option>
+        <mat-option value="playstation">Playstation</mat-option>
+        <mat-option value="xbox">Xbox</mat-option>
+      </mat-select>
+      <mat-error *ngIf="entryForm.controls['platform']?.invalid"
+        >Platform is required</mat-error
+      >
+      <mat-hint>The Platform you play on.</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="new-entry-form-field">
+      <mat-label>State</mat-label>
+      <mat-select name="state" ngModel required>
+        <mat-option *ngFor="let state of states" [value]="state">{{
+          state
+        }}</mat-option>
+      </mat-select>
+      <mat-hint
+        >Please pick a State for which you&apos;d like to declare your
+        affiliation.</mat-hint
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="new-entry-form-field">
+      <mat-label>Steam or Console ID</mat-label>
+      <input
+        matInput
+        placeholder="Enter your Steam or Console ID"
+        name="consoleId"
+        ngModel
+      />
+      <mat-hint
+        >If a Steam ID, should be some string of 17 digits. If a console ID,
+        should just be your Xbox or PSN username. Both should be on your in-game
+        Player Profile next to "STEAM ID" or console equivalent.</mat-hint
+      >
+    </mat-form-field>
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    class="form new-entry-form-button"
+    [disabled]="entryForm.invalid"
+  >
+    Submit
+  </button>
+</form>

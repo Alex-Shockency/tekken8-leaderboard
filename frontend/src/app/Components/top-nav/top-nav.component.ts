@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { RankingService } from '../../Services/ranking.service';
 import { MaterialModule } from '../../Shared/material.module';
 import { RouterModule } from '@angular/router';
-import { AuthButtonComponent } from '../auth-button/auth-button';
+import { AuthButtonComponent } from '../auth-button/auth-button.component';
 
 @Component({
   selector: 'app-top-nav',

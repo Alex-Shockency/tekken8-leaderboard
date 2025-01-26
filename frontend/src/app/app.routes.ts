@@ -4,10 +4,15 @@ import { PlayerInfoComponent } from './Components/player-info/player-info.compon
 import { FaqComponent } from './Components/faq/faq.component';
 import { InteractiveMapComponent } from './Components/interactive-map/interactive-map.component';
 import { StateLeaderboardComponent } from './Components/state-leaderboard/state-leaderboard.component';
+import { UserProfileComponent } from './Components/user-profile/user-profile.component';
 
-export const routes: Routes = [ { 
-    path: 'leaderboard/:stateId', component: StateLeaderboardComponent },
-    {path: '', component: HomeComponent },
-    { path: 'playerInfo/:tekkenId', component: PlayerInfoComponent },
-    { path: 'faq', component: FaqComponent }
+export const routes: Routes = [
+  {
+    path: 'leaderboard/:stateId',
+    component: StateLeaderboardComponent,
+  },
+  { path: '', component: HomeComponent },
+  { path: 'playerInfo/:tekkenId', component: PlayerInfoComponent },
+  { path: 'faq', component: FaqComponent },
+  { path: 'user', component: UserProfileComponent },
 ];
