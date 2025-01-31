@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MaterialModule } from '../../Shared/material.module';
 import { UserService } from '../../Services/user/user.service';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-new-entry-form',
@@ -70,7 +71,7 @@ export class NewEntryFormComponent {
   ];
   entryForm: FormGroup;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private auth: AuthService) {
     this.entryForm = new FormGroup({
       tekkenId: new FormControl(''),
       displayName: new FormControl(''),
@@ -83,14 +84,17 @@ export class NewEntryFormComponent {
   // TODO: more form validation on id lengths
   onSubmit() {
     if (this.entryForm.valid) {
-      this.userService.createUserData(this.entryForm.value).subscribe(
-        (response: any) => {
-          console.log('User data created successfully', response);
-        },
-        (error: any) => {
-          console.error('Error creating user data', error);
-        }
-      );
+      this.auth.getAccessTokenSilently().subscribe((token) => {
+        this.userService.createUserData(this.entryForm.value, token).subscribe(
+          (response: any) => {
+            console.log('User data created successfully', response);
+          },
+          (error: any) => {
+            console.error('Error creating user data', error);
+          }
+        );
+      });
+     
     }
   }
 }

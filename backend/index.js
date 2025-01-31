@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const routes = require("./routes/routes.js");
 const mongoString = process.env.DATABASE_URL;
 const cors = require("cors");
-var bodyParser = require("body-parser");
 
 const options = [
   cors({
@@ -31,8 +30,6 @@ const app = express();
 app.use(options);
 
 app.use("/api", routes);
-
-app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.json());
 

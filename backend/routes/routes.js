@@ -1,10 +1,10 @@
 const express = require("express");
+var bodyParser = require('body-parser')
 
 const router = express.Router();
 const Replay = require("../models/replay");
 const Player = require("../models/player");
 const { checkJwt } = require("../utils");
-// const require('body-parser');
 
 const options = {
   year: "numeric",
@@ -15,6 +15,12 @@ const options = {
 };
 
 module.exports = router;
+
+// create application/json parser
+var jsonParser = bodyParser.json()
+ 
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get("/rankings", async (req, res) => {
   try {
@@ -217,9 +223,11 @@ router.get("/qualifiedReplays", async (req, res) => {
 });
 
 // User Handling
-router.post("/userData", checkJwt, (req, res) => {
+router.post("/userData", [checkJwt
+,jsonParser], (req, res) => {
   console.log("call to user-data endpoint");
   // Handle user form submissions
+  console.log(req.auth)
   console.log(req.body);
   res.send({ success: true });
 });
