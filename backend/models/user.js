@@ -15,11 +15,15 @@ const dataSchema = new mongoose.Schema({
   },
   state: {
     required: true,
-    type: Boolean,
+    type: String,
   },
   platformId: {
     required: true,
     type: Object,
+  },
+  isAdmin: {
+    required: true,
+    type: Boolean,
   },
 });
 

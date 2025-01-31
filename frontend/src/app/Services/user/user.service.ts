@@ -23,9 +23,20 @@ export class UserService {
   createUserData(userData: UserData): Observable<UserData> {
     return new Observable((observer) => {
       this.auth.getAccessTokenSilently().subscribe((token) => {
+        console.log(userData);
+        const body = {
+          tekkenId: userData.tekkenId,
+          displayName: userData.displayName,
+          platform: userData.platform,
+          state: userData.state,
+          platformId: userData.platformId,
+        };
         this.http
-          .post<UserData>(this.api + `userData`, userData, {
-            headers: { Authorization: `Bearer ${token}` },
+          .post<UserData>(this.api + `userData`, body, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           })
           .subscribe(
             (response) => {
