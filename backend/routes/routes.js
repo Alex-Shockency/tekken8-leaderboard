@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 const router = express.Router();
 const Replay = require("../models/replay");
 const Player = require("../models/player");
-const { checkJwt } = require("../utils");
+const { checkJwt, isStateCodeValid } = require("../utils");
 const User = require("../models/user");
 
 const options = {
@@ -224,29 +224,49 @@ router.get("/qualifiedReplays", async (req, res) => {
 });
 
 // User Handling
+router.get("/user/:userId", checkJwt, async (req, res) => {
+  try {
+    const data = await User.findById(req.params.userId);
+    if (!data) {
+      res
+        .status(404)
+        .json({ message: `No user found at ${req.params.userId}` });
+    }
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// 3b8RiMm59hH4
 router.post("/userData", [checkJwt, jsonParser], async (req, res) => {
-  console.log("call to user-data endpoint");
   // TODO: scrub Tekken ID better
-  // TODO: state value should be enforced before write
   const { tekkenId, state, userId } = req.body;
 
   const session = await Player.startSession();
   session.startTransaction();
 
   try {
-    // Find existing Player by form ID
+    // Verify input data
     const strippedTekkenId = tekkenId.split("-").join("");
+    if (!isStateCodeValid(state)) {
+      return res
+        .status(400)
+        .json({ message: `Received unexpected state code: ${state}` });
+    }
 
+    // Find existing Player by form ID
     const player = await Player.findById(strippedTekkenId).session(session);
     if (!player) {
       await session.abortTransaction();
       session.endSession();
-      return res.status(404).json({ message: "Player not found" });
+      return res.status(400).json({ message: "Player not found" });
     }
 
     // Upsert User entry at User ID
     await User.findOneAndUpdate(
-      { userId: userId },
+      { _id: userId },
       {
         tekkenId: strippedTekkenId,
         state: state,

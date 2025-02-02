@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const dataSchema = new mongoose.Schema({
-  userId: {
+  _id: {
     required: true,
-    type: String,
+    type: Object,
   },
   tekkenId: {
     required: true,
