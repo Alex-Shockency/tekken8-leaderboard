@@ -15,16 +15,10 @@ export class UserService {
     console.log(environment.apiUrl);
   }
 
-  // createUserData(userData: UserData): Observable<UserData> {
-  //   console.log('createUserData', userData);
-  //   return this.http.post<UserData>(this.api + `userData`, userData);
-  // }
-
-  createUserData(userData: UserData, token:string): Observable<UserData> {
-        return this.http
-          .post<UserData>(this.api + `userData`, userData, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
+  createUserData(userData: UserData, token: string): Observable<UserData> {
+    return this.http.post<UserData>(this.api + `userData`, userData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   }
 
   approveUser(userId: string): Observable<UserData> {

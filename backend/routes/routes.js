@@ -1,10 +1,11 @@
 const express = require("express");
-var bodyParser = require('body-parser')
+var bodyParser = require("body-parser");
 
 const router = express.Router();
 const Replay = require("../models/replay");
 const Player = require("../models/player");
 const { checkJwt } = require("../utils");
+const User = require("../models/user");
 
 const options = {
   year: "numeric",
@@ -17,10 +18,10 @@ const options = {
 module.exports = router;
 
 // create application/json parser
-var jsonParser = bodyParser.json()
- 
+var jsonParser = bodyParser.json();
+
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 router.get("/rankings", async (req, res) => {
   try {
@@ -223,18 +224,57 @@ router.get("/qualifiedReplays", async (req, res) => {
 });
 
 // User Handling
-router.post("/userData", [checkJwt
-,jsonParser], (req, res) => {
+router.post("/userData", [checkJwt, jsonParser], async (req, res) => {
   console.log("call to user-data endpoint");
-  // Handle user form submissions
-  console.log(req.auth)
-  console.log(req.body);
-  res.send({ success: true });
+  // TODO: scrub Tekken ID better
+  // TODO: state value should be enforced before write
+  const { tekkenId, state, userId } = req.body;
+
+  const session = await Player.startSession();
+  session.startTransaction();
+
+  try {
+    // Find existing Player by form ID
+    const strippedTekkenId = tekkenId.split("-").join("");
+
+    const player = await Player.findById(strippedTekkenId).session(session);
+    if (!player) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(404).json({ message: "Player not found" });
+    }
+
+    // Upsert User entry at User ID
+    await User.findOneAndUpdate(
+      { userId: userId },
+      {
+        tekkenId: strippedTekkenId,
+        state: state,
+        $setOnInsert: { isAdmin: false },
+      },
+      { upsert: true, new: true, session: session }
+    );
+
+    // Update Player to approved after creating User entry
+    await Player.findOneAndUpdate(
+      { _id: strippedTekkenId },
+      { is_approved: true, state_id: state },
+      { upsert: true, new: false, session: session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.send({ success: true });
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // TODO: need RBAC on this endpoint
 router.post("/approveUser", checkJwt, (req, res) => {
-  console.log("call to approve-user endpoint");
   const { userId } = req.body;
   // Approve the user in the database
   res.send({ success: true, message: `User ${userId} approved.` });

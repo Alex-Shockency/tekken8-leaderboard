@@ -25,61 +25,15 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="new-entry-form-field">
-      <mat-label>In-Game Display Name (Most Recent)</mat-label>
-      <input
-        matInput
-        placeholder="Enter your In-Game Display Name"
-        name="displayName"
-        formControlName="displayName"
-        required
-      />
-      <!-- <mat-error *ngIf="entryForm.controls['displayName']?.invalid"
-        >Display Name is required</mat-error
-      > -->
-      <mat-hint
-        >Please provide your current in-game display name, this is how we will
-        look you up. This is case-sensitive information.</mat-hint
-      >
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="new-entry-form-field">
-      <mat-label>Platform</mat-label>
-      <mat-select name="platform" required formControlName="platform">
-        <mat-option value="steam">Steam</mat-option>
-        <mat-option value="playstation">Playstation</mat-option>
-        <mat-option value="xbox">Xbox</mat-option>
-      </mat-select>
-      <!-- <mat-error *ngIf="entryForm.controls['platform']?.invalid"
-        >Platform is required</mat-error
-      > -->
-      <mat-hint>The Platform you play on.</mat-hint>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="new-entry-form-field">
       <mat-label>State</mat-label>
       <mat-select name="state" formControlName="state" required>
-        <mat-option *ngFor="let state of states" [value]="state">{{
-          state
-        }}</mat-option>
+        <mat-option *ngFor="let state of states" [value]="state.code">
+          {{ state.name }}
+        </mat-option>
       </mat-select>
       <mat-hint
         >Please pick a State for which you&apos;d like to declare your
         affiliation.</mat-hint
-      >
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="new-entry-form-field">
-      <mat-label>Steam or Console ID</mat-label>
-      <input
-        matInput
-        placeholder="Enter your Steam or Console ID"
-        name="platformId"
-        formControlName="platformId"
-      />
-      <mat-hint
-        >If a Steam ID, should be some string of 17 digits. If a console ID,
-        should just be your Xbox or PSN username. Both should be on your in-game
-        Player Profile next to "STEAM ID" or console equivalent.</mat-hint
       >
     </mat-form-field>
   </div>

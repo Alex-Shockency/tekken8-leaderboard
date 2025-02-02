@@ -1,7 +1,5 @@
 export interface UserData {
+  userId: string;
   tekkenId: string;
-  displayName: string;
-  platform: 'Steam' | 'Xbox' | 'Playstation';
   state: string;
-  platformId: string;
 }

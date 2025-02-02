@@ -1,25 +1,17 @@
 const mongoose = require("mongoose");
 
 const dataSchema = new mongoose.Schema({
+  userId: {
+    required: true,
+    type: String,
+  },
   tekkenId: {
     required: true,
     type: Object,
   },
-  displayName: {
-    required: true,
-    type: String,
-  },
-  platform: {
-    required: true,
-    type: String,
-  },
   state: {
     required: true,
     type: String,
-  },
-  platformId: {
-    required: true,
-    type: Object,
   },
   isAdmin: {
     required: true,
@@ -27,4 +19,4 @@ const dataSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Player", dataSchema, "players");
+module.exports = mongoose.model("User", dataSchema, "users");
