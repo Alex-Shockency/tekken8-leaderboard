@@ -9,20 +9,6 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.manual-break {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.list-item {
-  display: inline-flex;
-  flex-flow: column;
-  width: 100%;
-  word-break: break-word;
-  padding-bottom: 1rem;
-}
-
 .update-form {
   display: flex;
   flex-direction: column;
