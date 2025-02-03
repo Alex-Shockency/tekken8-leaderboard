@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UserData, ReturnedUserData } from '../../Models/user';
-import { Ranking } from '../../Models/ranking';
 import { PlayerData } from '../../Models/playerData';
-// import { AuthService } from '@auth0/auth0-angular';
 
 @Injectable({
   providedIn: 'root',

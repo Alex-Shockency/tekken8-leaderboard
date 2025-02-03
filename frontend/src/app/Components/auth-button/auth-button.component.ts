@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { MaterialModule } from '../../Shared/material.module';
-import { DOCUMENT, NgIf, AsyncPipe } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-auth-button',
