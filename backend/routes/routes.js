@@ -226,21 +226,32 @@ router.get("/qualifiedReplays", async (req, res) => {
 // User Handling
 router.get("/user/:userId", checkJwt, async (req, res) => {
   try {
-    const data = await User.findById(req.params.userId);
-    if (!data) {
+    const userData = await User.findById(req.params.userId);
+    if (!userData) {
       res
         .status(404)
         .json({ message: `No user found at ${req.params.userId}` });
-    }
+    } else {
+      const { tekkenId } = userData;
+      const playerData = await Player.findById(tekkenId);
 
-    res.json(data);
+      if (!playerData) {
+        throw new Error(
+          `Expected player data to be associated with found user. \nUser ID: ${userId}\nTekken ID: ${tekkenId}`
+        );
+      }
+
+      res.json({
+        userData,
+        playerData,
+      });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// 3b8RiMm59hH4
-router.post("/userData", [checkJwt, jsonParser], async (req, res) => {
+router.post("/user/upsert", [checkJwt, jsonParser], async (req, res) => {
   // TODO: scrub Tekken ID better
   const { tekkenId, state, userId } = req.body;
 
@@ -291,13 +302,6 @@ router.post("/userData", [checkJwt, jsonParser], async (req, res) => {
     session.endSession();
     res.status(500).json({ message: error.message });
   }
-});
-
-// TODO: need RBAC on this endpoint
-router.post("/approveUser", checkJwt, (req, res) => {
-  const { userId } = req.body;
-  // Approve the user in the database
-  res.send({ success: true, message: `User ${userId} approved.` });
 });
 
 function isEmpty(obj) {

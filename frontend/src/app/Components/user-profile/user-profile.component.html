@@ -13,7 +13,48 @@
     </div>
     <mat-divider></mat-divider>
     <div style="color: white; margin: 1rem">
-      <app-new-entry-form></app-new-entry-form>
+      <div *ngIf="!isUnregisteredUser && currentUser" class="form-fields">
+        <form
+          [formGroup]="stateForm"
+          (ngSubmit)="onSubmit()"
+          class="update-form"
+        >
+          <h2>Current User Information:</h2>
+          <p>
+            Here is your current information. You may update your state
+            affiliation below.
+          </p>
+          <p>Name: {{ currentUser.playerData.name }}</p>
+          <p>Tekken ID: {{ currentUser.userData.tekkenId }}</p>
+          <p>Current State Affiliation: {{ currentUser.userData.state }}</p>
+          <mat-form-field
+            appearance="fill"
+            class="update-form-field"
+            style="margin-top: 12px"
+          >
+            <mat-label>New State Affiliation</mat-label>
+            <mat-select name="state" formControlName="state" required>
+              <mat-option *ngFor="let state of states" [value]="state.code">
+                {{ state.name }}
+              </mat-option>
+            </mat-select>
+            <mat-hint>
+              If you would like to Update your State Affiliation, Please do so
+              here.
+            </mat-hint>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            class="update-form-button"
+            type="submit"
+            [disabled]="stateForm.invalid"
+          >
+            Update State
+          </button>
+        </form>
+      </div>
+      <app-user-entry-form *ngIf="isUnregisteredUser"></app-user-entry-form>
     </div>
   </div>
 </div>

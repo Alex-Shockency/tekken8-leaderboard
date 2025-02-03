@@ -2,8 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { UserData } from '../../Models/user';
-import { AuthService } from '@auth0/auth0-angular';
+import { UserData, ReturnedUserData } from '../../Models/user';
+import { Ranking } from '../../Models/ranking';
+import { PlayerData } from '../../Models/playerData';
+// import { AuthService } from '@auth0/auth0-angular';
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +13,25 @@ import { AuthService } from '@auth0/auth0-angular';
 export class UserService {
   private api: string = environment.apiUrl;
 
-  constructor(private http: HttpClient, private auth: AuthService) {
+  constructor(private http: HttpClient) {
     console.log(environment.apiUrl);
   }
 
-  createUserData(userData: UserData, token: string): Observable<UserData> {
-    return this.http.post<UserData>(this.api + `userData`, userData, {
+  upsertUserData(userData: UserData, token: string): Observable<UserData> {
+    return this.http.post<UserData>(this.api + `user/upsert`, userData, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
-  approveUser(userId: string): Observable<UserData> {
-    return this.http.post<UserData>(this.api + `approveUser`, userId);
+  getUserById(
+    userId: string,
+    token: string
+  ): Observable<{ userData: ReturnedUserData; playerData: PlayerData }> {
+    return this.http.get<{
+      userData: ReturnedUserData;
+      playerData: PlayerData;
+    }>(this.api + `user/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   }
 }
