@@ -7,10 +7,10 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
+    jwksUri: `https://login.tekkenleaderboard.com/.well-known/jwks.json`,
   }),
   audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`,
-  issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+  issuer: `https://login.tekkenleaderboard.com/`,
   algorithms: ["RS256"],
 });
 

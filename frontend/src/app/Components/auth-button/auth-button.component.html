@@ -11,7 +11,7 @@
 
 <ng-template #loggedOut>
   <button
-    (click)="auth.loginWithRedirect({ appState: { target: '/user' } })"
+    (click)="login()"
     mat-button
   >
     <mat-icon>person_outline</mat-icon>Log in

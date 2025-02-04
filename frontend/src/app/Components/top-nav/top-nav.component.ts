@@ -3,11 +3,12 @@ import { RankingService } from '../../Services/ranking.service';
 import { MaterialModule } from '../../Shared/material.module';
 import { RouterModule } from '@angular/router';
 import { AuthButtonComponent } from '../auth-button/auth-button.component';
+import { SearchBarComponent } from "../search-bar/search-bar.component";
 
 @Component({
   selector: 'app-top-nav',
   standalone: true,
-  imports: [MaterialModule, RouterModule, AuthButtonComponent],
+  imports: [MaterialModule, RouterModule, AuthButtonComponent, SearchBarComponent],
   templateUrl: './top-nav.component.html',
   styleUrl: './top-nav.component.css',
 })

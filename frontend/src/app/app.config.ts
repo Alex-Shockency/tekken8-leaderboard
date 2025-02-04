@@ -11,7 +11,7 @@ import { environment } from '../environments/environment';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAuth0({
-      domain: `${environment.auth0_domain}`,
+      domain: `login.tekkenleaderboard.com`,
       clientId: environment.auth0_client_id,
       authorizationParams: {
         redirect_uri: window.location.origin,
