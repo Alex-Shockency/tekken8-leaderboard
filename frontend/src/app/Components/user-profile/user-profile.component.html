@@ -1,0 +1,67 @@
+<app-top-nav></app-top-nav>
+<div
+  style="
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 165px);
+    background: linear-gradient(180deg, #311122, transparent);
+  "
+>
+  <div class="inner-flex">
+    <div style="display: flex; padding-left: 1rem; color: white">
+      <h1>User Profile</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="color: white; margin: 1rem">
+      <div *ngIf="!isUnregisteredUser && currentUser">
+        <div style="padding: 16px 48px">
+          <h2>Current User Information:</h2>
+          <p>
+            Here is your current information. You may update your state
+            affiliation below.
+          </p>
+          <ul>
+            <li>Name: {{ currentUser.playerData.name }}</li>
+            <li>Tekken ID: {{ currentUser.userData.tekkenId }}</li>
+          </ul>
+        </div>
+        <div class="form-fields">
+          <form
+            [formGroup]="stateForm"
+            (ngSubmit)="onSubmit()"
+            class="update-form"
+          >
+            <h3>Update State Affiliation</h3>
+            <p>Current State Affiliation: {{ currentUser.userData.state }}</p>
+            <mat-form-field
+              appearance="fill"
+              class="update-form-field"
+              style="margin-top: 12px"
+            >
+              <mat-label>New State Affiliation</mat-label>
+              <mat-select name="state" formControlName="state" required>
+                <mat-option *ngFor="let state of states" [value]="state.code">
+                  {{ state.name }}
+                </mat-option>
+              </mat-select>
+              <mat-hint>
+                If you would like to Update your State Affiliation, Please do so
+                here.
+              </mat-hint>
+            </mat-form-field>
+            <button
+              mat-raised-button
+              color="primary"
+              class="update-form-button"
+              type="submit"
+              [disabled]="stateForm.invalid"
+            >
+              Update State
+            </button>
+          </form>
+        </div>
+      </div>
+      <app-user-entry-form *ngIf="isUnregisteredUser"></app-user-entry-form>
+    </div>
+  </div>
+</div>

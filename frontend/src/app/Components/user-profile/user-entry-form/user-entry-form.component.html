@@ -1,0 +1,50 @@
+<form class="new-entry-form" (ngSubmit)="onSubmit()" [formGroup]="entryForm">
+  <h2>New Entry Form</h2>
+  <p>
+    If you would like to be added to the Tekken 8 Leaderboard for your State,
+    please provide some information below.
+  </p>
+  <div class="form-fields">
+    <mat-form-field appearance="fill" class="new-entry-form-field">
+      <mat-label>Tekken ID</mat-label>
+      <input
+        matInput
+        placeholder="Enter your Tekken ID"
+        name="tekkenId"
+        formControlName="tekkenId"
+        required
+      />
+      <!-- <mat-error *ngIf="entryForm.controls['tekkenId']?.invalid"
+        >Tekken ID is required</mat-error
+      > -->
+      <mat-hint
+        >a.k.a. Polaris ID, should be in a similar format to this:
+        "5bHF-gfBL-3NyG",<br />Should be able to find it in-game on your in-game
+        Player Profile next to the "TEKKEN ID" field</mat-hint
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="new-entry-form-field">
+      <mat-label>State</mat-label>
+      <mat-select name="state" formControlName="state" required>
+        <mat-option *ngFor="let state of states" [value]="state.code">
+          {{ state.name }}
+        </mat-option>
+      </mat-select>
+      <mat-hint
+        >Please pick a State for which you&apos;d like to declare your
+        affiliation.</mat-hint
+      >
+    </mat-form-field>
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    class="form new-entry-form-button"
+    [disabled]="entryForm.invalid"
+  >
+    Submit
+  </button>
+</form>
