@@ -251,7 +251,7 @@ router.get("/user/:userId", checkJwt, async (req, res) => {
   }
 });
 
-router.post("/user/upsert", [checkJwt, jsonParser], async (req, res) => {
+router.post("/user/create", [checkJwt, jsonParser], async (req, res) => {
   // TODO: scrub Tekken ID better
   const { tekkenId, state, userId } = req.body;
 
@@ -261,6 +261,7 @@ router.post("/user/upsert", [checkJwt, jsonParser], async (req, res) => {
   try {
     // Verify input data
     const strippedTekkenId = tekkenId.split("-").join("");
+    // Tekken ID validation
     if (!isStateCodeValid(state)) {
       return res
         .status(400)
@@ -273,23 +274,73 @@ router.post("/user/upsert", [checkJwt, jsonParser], async (req, res) => {
       await session.abortTransaction();
       session.endSession();
       return res.status(400).json({ message: "Player not found" });
+    } else if (player.is_approved) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({
+        message:
+          "Player is already approved and associated with another account",
+      });
     }
 
-    // Upsert User entry at User ID
-    await User.findOneAndUpdate(
-      { _id: userId },
-      {
-        tekkenId: strippedTekkenId,
-        state: state,
-        $setOnInsert: { isAdmin: false },
-      },
-      { upsert: true, new: true, session: session }
+    // Create User entry at User ID
+    await User.create(
+      [
+        {
+          _id: userId,
+          tekkenId: strippedTekkenId,
+          state: state,
+          isAdmin: false,
+        },
+      ],
+      { session: session }
     );
 
     // Update Player to approved after creating User entry
     await Player.findOneAndUpdate(
       { _id: strippedTekkenId },
       { is_approved: true, state_id: state },
+      { upsert: true, new: false, session: session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.send({ success: true });
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/user/update", [checkJwt, jsonParser], async (req, res) => {
+  const { tekkenId, state, userId } = req.body;
+
+  const session = await Player.startSession();
+  session.startTransaction();
+
+  try {
+    // Verify input data
+    const strippedTekkenId = tekkenId.split("-").join("");
+    // Tekken ID validation
+    if (!isStateCodeValid(state)) {
+      return res
+        .status(400)
+        .json({ message: `Received unexpected state code: ${state}` });
+    }
+
+    // Find existing Player by form ID
+    await Player.findOneAndUpdate(
+      { _id: strippedTekkenId },
+      { state_id: state },
+      { upsert: true, new: false, session: session }
+    );
+
+    // Upsert User entry at User ID
+    await User.findOneAndUpdate(
+      { _id: userId },
+      { state: state },
       { upsert: true, new: false, session: session }
     );
 

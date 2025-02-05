@@ -40,3 +40,13 @@
   font-size: 1rem;
   margin-top: 32px;
 }
+
+.error-message {
+  color: #ff647f;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 8px;
+  text-align: center;
+}

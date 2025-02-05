@@ -16,6 +16,10 @@
       <div *ngIf="!isUnregisteredUser && currentUser">
         <div style="padding: 16px 48px">
           <h2>Current User Information:</h2>
+          <div *ngIf="isError" class="error-message">
+            An error occurred while updating user information. Please try again
+            later.
+          </div>
           <p>
             Here is your current information. You may update your state
             affiliation below.
