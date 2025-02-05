@@ -67,12 +67,12 @@ export class UserProfileComponent {
         };
 
         this.auth.getAccessTokenSilently().subscribe((token) => {
-          this.userService.upsertUserData(userData, token).subscribe(
+          this.userService.updateUserData(userData, token).subscribe(
             () => {
               window.location.reload();
             },
             (error: any) => {
-              // TODO: Do something on user error
+              this.isError = true;
               console.error('Error creating user data', error);
             }
           );

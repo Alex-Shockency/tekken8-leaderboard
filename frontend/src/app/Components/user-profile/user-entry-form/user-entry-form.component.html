@@ -1,5 +1,8 @@
 <form class="new-entry-form" (ngSubmit)="onSubmit()" [formGroup]="entryForm">
   <h2>New Entry Form</h2>
+  <div *ngIf="isError" class="error-message">
+    An error occurred while submitting the form. Please try again later.
+  </div>
   <p>
     If you would like to be added to the Tekken 8 Leaderboard for your State,
     please provide some information below.

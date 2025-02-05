@@ -1,4 +1,4 @@
-import { Component, input, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MaterialModule } from '../../../Shared/material.module';
 import { UserService } from '../../../Services/user/user.service';
@@ -15,6 +15,7 @@ import { states } from '../../../Shared/utilities';
 export class NewEntryFormComponent {
   states = states;
   entryForm: FormGroup;
+  isError = false;
 
   constructor(private userService: UserService, private auth: AuthService) {
     this.entryForm = new FormGroup({
@@ -34,12 +35,12 @@ export class NewEntryFormComponent {
           };
 
           this.auth.getAccessTokenSilently().subscribe((token) => {
-            this.userService.upsertUserData(userData, token).subscribe(
+            this.userService.createUserData(userData, token).subscribe(
               () => {
                 window.location.reload();
               },
               (error: any) => {
-                // TODO: Do something on user error
+                this.isError = true;
                 console.error('Error creating user data', error);
               }
             );
