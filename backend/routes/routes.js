@@ -224,7 +224,7 @@ router.get("/qualifiedReplays", async (req, res) => {
 });
 
 // User Handling
-router.get("/user/:userId", checkJwt, async (req, res) => {
+router.get("/user/:userId", async (req, res) => {
   try {
     const userData = await User.findById(req.params.userId);
     if (!userData) {
