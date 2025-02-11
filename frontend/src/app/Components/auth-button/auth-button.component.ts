@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
+import { AuthService, User } from '@auth0/auth0-angular';
 import { MaterialModule } from '../../Shared/material.module';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
@@ -12,10 +12,18 @@ import { Router } from '@angular/router';
   styleUrl: './auth-button.component.css',
 })
 export class AuthButtonComponent {
+  user:User
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    public auth: AuthService,private router: Router
-  ) {}
+    public auth: AuthService,public router: Router
+  ) {
+    this.user = auth.user$.subscribe((user) =>{
+      if(user){
+        this.user = user
+      }
+      
+    })
+  }
 
   login() {
     this.auth.loginWithPopup().subscribe( () => {

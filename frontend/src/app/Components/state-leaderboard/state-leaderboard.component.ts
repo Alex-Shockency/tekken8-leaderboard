@@ -35,7 +35,6 @@ export class StateLeaderboardComponent {
   constructor(rankingService: RankingService, private router: Router,private route:ActivatedRoute) {
     let stateId = route.snapshot.params['stateId']
     rankingService.getStateRankings(stateId).subscribe((result) => {
-
       result.forEach(player => {
         if (player.rankings.length > 0) {
           //Rankings are ordered by rating so just get first

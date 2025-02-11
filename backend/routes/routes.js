@@ -223,6 +223,25 @@ router.get("/qualifiedReplays", async (req, res) => {
   }
 });
 
+// Get Users
+router.get("/user", checkJwt, async (req, res) => {
+  try {
+    const userData = await User.find({});
+    if (!userData) {
+      res
+        .status(404)
+        .json({ message: `No user found at ${req.params.userId}` });
+    } else {
+      res.json({
+        userData,
+      });
+    }
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ message: error.message });
+  }
+})
+
 // User Handling
 router.get("/user/:userId", checkJwt, async (req, res) => {
   try {

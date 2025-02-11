@@ -17,8 +17,6 @@ export const appConfig: ApplicationConfig = {
         redirect_uri: window.location.origin,
         // Request this audience at user authentication time
         audience: `https://${environment.auth0_domain}/api/v2/`,
-        // Request this scope at user authentication time
-        scope: 'read:current_user',
       },
       httpInterceptor: {
         allowedList: [
@@ -28,8 +26,6 @@ export const appConfig: ApplicationConfig = {
               authorizationParams: {
                 // The attached token should target this audience
                 audience: `https://${environment.auth0_domain}/api/v2/`,
-                // The attached token should have these scopes
-                scope: 'read:current_user',
               },
             },
           },

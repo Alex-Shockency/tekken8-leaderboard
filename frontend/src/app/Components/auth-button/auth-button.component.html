@@ -1,19 +1,27 @@
-<ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-  <button
-    (click)="
-      auth.logout({ logoutParams: { returnTo: document.location.origin } })
-    "
-    mat-button
-  >
-    <mat-icon>person_outline</mat-icon>Log out
-  </button>
+@if(auth.isAuthenticated$ |async){
+<ng-container>
+  @if(user){
+    <button style="background-image: url({{this.user.picture}});
+        background-size: cover;" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    </button>
+  <mat-menu #menu="matMenu">
+    <div style="color: rgb(255, 255, 255);display: flex; padding: 1rem;">
+      <span>{{user.email}}</span>
+    </div>
+    <mat-divider></mat-divider>
+    <button (click)="this.router.navigate(['/user'])" mat-menu-item>
+      <mat-icon>person_outline</mat-icon>
+      <span>Profile</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })">
+      <mat-icon>logout</mat-icon>Log out
+    </button>
+  </mat-menu>
+  }
 </ng-container>
-
-<ng-template #loggedOut>
-  <button
-    (click)="login()"
-    mat-button
-  >
-    <mat-icon>person_outline</mat-icon>Log in
-  </button>
-</ng-template>
+} @else if(!(auth.isLoading$ | async)){
+<button (click)="login()" mat-button>
+  <mat-icon>person_outline</mat-icon>Log in
+</button>
+}

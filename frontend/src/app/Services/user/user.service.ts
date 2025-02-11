@@ -15,6 +15,14 @@ export class UserService {
     console.log(environment.apiUrl);
   }
 
+  getUsers(token:string): Observable<{ userData: ReturnedUserData }> {
+    return this.http.get<{
+      userData: ReturnedUserData;
+    }>(this.api + `user`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
   createUserData(userData: UserData, token: string): Observable<UserData> {
     return this.http.post<UserData>(this.api + `user/create`, userData, {
       headers: { Authorization: `Bearer ${token}` },

@@ -38,7 +38,6 @@ export class HomeComponent {
 
   constructor(rankingService: RankingService, private router: Router) {
     rankingService.getRankings().subscribe((result) => {
-
       result.forEach(player => {
         if (player.rankings.length > 0) {
           //Rankings are ordered by rating so just get first
@@ -66,13 +65,6 @@ export class HomeComponent {
           });
           this.qualifiedPlayers.push(playerData);
         }
-      })
-      let index = 0;
-      this.players.sort((player1, player2) => {
-        return player2.rating - player1.rating;
-      }).map(player => {
-        player.ranking = index;
-        index++;
       })
       let qualIndex = 0;
       this.qualifiedPlayers.sort((player1, player2) => {
