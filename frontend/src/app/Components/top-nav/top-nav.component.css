@@ -1,0 +1,13 @@
+@media only screen and (max-width: 768px) {
+    .menu-button{
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media only screen and (width >=768px) {
+    .menu-button{
+        width: 48px;
+        height: 48px;
+    }
+}

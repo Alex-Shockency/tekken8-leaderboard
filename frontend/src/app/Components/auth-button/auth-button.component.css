@@ -1,4 +1,12 @@
-.example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
+@media only screen and (max-width: 768px) {
+.header-image {
+    width: 32px;
+    height: 32px;
   }
+}
+@media only screen and (width >=768px) {
+  .header-image {
+    width: 48px;
+    height: 48px;
+  }
+}

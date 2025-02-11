@@ -12,21 +12,21 @@ import { Router } from '@angular/router';
   styleUrl: './auth-button.component.css',
 })
 export class AuthButtonComponent {
-  user:User
+  user: User
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    public auth: AuthService,public router: Router
+    public auth: AuthService, public router: Router
   ) {
-    this.user = auth.user$.subscribe((user) =>{
-      if(user){
+    this.user = auth.user$.subscribe((user) => {
+      if (user) {
         this.user = user
       }
-      
+
     })
   }
 
   login() {
-    this.auth.loginWithPopup().subscribe( () => {
+    this.auth.loginWithPopup().subscribe(() => {
       this.router.navigate(["/user"])
     })
   }
