@@ -27,7 +27,7 @@ export class AuthButtonComponent {
 
   login() {
     this.auth.loginWithPopup().subscribe(() => {
-      this.router.navigate(["/user"])
+      //this.router.navigate(["/user"])
     })
   }
 }

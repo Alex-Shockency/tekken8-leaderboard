@@ -1,7 +1,7 @@
 @if(auth.isAuthenticated$ |async){
 <ng-container>
   @if(user){
-  <button style="background-image: url({{this.user.picture}});
+  <button style="background-image: url({{this.user.picture}}), url(https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png);
         background-size: cover;" mat-icon-button [matMenuTriggerFor]="menu"
     aria-label="Example icon-button with a menu" class="header-image">
   </button>
