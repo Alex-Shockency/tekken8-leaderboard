@@ -6,17 +6,34 @@
     animationDuration="100">
     <mat-tab label="Americas">
       <div style="color: white; z-index: 2; display: flex; justify-content: center;">
-        <h2>Top 500 Americas</h2>
+        <h2>Top 100 Americas</h2>
       </div>
       <div class="inner-flex">
-        <div style="margin: 1rem 0rem 0rem 1rem;">
+        <div style="margin: 1rem 1rem 0rem 1rem; display: inline-flex;justify-content: space-between;">
           <form class="example-form">
             <mat-form-field>
-              <input type="text" placeholder="Filter" aria-label="Search" matInput [formControl]="myControl"
+              <input type="text" placeholder="Filter" aria-label="Search" matInput [formControl]="filterControl"
                 [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete">
                 @for (option of filteredPlayers | async; track option) {
                 <mat-option [value]="option.name">{{option.name}}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+          <form>
+            <mat-form-field>
+              <mat-label>Character</mat-label>
+              <input type="text"
+                     placeholder="Pick one"
+                     matInput
+                     [formControl]="charControl"
+                     [matAutocomplete]="charAuto">
+              <mat-autocomplete #charAuto="matAutocomplete" (optionSelected)="charSelected($event)">
+                @for (option of filteredChars | async; track option) {
+                  <mat-option [value]="option">
+                    {{option}}
+                  </mat-option>
                 }
               </mat-autocomplete>
             </mat-form-field>

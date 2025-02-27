@@ -27,7 +27,7 @@ router.get("/rankings", async (req, res) => {
   try {
     let data = await Player.find({ "max_qual_chara.id": { $exists: true } })
       .sort({ "max_qual_chara.rating": -1 })
-      .limit(500);
+      .limit(100);
     let rankingsByPlayer = [];
 
     data.forEach((player) => {
@@ -39,6 +39,66 @@ router.get("/rankings", async (req, res) => {
       rankings.push(player.max_chara);
       if (!isEmpty(player.max_qual_chara))
         qualRankings.push(player.max_qual_chara);
+
+      rankingsByPlayer.push({
+        name: player.name,
+        tekken_id: player._id,
+        rankings: rankings,
+        qual_rankings: qualRankings,
+      });
+    });
+    res.json(rankingsByPlayer);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/rankings/character/:charId", async (req, res) => {
+  try {
+    let charId = Number.parseInt(req.params.charId) 
+    let data = await Player.aggregate([ {
+      '$match': {
+        '$and': [
+          {
+            'characters.id': charId
+          }, {
+            'characters.qualified': true
+          }
+        ]
+      }
+    }, {
+      '$addFields': {
+        'characterRating': {
+          '$filter': {
+            'input': '$characters', 
+            'as': 'item', 
+            'cond': {
+              '$eq': [
+                '$$item.id', charId
+              ]
+            }
+          }
+        }
+      }
+    }, {
+      '$match': {
+        'characterRating.qualified': true
+      }
+    }, {
+      '$sort': {
+        'characterRating.rating': -1
+      }
+    }]).limit(100);
+
+    let rankingsByPlayer = [];
+
+    data.forEach((player) => {
+      rankings = [];
+      qualRankings = [];
+
+      rankings.push(player.max_chara);
+      if (!isEmpty(player.characterRating))
+        qualRankings.push(...player.characterRating);
 
       rankingsByPlayer.push({
         name: player.name,

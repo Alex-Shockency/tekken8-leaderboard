@@ -5,7 +5,13 @@ import { Injectable } from '@angular/core';
 })
 export class Utilities {
   charaIdMap = new Map();
+  charaNameMap = new Map();
+  charArray:string[] = [];
   regionIdMap = new Map();
+
+  swap(obj:Map<number,string>){
+    return new Map(Array.from(obj, a => a.reverse() as [number,string]))
+  }
 
   constructor() {
     this.charaIdMap.set(0, 'Paul');
@@ -44,6 +50,10 @@ export class Utilities {
     this.charaIdMap.set(39, 'Lidia');
     this.charaIdMap.set(40, 'Heihachi');
     this.charaIdMap.set(41, 'Clive');
+
+    this.charaNameMap = this.swap(this.charaIdMap)
+
+    this.charArray = ['Any','Paul', 'Law', 'King', 'Yoshimitsu', 'Hworang', 'Xiaoyu', 'Jin', 'Bryan', 'Kazuya', 'Steve', 'Jack-8', 'Asuka', 'Devil Jin', 'Feng', 'Lili', 'Dragunov', 'Leo', 'Lars', 'Alisa', 'Claudio', 'Shaheen', 'Nina', 'Lee', 'Kuma', 'Panda', 'Zafina', 'Leroy', 'Jun', 'Reina', 'Azucena', 'Victor', 'Raven', 'Eddy', 'Lidia', 'Heihachi', 'Clive']
 
     this.regionIdMap.set(0, 'Asia');
     this.regionIdMap.set(3, 'America');

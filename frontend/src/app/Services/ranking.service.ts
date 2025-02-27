@@ -26,6 +26,10 @@ export class RankingService {
     return this.http.get<PlayerData[]>(this.api + `rankings`);
   }
 
+  getRankingsByChar(charId: string): Observable<PlayerData[]> {
+    return this.http.get<PlayerData[]>(this.api + `rankings/character/${charId}`);
+  }
+
   getStateRankings(stateId:string): Observable<PlayerData[]> {
     return this.http.get<PlayerData[]>(this.api + `stateRankings/${stateId}`);
   }
