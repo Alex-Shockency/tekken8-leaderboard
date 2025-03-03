@@ -26,7 +26,7 @@ export class SearchBarComponent {
     this.timeout = setTimeout(() => {
       if (this.searchControl.value) {
         this.isSearching = true;
-        this.rankingService.searchPlayers(this.searchControl.value).subscribe(result => {
+        this.rankingService.searchPlayers(encodeURIComponent(this.searchControl.value)).subscribe(result => {
           this.searchedPlayers = result
           this.isSearching = false;
         })
