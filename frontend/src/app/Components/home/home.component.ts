@@ -40,35 +40,35 @@ export class HomeComponent {
   charArray: string[] = [];
   filteredChars!: Observable<string[]>;
 
-  constructor(private rankingService: RankingService, private router: Router, private utilities: Utilities) {
+  constructor(private rankingService: RankingService, private router: Router, public utilities: Utilities) {
     this.charArray = utilities.charArray;
     rankingService.getRankings().subscribe((result) => {
       result.forEach(player => {
         if (player.rankings.length > 0) {
           //Rankings are ordered by rating so just get first
-          let playerData = player.rankings[0]
-          playerData.name = player.name
-          playerData.tekken_id = player.tekken_id
-          playerData.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
+          let leaderboardRank = player.rankings[0] as any
+          leaderboardRank.name = player.name
+          leaderboardRank.tekken_id = player.tekken_id
+          leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
             year: "numeric",
             month: "long",
             day: "numeric",
           });
-          this.players.push(playerData);
+          this.players.push(leaderboardRank);
 
         }
 
         if (player.qual_rankings.length > 0) {
           //Rankings are ordered by rating so just get first
-          let playerData = player.qual_rankings[0]
-          playerData.name = player.name
-          playerData.tekken_id = player.tekken_id
-          playerData.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+          let leaderboardRank = player.qual_rankings[0] as any
+          leaderboardRank.name = player.name
+          leaderboardRank.tekken_id = player.tekken_id
+          leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
             year: "numeric",
             month: "long",
             day: "numeric",
           });
-          this.qualifiedPlayers.push(playerData);
+          this.qualifiedPlayers.push(leaderboardRank);
         }
       })
       let qualIndex = 0;
@@ -120,28 +120,28 @@ export class HomeComponent {
         result.forEach(player => {
           if (player.rankings.length > 0) {
             //Rankings are ordered by rating so just get first
-            let playerData = player.rankings[0]
-            playerData.name = player.name
-            playerData.tekken_id = player.tekken_id
-            playerData.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
+            let leaderboardRank = player.rankings[0] as any
+            leaderboardRank.name = player.name
+            leaderboardRank.tekken_id = player.tekken_id
+            leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
               year: "numeric",
               month: "long",
               day: "numeric",
             });
-            this.players.push(playerData);
+            this.players.push(leaderboardRank);
           }
 
           if (player.qual_rankings.length > 0) {
             //Rankings are ordered by rating so just get first
-            let playerData = player.qual_rankings[0]
-            playerData.name = player.name
-            playerData.tekken_id = player.tekken_id
-            playerData.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+            let leaderboardRank = player.rankings[0] as any
+            leaderboardRank.name = player.name
+            leaderboardRank.tekken_id = player.tekken_id
+            leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
               year: "numeric",
               month: "long",
               day: "numeric",
             });
-            this.qualifiedPlayers.push(playerData);
+            this.qualifiedPlayers.push(leaderboardRank);
           }
         })
         let qualIndex = 0;
@@ -171,28 +171,28 @@ export class HomeComponent {
         result.forEach(player => {
           if (player.rankings.length > 0) {
             //Rankings are ordered by rating so just get first
-            let playerData = player.rankings[0]
-            playerData.name = player.name
-            playerData.tekken_id = player.tekken_id
-            playerData.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
+            let leaderboardRank = player.rankings[0] as any
+            leaderboardRank.name = player.name
+            leaderboardRank.tekken_id = player.tekken_id
+            leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
               year: "numeric",
               month: "long",
               day: "numeric",
             });
-            this.players.push(playerData);
+            this.players.push(leaderboardRank);
           }
 
           if (player.qual_rankings.length > 0) {
             //Rankings are ordered by rating so just get first
-            let playerData = player.qual_rankings[0]
-            playerData.name = player.name
-            playerData.tekken_id = player.tekken_id
-            playerData.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+            let leaderboardRank = player.qual_rankings[0] as any
+            leaderboardRank.name = player.name
+            leaderboardRank.tekken_id = player.tekken_id
+            leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
               year: "numeric",
               month: "long",
               day: "numeric",
             });
-            this.qualifiedPlayers.push(playerData);
+            this.qualifiedPlayers.push(leaderboardRank);
           }
         })
         let qualIndex = 0;

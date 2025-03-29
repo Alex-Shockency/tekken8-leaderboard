@@ -13,18 +13,20 @@
     <div style="display: inline-flex;overflow-x: auto;margin: 1rem 1rem 1rem 1rem;">
       @if(playerData.qual_rankings.length > 0){
       <div>
-        <div style="color: rgba(255, 255, 255, 0.871);margin: 0rem 2rem;">
-          <h3>Qualified</h3>
+        <div style="color: rgba(255, 255, 255, 0.871);margin: 0rem 2rem;display: inline-flex;align-items: center;">
+          <mat-icon style="padding-right: .5rem;" matTooltip="30 or more recent battles (battles within the last month)">info_outline</mat-icon><h3>Qualified</h3>
         </div>
         <mat-divider style="margin: 0rem 1rem;"></mat-divider>
-        <div style="display: inline-flex;min-height: 356px;color: rgba(255, 255, 255, 0.871);">
+        <div style="display: inline-flex;min-height: 356px; color:rbga(255, 255, 255, 0.871);">
           @for (ranking of playerData.qual_rankings; track $index) {
-          <div style="padding: 1rem;">
+          <div style="padding-top: 1rem; width: 182px;">
             <div style="display: flex;flex-flow: column;align-items: center;">
               <span>{{this.utilities.charaIdMap.get(ranking.id)}}</span>
-              <span>Rating: {{ranking.rating}}</span>
+              <span style="color: orange;">Rating: {{ranking.rating}}</span>
+              <span>Recent Battles: {{ranking.recent_battles.length}}</span>
               <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
                 width="128px" height="194px" src="../../../assets/character-thumbnails/{{ranking.id}}.webp">
+              <span>Total Battles: {{ranking.battle_count}}</span>
               <span>Updated:</span>
               <span style="font-size: .9rem;">{{ranking.date}}</span>
               <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png">
@@ -46,13 +48,14 @@
           <div style="padding: 1rem;">
             <div style="display: flex;flex-flow: column;align-items: center;">
               <span>{{this.utilities.charaIdMap.get(ranking.id)}}</span>
-              <span>Rating: {{ranking.rating}}</span>
+              <span style="color: orange;">Rating: {{ranking.rating}}</span>
+              <span>Recent Battles: {{ranking.recent_battles.length}}</span>
               <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
                 width="128px" height="194px" src="../../../assets/character-thumbnails/{{ranking.id}}.webp">
+              <span>Battles: {{ranking.battle_count}}</span>
               <span>Updated:</span>
               <span style="font-size: .9rem;">{{ranking.date}}</span>
               <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png">
-
             </div>
           </div>
           }
@@ -184,28 +187,29 @@
         </mat-tab>
         <mat-tab label="Matchups">
           @if(isMatchupLoading){
-            <div style="width: 100%;
+          <div style="width: 100%;
                 height: 256px;
                 display: flex;
                 flex-flow: column;
                 justify-content: center;
                 align-items: center;">
-              <mat-spinner></mat-spinner>
-              <span style="color: rgba(255, 255, 255, 0.871); padding: 1rem;"> Collecting all replay data...</span>
-            </div>
+            <mat-spinner></mat-spinner>
+            <span style="color: rgba(255, 255, 255, 0.871); padding: 1rem;"> Collecting all replay data...</span>
+          </div>
           } @else {
-            <h3 style="display: flex;justify-content: center;">Overall Win:<span style="padding-left: .5rem;">{{this.overallWinPercent}}%</span></h3>
-            <div class="matchup-grid">
-              @for (matchup of matchupMap.entries(); track $index) {
-              <div style="display: flex; align-items: center;">
-                @if($index == 0){
-                  <mat-icon>star</mat-icon>
-                }
-                <span>{{this.utilities.charaIdMap.get(matchup[0])}} ({{matchup[1].wins}} - {{matchup[1].losses}}) <span
-                    [ngStyle]="{'color': matchup[1].wins > matchup[1].losses? 'green':'red'}">{{(matchup[1].wins/(matchup[1].wins+matchup[1].losses)*100).toFixed(2)}}%</span></span>
-              </div>
+          <h3 style="display: flex;justify-content: center;">Overall Win:<span
+              style="padding-left: .5rem;">{{this.overallWinPercent}}%</span></h3>
+          <div class="matchup-grid">
+            @for (matchup of matchupMap.entries(); track $index) {
+            <div style="display: flex; align-items: center;">
+              @if($index == 0){
+              <mat-icon>star</mat-icon>
               }
+              <span>{{this.utilities.charaIdMap.get(matchup[0])}} ({{matchup[1].wins}} - {{matchup[1].losses}}) <span
+                  [ngStyle]="{'color': matchup[1].wins > matchup[1].losses? 'green':'red'}">{{(matchup[1].wins/(matchup[1].wins+matchup[1].losses)*100).toFixed(2)}}%</span></span>
             </div>
+            }
+          </div>
           }
         </mat-tab>
       </mat-tab-group>

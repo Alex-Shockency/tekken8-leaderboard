@@ -5,4 +5,6 @@ export interface Ranking {
     qualified: boolean,
     rank: number,
     rating: number,
+    recent_battles: [];
+    battle_count: number;
 }

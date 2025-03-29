@@ -27,7 +27,7 @@ router.get("/rankings", async (req, res) => {
   try {
     let data = await Player.find({ "max_qual_chara.id": { $exists: true } })
       .sort({ "max_qual_chara.rating": -1 })
-      .limit(100);
+      .limit(500);
     let rankingsByPlayer = [];
 
     data.forEach((player) => {
@@ -178,6 +178,18 @@ router.get("/rankings/:tekkenId", async (req, res) => {
         qual_rankings: qualRankings,
       };
     });
+
+    rankingsByPlayer.qual_rankings = rankingsByPlayer.qual_rankings.sort((a,b) => {
+      if(a.rating > b.rating){
+        return -1
+      }
+    })
+
+    rankingsByPlayer.rankings = rankingsByPlayer.rankings.sort((a,b) => {
+      if(a.rating > b.rating){
+        return -1
+      }
+    })
 
     res.json(rankingsByPlayer);
   } catch (error) {
