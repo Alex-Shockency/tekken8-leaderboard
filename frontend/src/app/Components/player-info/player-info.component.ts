@@ -65,8 +65,6 @@ export class PlayerInfoComponent {
     route.params.subscribe(val => {
       this.tekkenId = val['tekkenId'];
       this.tekkenIdDashes = val['tekkenId'].match(new RegExp('.{1,4}', 'g')).join("-");
-      let overallWins = 0;
-      let overallLosses = 0;
   
       this.rankingService.getReplaysById(this.tekkenId, this.pageNum, this.pageSize).subscribe((result) => {
         this.battleCount = result.metadata[0].totalCount
@@ -112,65 +110,82 @@ export class PlayerInfoComponent {
           return data;
           
         });
+
+        result.qual_rankings = result.qual_rankings.sort((a,b) => {
+          if(a.rating > b.rating){
+            return -1
+          } else{
+            return 1;
+          }
+        })
+    
+        result.rankings = result.rankings.sort((a,b) => {
+          if(a.rating > b.rating){
+            return -1
+          }
+          else{
+            return 1;
+          }
+        })
+
         this.playerData = result
         this.isPlayerLoading = false;
       });
   
-      rankingService.getAllReplaysById(this.tekkenId).subscribe((result) => {
-        result.forEach((replay:any) => {
-          if (replay.p1_polaris_id == this.tekkenId) {
-            if (replay.p1_rounds > replay.p2_rounds) {
-              if (this.matchupMap.has(replay.p2_chara_id)) {
-                let winsLosses = this.matchupMap.get(replay.p2_chara_id) ?? { wins: 0, losses: 0 };
-                this.matchupMap.set(replay.p2_chara_id, { wins: winsLosses.wins + 1, losses: winsLosses.losses })
-                overallWins +=1
-              } else {
-                this.matchupMap.set(replay.p2_chara_id, { wins: 1, losses: 0 })
-                overallWins +=1
-              }
-            } else {
-              if (this.matchupMap.has(replay.p2_chara_id)) {
-                let winsLosses = this.matchupMap.get(replay.p2_chara_id) ?? { wins: 0, losses: 0 };
-                this.matchupMap.set(replay.p2_chara_id, { wins: winsLosses.wins, losses: winsLosses.losses + 1 })
-                overallLosses+=1
-              } else {
-                this.matchupMap.set(replay.p2_chara_id, { wins: 0, losses: 1 })
-                overallLosses+=1
-              }
-            }
-          } 
-          else {
-            if (replay.p2_rounds > replay.p1_rounds) {
-              if (this.matchupMap.has(replay.p1_chara_id)) {
-                let winsLosses = this.matchupMap.get(replay.p1_chara_id) ?? { wins: 0, losses: 0 };
-                this.matchupMap.set(replay.p1_chara_id, { wins: winsLosses.wins + 1, losses: winsLosses.losses })
-                overallWins +=1
-              } else {
-                this.matchupMap.set(replay.p1_chara_id, { wins: 1, losses: 0 })
-                overallWins +=1
-              }
-            } else {
-              if (this.matchupMap.has(replay.p1_chara_id)) {
-                let winsLosses = this.matchupMap.get(replay.p1_chara_id) ?? { wins: 0, losses: 0 };
-                this.matchupMap.set(replay.p1_chara_id, { wins: winsLosses.wins, losses: winsLosses.losses + 1 })
-                overallLosses+=1
-              } else {
-                this.matchupMap.set(replay.p1_chara_id, { wins: 0, losses: 1 })
-                overallLosses+=1
-              }
-            }
-          }
-        })
-        this.matchupMap = new Map([...this.matchupMap.entries()].sort((matchup1,matchup2)=>{
-          return matchup2[1].wins/(matchup2[1].wins+matchup2[1].losses) - matchup1[1].wins/(matchup1[1].wins+matchup1[1].losses);
-        }))
-        this.overallWinPercent = Number.parseFloat((overallWins/(overallWins+overallLosses)*100).toFixed(2))
-        this.isMatchupLoading = false;
-      });
+      // rankingService.getAllReplaysById(this.tekkenId).subscribe((result) => {
+      //   result.forEach((replay:any) => {
+      //     if (replay.p1_polaris_id == this.tekkenId) {
+      //       if (replay.p1_rounds > replay.p2_rounds) {
+      //         if (this.matchupMap.has(replay.p2_chara_id)) {
+      //           let winsLosses = this.matchupMap.get(replay.p2_chara_id) ?? { wins: 0, losses: 0 };
+      //           this.matchupMap.set(replay.p2_chara_id, { wins: winsLosses.wins + 1, losses: winsLosses.losses })
+      //           overallWins +=1
+      //         } else {
+      //           this.matchupMap.set(replay.p2_chara_id, { wins: 1, losses: 0 })
+      //           overallWins +=1
+      //         }
+      //       } else {
+      //         if (this.matchupMap.has(replay.p2_chara_id)) {
+      //           let winsLosses = this.matchupMap.get(replay.p2_chara_id) ?? { wins: 0, losses: 0 };
+      //           this.matchupMap.set(replay.p2_chara_id, { wins: winsLosses.wins, losses: winsLosses.losses + 1 })
+      //           overallLosses+=1
+      //         } else {
+      //           this.matchupMap.set(replay.p2_chara_id, { wins: 0, losses: 1 })
+      //           overallLosses+=1
+      //         }
+      //       }
+      //     } 
+      //     else {
+      //       if (replay.p2_rounds > replay.p1_rounds) {
+      //         if (this.matchupMap.has(replay.p1_chara_id)) {
+      //           let winsLosses = this.matchupMap.get(replay.p1_chara_id) ?? { wins: 0, losses: 0 };
+      //           this.matchupMap.set(replay.p1_chara_id, { wins: winsLosses.wins + 1, losses: winsLosses.losses })
+      //           overallWins +=1
+      //         } else {
+      //           this.matchupMap.set(replay.p1_chara_id, { wins: 1, losses: 0 })
+      //           overallWins +=1
+      //         }
+      //       } else {
+      //         if (this.matchupMap.has(replay.p1_chara_id)) {
+      //           let winsLosses = this.matchupMap.get(replay.p1_chara_id) ?? { wins: 0, losses: 0 };
+      //           this.matchupMap.set(replay.p1_chara_id, { wins: winsLosses.wins, losses: winsLosses.losses + 1 })
+      //           overallLosses+=1
+      //         } else {
+      //           this.matchupMap.set(replay.p1_chara_id, { wins: 0, losses: 1 })
+      //           overallLosses+=1
+      //         }
+      //       }
+      //     }
+      //   })
+      //   this.matchupMap = new Map([...this.matchupMap.entries()].sort((matchup1,matchup2)=>{
+      //     return matchup2[1].wins/(matchup2[1].wins+matchup2[1].losses) - matchup1[1].wins/(matchup1[1].wins+matchup1[1].losses);
+      //   }))
+      //   this.overallWinPercent = Number.parseFloat((overallWins/(overallWins+overallLosses)*100).toFixed(2))
+      //   this.isMatchupLoading = false;
+      // });
     });
-   
-    
   }
+
   private createChart(result: any) {
     if(this.replayChart){
       this.replayChart.destroy()

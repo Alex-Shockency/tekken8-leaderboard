@@ -180,18 +180,6 @@ router.get("/rankings/:tekkenId", async (req, res) => {
       };
     });
 
-    rankingsByPlayer.qual_rankings = rankingsByPlayer.qual_rankings.sort((a,b) => {
-      if(a.rating > b.rating){
-        return -1
-      }
-    })
-
-    rankingsByPlayer.rankings = rankingsByPlayer.rankings.sort((a,b) => {
-      if(a.rating > b.rating){
-        return -1
-      }
-    })
-
     res.json(rankingsByPlayer);
   } catch (error) {
     res.status(500).json({ message: error.message });
