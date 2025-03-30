@@ -72,15 +72,6 @@ export class HomeComponent {
         })
       })
     })).subscribe()
-
-    // let qualIndex = 0;
-    // this.qualifiedPlayers.sort((player1, player2) => {
-    //   return player2.rating - player1.rating;
-    // }).map(player => {
-    //   player.ranking = qualIndex;
-    //   qualIndex++;
-    // })
-
   }
 
   ngOnInit() {
@@ -98,45 +89,39 @@ export class HomeComponent {
   charSelected(event: MatAutocompleteSelectedEvent) {
     this.isLoading = true;
     let charId = this.utilities.charaNameMap.get(event.option.value);
-    this.pageNum = 0;
+    this.pageNum = 1;
     if (event.option.value == "Any") {
+      let rank = 0;
+      let observables = [];
       for (let i = 0; i < (500 / this.pageSize); i++) {
-        this.rankingService.getRankings(this.pageNum, this.pageSize).subscribe((result) => {
-          this.qualifiedPlayers = [];
+        observables.push(this.rankingService.getRankings(this.pageNum, this.pageSize))
+        this.pageNum += 1
+      }
 
-          this.filteredQualifiedPlayers = this.filterControl.valueChanges.pipe(
-            startWith(''),
-            map(value => this._qualFilter(value || ''))
-          )
-          result.forEach(player => {
+      forkJoin(observables).pipe(map(result => {
+        result.forEach(playerArr => {
+          playerArr.forEach(player => {
             if (player.qual_rankings.length > 0) {
               //Rankings are ordered by rating so just get first
-              let leaderboardRank = player.rankings[0] as any
+              let leaderboardRank = player.qual_rankings[0] as any
               leaderboardRank.name = player.name
               leaderboardRank.tekken_id = player.tekken_id
-              leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
+              leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               });
+              leaderboardRank.ranking = rank
               this.qualifiedPlayers.push(leaderboardRank);
+              rank++;
             }
+            this.isLoading = false;
           })
-          let qualIndex = 0;
-          this.qualifiedPlayers.sort((player1, player2) => {
-            return player2.rating - player1.rating;
-          }).map(player => {
-            player.ranking = qualIndex;
-            qualIndex++;
-          })
-
-          this.pageNum += 1
-
-          this.isLoading = false;
-        });
-      }
+        })
+      })).subscribe()
 
     } else {
+      let rank = 0;
       this.rankingService.getRankingsByChar(charId).subscribe((result) => {
         this.qualifiedPlayers = [];
 
@@ -156,15 +141,10 @@ export class HomeComponent {
               month: "long",
               day: "numeric",
             });
+            leaderboardRank.ranking = rank
             this.qualifiedPlayers.push(leaderboardRank);
+            rank++;
           }
-        })
-        let qualIndex = 0;
-        this.qualifiedPlayers.sort((player1, player2) => {
-          return player2.rating - player1.rating;
-        }).map(player => {
-          player.ranking = qualIndex;
-          qualIndex++;
         })
 
         this.isLoading = false;

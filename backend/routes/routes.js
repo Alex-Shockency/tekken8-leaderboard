@@ -181,7 +181,6 @@ router.get("/rankings/:tekkenId", async (req, res) => {
           qualRankings.push(char);
           rankings.push(char);
         } else {
-          console.log(char)
           rankings.push(char);
         }
       });

@@ -51,7 +51,7 @@
         @else {
         @if(qualifiedPlayers.length >0){
         <div style="display: flex;flex-flow: column;">
-          @for (player of qualifiedPlayers; track player; let idx = $index) {
+          @for (player of filteredQualifiedPlayers| async; track player; let idx = $index) {
           <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
             <div style="background: rgba(38, 86, 116, 1);
               height: 100%;
