@@ -22,8 +22,8 @@ export class RankingService {
     return this.http.get<any>(this.api + `lastUpdate`);
   }
 
-  getRankings(): Observable<PlayerData[]> {
-    return this.http.get<PlayerData[]>(this.api + `rankings`);
+  getRankings(pageNum: number,pageSize: number): Observable<PlayerData[]> {
+    return this.http.get<PlayerData[]>(this.api + `rankings?pageNum=${pageNum}&pageSize=${pageSize}`);
   }
 
   getRankingsByChar(charId: string): Observable<PlayerData[]> {

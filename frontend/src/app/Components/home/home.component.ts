@@ -5,7 +5,7 @@ import { TopNavComponent } from "../top-nav/top-nav.component";
 import { Router } from '@angular/router';
 import { PlayerData } from '../../Models/playerData';
 import { FormControl } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
+import { forkJoin, map, Observable, startWith } from 'rxjs';
 import { InteractiveMapComponent } from "../interactive-map/interactive-map.component";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SearchBarComponent } from "../search-bar/search-bar.component";
@@ -39,34 +39,47 @@ export class HomeComponent {
   filteredQualifiedPlayers!: Observable<any[]>;
   charArray: string[] = [];
   filteredChars!: Observable<string[]>;
+  pageNum = 1;
+  pageSize = 100;
 
   constructor(private rankingService: RankingService, private router: Router, public utilities: Utilities) {
     this.charArray = utilities.charArray;
-    rankingService.getRankings().subscribe((result) => {
-      result.forEach(player => {
-        if (player.qual_rankings.length > 0) {
-          //Rankings are ordered by rating so just get first
-          let leaderboardRank = player.qual_rankings[0] as any
-          leaderboardRank.name = player.name
-          leaderboardRank.tekken_id = player.tekken_id
-          leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-          this.qualifiedPlayers.push(leaderboardRank);
-        }
-      })
-      let qualIndex = 0;
-      this.qualifiedPlayers.sort((player1, player2) => {
-        return player2.rating - player1.rating;
-      }).map(player => {
-        player.ranking = qualIndex;
-        qualIndex++;
-      })
+    let rank = 0;
+    let observables = [];
+    for (let i = 0; i < (500 / this.pageSize); i++) {
+      observables.push(rankingService.getRankings(this.pageNum, this.pageSize))
+      this.pageNum += 1
+    }
 
-      this.isLoading = false;
-    });
+    forkJoin(observables).pipe(map(result => {
+      result.forEach(playerArr => {
+        playerArr.forEach(player => {
+          if (player.qual_rankings.length > 0) {
+            //Rankings are ordered by rating so just get first
+            let leaderboardRank = player.qual_rankings[0] as any
+            leaderboardRank.name = player.name
+            leaderboardRank.tekken_id = player.tekken_id
+            leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+            leaderboardRank.ranking = rank
+            this.qualifiedPlayers.push(leaderboardRank);
+            rank++;
+          }
+          this.isLoading = false;
+        })
+      })
+    })).subscribe()
+
+    // let qualIndex = 0;
+    // this.qualifiedPlayers.sort((player1, player2) => {
+    //   return player2.rating - player1.rating;
+    // }).map(player => {
+    //   player.ranking = qualIndex;
+    //   qualIndex++;
+    // })
 
   }
 
@@ -85,38 +98,44 @@ export class HomeComponent {
   charSelected(event: MatAutocompleteSelectedEvent) {
     this.isLoading = true;
     let charId = this.utilities.charaNameMap.get(event.option.value);
+    this.pageNum = 0;
     if (event.option.value == "Any") {
-      this.rankingService.getRankings().subscribe((result) => {
-        this.qualifiedPlayers = [];
+      for (let i = 0; i < (500 / this.pageSize); i++) {
+        this.rankingService.getRankings(this.pageNum, this.pageSize).subscribe((result) => {
+          this.qualifiedPlayers = [];
 
-        this.filteredQualifiedPlayers = this.filterControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._qualFilter(value || ''))
-        )
-        result.forEach(player => {
-          if (player.qual_rankings.length > 0) {
-            //Rankings are ordered by rating so just get first
-            let leaderboardRank = player.rankings[0] as any
-            leaderboardRank.name = player.name
-            leaderboardRank.tekken_id = player.tekken_id
-            leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
-            this.qualifiedPlayers.push(leaderboardRank);
-          }
-        })
-        let qualIndex = 0;
-        this.qualifiedPlayers.sort((player1, player2) => {
-          return player2.rating - player1.rating;
-        }).map(player => {
-          player.ranking = qualIndex;
-          qualIndex++;
-        })
+          this.filteredQualifiedPlayers = this.filterControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._qualFilter(value || ''))
+          )
+          result.forEach(player => {
+            if (player.qual_rankings.length > 0) {
+              //Rankings are ordered by rating so just get first
+              let leaderboardRank = player.rankings[0] as any
+              leaderboardRank.name = player.name
+              leaderboardRank.tekken_id = player.tekken_id
+              leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
+              this.qualifiedPlayers.push(leaderboardRank);
+            }
+          })
+          let qualIndex = 0;
+          this.qualifiedPlayers.sort((player1, player2) => {
+            return player2.rating - player1.rating;
+          }).map(player => {
+            player.ranking = qualIndex;
+            qualIndex++;
+          })
 
-        this.isLoading = false;
-      });
+          this.pageNum += 1
+
+          this.isLoading = false;
+        });
+      }
+
     } else {
       this.rankingService.getRankingsByChar(charId).subscribe((result) => {
         this.qualifiedPlayers = [];

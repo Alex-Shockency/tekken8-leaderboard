@@ -6,6 +6,7 @@ const Replay = require("../models/replay");
 const Player = require("../models/player");
 const { checkJwt, isStateCodeValid } = require("../utils");
 const User = require("../models/user");
+const player = require("../models/player");
 
 const options = {
   year: "numeric",
@@ -24,13 +25,33 @@ var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 router.get("/rankings", async (req, res) => {
+  let pageNum = req.query.pageNum;
+  let pageSize = parseInt(req.query.pageSize);
   try {
-    let data = await Player.find({ "max_qual_chara.id": { $exists: true } })
-      .sort({ "max_qual_chara.rating": -1 })
-      .limit(500);
+    let data = await Player.aggregate([
+      {
+        $match: {
+          "max_qual_chara.id": { $exists: true }
+        },
+      },
+      {
+        $sort: {
+          "max_qual_chara.rating": -1,
+        },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: "totalCount" }],
+          players: [{ $skip: (pageNum - 1) * pageSize }, { $limit: pageSize }],
+        },
+      },
+    ]);
+
+   
+      
     let rankingsByPlayer = [];
 
-    data.forEach((player) => {
+    data[0].players.forEach((player) => {
       qualRankings = [];
       qualRankings.push(player.max_qual_chara);
 
