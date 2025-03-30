@@ -93,6 +93,7 @@ export class HomeComponent {
     if (event.option.value == "Any") {
       let rank = 0;
       let observables = [];
+      this.qualifiedPlayers = [];
       for (let i = 0; i < (500 / this.pageSize); i++) {
         observables.push(this.rankingService.getRankings(this.pageNum, this.pageSize))
         this.pageNum += 1
@@ -122,9 +123,8 @@ export class HomeComponent {
 
     } else {
       let rank = 0;
+      this.qualifiedPlayers = [];
       this.rankingService.getRankingsByChar(charId).subscribe((result) => {
-        this.qualifiedPlayers = [];
-
         this.filteredQualifiedPlayers = this.filterControl.valueChanges.pipe(
           startWith(''),
           map(value => this._qualFilter(value || ''))
