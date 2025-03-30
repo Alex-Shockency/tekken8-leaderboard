@@ -44,20 +44,6 @@ export class HomeComponent {
     this.charArray = utilities.charArray;
     rankingService.getRankings().subscribe((result) => {
       result.forEach(player => {
-        if (player.rankings.length > 0) {
-          //Rankings are ordered by rating so just get first
-          let leaderboardRank = player.rankings[0] as any
-          leaderboardRank.name = player.name
-          leaderboardRank.tekken_id = player.tekken_id
-          leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-          this.players.push(leaderboardRank);
-
-        }
-
         if (player.qual_rankings.length > 0) {
           //Rankings are ordered by rating so just get first
           let leaderboardRank = player.qual_rankings[0] as any
@@ -90,10 +76,6 @@ export class HomeComponent {
       startWith(''),
       map(value => this._qualFilter(value || ''))
     )
-    this.filteredPlayers = this.filterControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || ''))
-    )
     this.filteredChars = this.charControl.valueChanges.pipe(
       startWith(''),
       map(value => this._charFilter(value || ''))
@@ -105,32 +87,13 @@ export class HomeComponent {
     let charId = this.utilities.charaNameMap.get(event.option.value);
     if (event.option.value == "Any") {
       this.rankingService.getRankings().subscribe((result) => {
-        this.players = [];
         this.qualifiedPlayers = [];
 
         this.filteredQualifiedPlayers = this.filterControl.valueChanges.pipe(
           startWith(''),
           map(value => this._qualFilter(value || ''))
         )
-        this.filteredPlayers = this.filterControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value || ''))
-        )
-
         result.forEach(player => {
-          if (player.rankings.length > 0) {
-            //Rankings are ordered by rating so just get first
-            let leaderboardRank = player.rankings[0] as any
-            leaderboardRank.name = player.name
-            leaderboardRank.tekken_id = player.tekken_id
-            leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
-            this.players.push(leaderboardRank);
-          }
-
           if (player.qual_rankings.length > 0) {
             //Rankings are ordered by rating so just get first
             let leaderboardRank = player.rankings[0] as any
@@ -156,32 +119,14 @@ export class HomeComponent {
       });
     } else {
       this.rankingService.getRankingsByChar(charId).subscribe((result) => {
-        this.players = [];
         this.qualifiedPlayers = [];
 
         this.filteredQualifiedPlayers = this.filterControl.valueChanges.pipe(
           startWith(''),
           map(value => this._qualFilter(value || ''))
         )
-        this.filteredPlayers = this.filterControl.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filter(value || ''))
-        )
 
         result.forEach(player => {
-          if (player.rankings.length > 0) {
-            //Rankings are ordered by rating so just get first
-            let leaderboardRank = player.rankings[0] as any
-            leaderboardRank.name = player.name
-            leaderboardRank.tekken_id = player.tekken_id
-            leaderboardRank.date = new Date(player.rankings[0].date).toLocaleDateString("en", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
-            this.players.push(leaderboardRank);
-          }
-
           if (player.qual_rankings.length > 0) {
             //Rankings are ordered by rating so just get first
             let leaderboardRank = player.qual_rankings[0] as any
@@ -211,11 +156,6 @@ export class HomeComponent {
   routeToPlayerInfo(tekkenId: string) {
     tekkenId = tekkenId.replaceAll('-', '')
     this.router.navigate([`/playerInfo/${tekkenId}`])
-  }
-
-  private _filter(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    return this.players.filter(player => player.name.toLowerCase().includes(filterValue));
   }
 
   private _qualFilter(value: string): any[] {

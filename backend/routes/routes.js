@@ -31,19 +31,12 @@ router.get("/rankings", async (req, res) => {
     let rankingsByPlayer = [];
 
     data.forEach((player) => {
-      rankings = [];
       qualRankings = [];
-
-      // console.log(player)
-
-      rankings.push(player.max_chara);
-      if (!isEmpty(player.max_qual_chara))
-        qualRankings.push(player.max_qual_chara);
+      qualRankings.push(player.max_qual_chara);
 
       rankingsByPlayer.push({
         name: player.name,
         tekken_id: player._id,
-        rankings: rankings,
         qual_rankings: qualRankings,
       });
     });
