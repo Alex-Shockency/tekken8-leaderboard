@@ -1,6 +1,15 @@
 .example-full-width {
     width: 100%;
   }
+
+  a {
+    color: rgba(255, 255, 255, 0.871);
+  }
+  
+  a:hover {
+    color: rgba(0, 192, 240, 0.871);
+  }
+  
   
   .inner-flex {
     display: flex;

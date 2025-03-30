@@ -29,8 +29,7 @@
               <span>Total Battles: {{ranking.battle_count}}</span>
               <span>Updated:</span>
               <span style="font-size: .9rem;">{{ranking.date}}</span>
-              <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png">
-
+              <!-- <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png"> -->
             </div>
           </div>
           }
@@ -45,7 +44,7 @@
         <mat-divider style="margin: 0rem 1rem;"></mat-divider>
         <div style="display: inline-flex;min-height: 356px;overflow-x: auto;color: rgba(255, 255, 255, 0.871);">
           @for (ranking of playerData.rankings; track $index) {
-          <div style="padding: 1rem;">
+          <div style="padding-top: 1rem; width: 182px;">
             <div style="display: flex;flex-flow: column;align-items: center;">
               <span>{{this.utilities.charaIdMap.get(ranking.id)}}</span>
               <span style="color: orange;">Rating: {{ranking.rating}}</span>
@@ -55,7 +54,7 @@
               <span>Battles: {{ranking.battle_count}}</span>
               <span>Updated:</span>
               <span style="font-size: .9rem;">{{ranking.date}}</span>
-              <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png">
+              <!-- <img style="padding: 1rem;" width="100px" src="../../../assets/ranks/{{ranking.rank}}.png"> -->
             </div>
           </div>
           }

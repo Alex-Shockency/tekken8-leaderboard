@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { SearchBarComponent } from "../search-bar/search-bar.component";
+import { Utilities } from '../../Shared/utilities';
 
 @Component({
   selector: 'app-state-leaderboard',
@@ -32,7 +33,7 @@ export class StateLeaderboardComponent {
   qualifiedPlayers: any[] = [];
   filteredQualifiedPlayers!: Observable<any[]>;
 
-  constructor(rankingService: RankingService, private router: Router, private route: ActivatedRoute) {
+  constructor(rankingService: RankingService, private router: Router, private route: ActivatedRoute, public utilities: Utilities) {
     let stateId = route.snapshot.params['stateId']
     rankingService.getStateRankings(stateId).subscribe((result) => {
       result.forEach(player => {

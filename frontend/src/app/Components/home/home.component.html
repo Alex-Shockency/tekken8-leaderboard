@@ -50,7 +50,7 @@
         }
         @else {
         @if(players.length >0){
-        <div style="display: flex;flex-flow: column;max-height: 80vh;overflow: auto;">
+        <div style="display: flex;flex-flow: column;">
           @for (player of filteredQualifiedPlayers| async; track player; let idx = $index) {
           <div class="player-card" (click)="routeToPlayerInfo(player.tekken_id)">
             <div style="background: rgba(38, 86, 116, 1);
@@ -75,21 +75,35 @@
               </div>
             </div>
             <div style="display: inline-flex;justify-content: space-between;width: 100%;">
-              <div style="display: inline-flex;align-items: center; padding-left: 1rem; width: 25%;">
-                <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
-                  width="42px" src="../../../assets/small-character-thumbnails/{{player.id}}.webp" loading="eager">
-                  <span style="padding-left: 1rem;" width="100px">{{this.utilities.charaIdMap.get(player.id)}}</span>
-              </div>
               <div
-                style="display: inline-flex; width: 100%; align-items: center; justify-content: space-around;">
-                <div style="width: 25%;">
-                  <span>{{player.name}}</span>
+                style="display: inline-flex; width: 100%; align-items: center; justify-content: space-between;">
+                @if(screenWidth >1000){
+                <div style="display: inline-flex;align-items: center; padding-left: .5rem; width: 20%;">
+                  <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
+                    width="42px" src="../../../assets/small-character-thumbnails/{{player.id}}.webp" loading="eager">
+                  <a href="/playerInfo/{{player.tekken_id}}" style="padding-left: .5rem;">{{player.name}}</a>
                 </div>
-                <div style="width: 25%;">
+                }
+                @else {
+                  <div style="display: inline-flex;align-items: center; padding-left: .5rem; width: 60%;">
+                    <img style="background: linear-gradient(to bottom, transparent, black); border-radius: .25rem;"
+                      width="42px" src="../../../assets/small-character-thumbnails/{{player.id}}.webp" loading="eager">
+                    <a href="/playerInfo/{{player.tekken_id}}" style="padding-left: .5rem;">{{player.name}}</a>
+                  </div>
+                }
+                @if(screenWidth >1000){
+                <div style="width: 20%;">
+                    <span style="padding-left: 1rem;" width="100px">{{this.utilities.charaIdMap.get(player.id)}}</span>
+                </div>
+                }
+                <div style="width: 20%;">
+                  <span>Battles: {{player.battle_count}}</span>
+                </div>
+                <div style="width: 20%;">
                   <span>Rating: {{player.rating}}</span>
                 </div>
                 @if(screenWidth >1000){
-                <div style="width: 25%;">
+                <div style="width: 20%;">
                   <span>Updated: {{player.date}}</span>
                 </div>
                 }
