@@ -1,6 +1,6 @@
 @if(auth.isAuthenticated$ |async){
 <ng-container>
-  @if(user){
+  @if(user && tekkenId){
   <button style="background-image: url({{this.user.picture}}), url(https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png);
         background-size: cover;" mat-icon-button [matMenuTriggerFor]="menu"
     aria-label="Example icon-button with a menu" class="header-image">
@@ -10,9 +10,14 @@
       <span>{{user.email}}</span>
     </div>
     <mat-divider></mat-divider>
+    <button (click)="navigateToPlayer(tekkenId)" mat-menu-item>
+      <mat-icon>emoji_events</mat-icon>
+      <span>{{this.currentUser.name}} ({{tekkenIdWithDases}})</span>
+    </button>
+    <mat-divider></mat-divider>
     <button (click)="this.router.navigate(['/user'])" mat-menu-item>
       <mat-icon>person_outline</mat-icon>
-      <span>Profile</span>
+      <span>Account</span>
     </button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="auth.logout({ logoutParams: { returnTo: document.location.origin } })">
