@@ -50,10 +50,11 @@ export class Utilities {
     this.charaIdMap.set(39, 'Lidia');
     this.charaIdMap.set(40, 'Heihachi');
     this.charaIdMap.set(41, 'Clive');
+    this.charaIdMap.set(42, 'Anna');
 
     this.charaNameMap = this.swap(this.charaIdMap)
 
-    this.charArray = ['Any','Paul', 'Law', 'King', 'Yoshimitsu', 'Hworang', 'Xiaoyu', 'Jin', 'Bryan', 'Kazuya', 'Steve', 'Jack-8', 'Asuka', 'Devil Jin', 'Feng', 'Lili', 'Dragunov', 'Leo', 'Lars', 'Alisa', 'Claudio', 'Shaheen', 'Nina', 'Lee', 'Kuma', 'Panda', 'Zafina', 'Leroy', 'Jun', 'Reina', 'Azucena', 'Victor', 'Raven', 'Eddy', 'Lidia', 'Heihachi', 'Clive']
+    this.charArray = ['All','Alisa', 'Anna', 'Asuka', 'Azucena', 'Bryan', 'Claudio', 'Clive', 'Devil Jin', 'Dragunov', 'Eddy', 'Feng', 'Heihachi', 'Hworang', 'Jack-8', 'Jin', 'Jun', 'Kazuya', 'King', 'Kuma', 'Lars', 'Law', 'Lee', 'Leo', 'Leroy', 'Lidia', 'Lili', 'Nina', 'Panda', 'Paul', 'Raven', 'Reina', 'Shaheen', 'Steve', 'Victor', 'Xiaoyu', 'Yoshimitsu', 'Zafina']
 
     this.regionIdMap.set(0, 'Asia');
     this.regionIdMap.set(3, 'America');

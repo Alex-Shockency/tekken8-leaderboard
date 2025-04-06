@@ -4,8 +4,15 @@
     <div
       style="color: rgba(255, 255, 255, 0.871); padding: 1rem; background: url(https://media.graphassets.com/hTZbojF7RfKctKFfrSK7) center center / cover no-repeat;height: 162px;">
       @if(playerData){
-      <h1>{{playerData.name}}</h1>
-      <h2>{{tekkenIdDashes}} </h2>
+      <div style="display: inline-flex; width: 100%; justify-content: space-between;">
+        <div>
+            <h1>{{playerData.name}}</h1>
+          <h2>{{tekkenIdDashes}} </h2> 
+        </div>
+        <div>
+          <h2>Total battles: {{this.totalBattleCount}}</h2>
+        </div>
+      </div>
       }
     </div>
     <mat-divider></mat-divider>
@@ -14,7 +21,9 @@
       @if(playerData.qual_rankings.length > 0){
       <div>
         <div style="color: rgba(255, 255, 255, 0.871);margin: 0rem 2rem;display: inline-flex;align-items: center;">
-          <mat-icon style="padding-right: .5rem;" matTooltip="30 or more recent battles (battles within the last month)">info_outline</mat-icon><h3>Qualified</h3>
+          <mat-icon style="padding-right: .5rem;"
+            matTooltip="30 or more recent battles (battles within the last month)">info_outline</mat-icon>
+          <h3>Qualified</h3>
         </div>
         <mat-divider style="margin: 0rem 1rem;"></mat-divider>
         <div style="display: inline-flex;min-height: 356px; color:rbga(255, 255, 255, 0.871);">
@@ -73,11 +82,31 @@
 
     <mat-divider></mat-divider>
     <div style="margin: 1rem;overflow: auto; max-height: 100%;">
-      <mat-tab-group style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="center"
+      <div style="display: inline-flex;">
+        <h3 style="padding-right: 1rem;">Select a character:</h3>
+        <form>
+          <mat-form-field>
+            <mat-label>Character</mat-label>
+            <input type="text" placeholder="Pick one" matInput [formControl]="charControl" [matAutocomplete]="charAuto">
+            <mat-autocomplete #charAuto="matAutocomplete" (optionSelected)="charSelected($event)">
+              @for (option of filteredChars | async; track option) {
+              <mat-option [value]="option">
+                {{option}}
+              </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </div>
+      @if (isCharLoading) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
+      <mat-divider></mat-divider>
+      <mat-tab-group #tabGroup style="width: 100%;max-width: 1500px;" mat-stretch-tabs="false" mat-align-tabs="center"
         animationDuration="100">
         <mat-tab label="Replays">
           <div>
-            @if (isReplayLoading) {
+            @if (isReplayLoading || isCharLoading) {
             <div style="width: 100%;
                 height: 25vh;
                 display: flex;
@@ -87,15 +116,18 @@
             </div>
             }
             @else {
-            <div style="width: 100%; display: flex;justify-content: center;">
+            <div style="width: 100%; display: flex;justify-content: center; align-items: center;">
+              <mat-icon style="padding-right: .5rem;" matTooltip="Last 25 replays">info_outline</mat-icon>
               <h3 style="color:rgba(255, 255, 255, 0.871);">Rating Change</h3>
             </div>
             }
-            <div style=" display: flex;justify-content: center; padding: 1rem;">
-              <div style="width: 800px; overflow-x: auto;">
+            <div style="display: flex;justify-content: center; padding: 1rem;"
+              [ngStyle]="{'display': this.isCharLoading || this.isReplayLoading? 'none':'flex'}">
+              <div style="position: relative; width:80%">
                 <canvas id="ratings"></canvas>
               </div>
             </div>
+            <mat-divider></mat-divider>
             @if (battleCount > 0) {
             <div style="color:rgba(255, 255, 255, 0.871); padding: 1rem">
               <span>Replays Found: {{battleCount}}</span>
@@ -196,8 +228,8 @@
             <span style="color: rgba(255, 255, 255, 0.871); padding: 1rem;"> Collecting all replay data...</span>
           </div>
           } @else {
-          <h3 style="display: flex;justify-content: center;">Overall Win:<span
-              style="padding-left: .5rem;">{{this.overallWinPercent}}%</span></h3>
+          <h4 style="display: flex;justify-content: center;">Overall Win:<span style="padding-left: .5rem;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;"
+              [ngStyle]="{'color': this.overallWinPercent >= 50? 'green':'red'}">{{this.overallWinPercent}}%</span></h4>
           <div class="matchup-grid">
             @for (matchup of matchupMap.entries(); track $index) {
             <div style="display: flex; align-items: center;">

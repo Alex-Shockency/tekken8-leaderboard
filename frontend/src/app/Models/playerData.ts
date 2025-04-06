@@ -5,4 +5,5 @@ export interface PlayerData {
     tekken_id: string,
     rankings: Ranking[],
     qual_rankings: Ranking[]
+    max_qual_chara: Ranking
 }

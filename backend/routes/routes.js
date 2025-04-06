@@ -30,35 +30,24 @@ router.get("/rankings", async (req, res) => {
   try {
     let data = await Player.aggregate([
       {
-        $match: {
-          "max_qual_chara.id": { $exists: true }
-        },
-      },
-      {
         $sort: {
           "max_qual_chara.rating": -1,
         },
       },
       {
         $facet: {
-          metadata: [{ $count: "totalCount" }],
           players: [{ $skip: (pageNum - 1) * pageSize }, { $limit: pageSize }],
         },
       },
     ]);
 
-   
-      
     let rankingsByPlayer = [];
 
     data[0].players.forEach((player) => {
-      qualRankings = [];
-      qualRankings.push(player.max_qual_chara);
-
       rankingsByPlayer.push({
         name: player.name,
         tekken_id: player._id,
-        qual_rankings: qualRankings,
+        max_qual_chara: player.max_qual_chara,
       });
     });
     res.json(rankingsByPlayer);
@@ -69,8 +58,8 @@ router.get("/rankings", async (req, res) => {
 
 router.get("/rankings/character/:charId", async (req, res) => {
   try {
-    let charId = Number.parseInt(req.params.charId) 
-    let data = await Player.aggregate([ {
+    let charId = Number.parseInt(req.params.charId)
+    let data = await Player.aggregate([{
       '$match': {
         '$and': [
           {
@@ -84,8 +73,8 @@ router.get("/rankings/character/:charId", async (req, res) => {
       '$addFields': {
         'characterRating': {
           '$filter': {
-            'input': '$characters', 
-            'as': 'item', 
+            'input': '$characters',
+            'as': 'item',
             'cond': {
               '$eq': [
                 '$$item.id', charId
@@ -107,18 +96,15 @@ router.get("/rankings/character/:charId", async (req, res) => {
     let rankingsByPlayer = [];
 
     data.forEach((player) => {
-      rankings = [];
       qualRankings = [];
 
-      rankings.push(player.max_chara);
       if (!isEmpty(player.characterRating))
         qualRankings.push(...player.characterRating);
 
       rankingsByPlayer.push({
         name: player.name,
         tekken_id: player._id,
-        rankings: rankings,
-        qual_rankings: qualRankings,
+        max_qual_chara: qualRankings[0],
       });
     });
     res.json(rankingsByPlayer);
@@ -281,6 +267,37 @@ router.get("/replays/:tekkenId", async (req, res) => {
     ]);
 
     res.json(data[0]);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+//Get by TekkenID Method and CharId
+router.get("/replays/:tekkenId/:charaId", async (req, res) => {
+  try {
+    let data = await Replay.aggregate([
+      {
+        $match: {
+          $or: [
+            { p1_polaris_id: req.params.tekkenId },
+            { p2_polaris_id: req.params.tekkenId },
+          ],
+        },
+      },
+      {
+        $sort: {
+          battle_at: -1,
+        },
+      }
+    ]);
+
+    data = data.filter((replay) => {
+      return replay.p1_chara_id == req.params.charaId && replay.p1_polaris_id == req.params.tekkenId || replay.p2_chara_id == req.params.charaId && replay.p2_polaris_id == req.params.tekkenId
+    })
+
+
+    res.json(data);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

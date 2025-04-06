@@ -20,12 +20,13 @@ import { Utilities } from '../../Shared/utilities';
 })
 export class HomeComponent {
   filterControl = new FormControl('');
-  charControl = new FormControl('Any');
+  charControl = new FormControl('All');
 
   screenHeight = 0;
   screenWidth = 0;
   lastUpdate: any;
   isLoading = true;
+  headerText = "Top 500 Leaderboard America";
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -54,12 +55,12 @@ export class HomeComponent {
     forkJoin(observables).pipe(map(result => {
       result.forEach(playerArr => {
         playerArr.forEach(player => {
-          if (player.qual_rankings.length > 0) {
+          if (player.max_qual_chara) {
             //Rankings are ordered by rating so just get first
-            let leaderboardRank = player.qual_rankings[0] as any
+            let leaderboardRank = player.max_qual_chara as any
             leaderboardRank.name = player.name
             leaderboardRank.tekken_id = player.tekken_id
-            leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+            leaderboardRank.date = new Date(player.max_qual_chara.date).toLocaleDateString("en", {
               year: "numeric",
               month: "long",
               day: "numeric",
@@ -90,7 +91,8 @@ export class HomeComponent {
     this.isLoading = true;
     let charId = this.utilities.charaNameMap.get(event.option.value);
     this.pageNum = 1;
-    if (event.option.value == "Any") {
+    if (event.option.value == "All") {
+      this.headerText = "Top 500 Leaderboard America";
       let rank = 0;
       let observables = [];
       this.qualifiedPlayers = [];
@@ -102,12 +104,12 @@ export class HomeComponent {
       forkJoin(observables).pipe(map(result => {
         result.forEach(playerArr => {
           playerArr.forEach(player => {
-            if (player.qual_rankings.length > 0) {
+            if (player.max_qual_chara) {
               //Rankings are ordered by rating so just get first
-              let leaderboardRank = player.qual_rankings[0] as any
+              let leaderboardRank = player.max_qual_chara as any
               leaderboardRank.name = player.name
               leaderboardRank.tekken_id = player.tekken_id
-              leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+              leaderboardRank.date = new Date(player.max_qual_chara.date).toLocaleDateString("en", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -122,6 +124,7 @@ export class HomeComponent {
       })).subscribe()
 
     } else {
+      this.headerText = `Top 100 ${this.utilities.charaIdMap.get(charId)} America`
       let rank = 0;
       this.qualifiedPlayers = [];
       this.rankingService.getRankingsByChar(charId).subscribe((result) => {
@@ -131,12 +134,12 @@ export class HomeComponent {
         )
 
         result.forEach(player => {
-          if (player.qual_rankings.length > 0) {
+          if (player.max_qual_chara) {
             //Rankings are ordered by rating so just get first
-            let leaderboardRank = player.qual_rankings[0] as any
+            let leaderboardRank = player.max_qual_chara as any
             leaderboardRank.name = player.name
             leaderboardRank.tekken_id = player.tekken_id
-            leaderboardRank.date = new Date(player.qual_rankings[0].date).toLocaleDateString("en", {
+            leaderboardRank.date = new Date(player.max_qual_chara.date).toLocaleDateString("en", {
               year: "numeric",
               month: "long",
               day: "numeric",
