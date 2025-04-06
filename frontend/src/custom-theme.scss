@@ -12,31 +12,31 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$tekken8-leaderboard-primary: mat.define-palette(mat.$pink-palette);
-$tekken8-leaderboard-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$tekken8-leaderboard-primary: mat.m2-define-palette(mat.$m2-pink-palette);
+$tekken8-leaderboard-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$tekken8-leaderboard-warn: mat.define-palette(mat.$red-palette);
+$tekken8-leaderboard-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$tekken8-leaderboard-theme: mat.define-light-theme((
+$tekken8-leaderboard-theme: mat.m2-define-light-theme((
   color: (
     primary: $tekken8-leaderboard-primary,
     accent: $tekken8-leaderboard-accent,
     warn: $tekken8-leaderboard-warn,
   ),
-  typography: mat.define-typography-config(),
+  typography: mat.m2-define-typography-config(),
   density: 0
 ));
 
-$tekken8-leaderboard-theme: mat.define-dark-theme((
+$tekken8-leaderboard-theme: mat.m2-define-dark-theme((
   color: (
     primary: $tekken8-leaderboard-primary,
     accent: $tekken8-leaderboard-accent,
     warn: $tekken8-leaderboard-warn,
   ),
-  typography: mat.define-typography-config(),
+  typography: mat.m2-define-typography-config(),
   density: 0
 ));
 

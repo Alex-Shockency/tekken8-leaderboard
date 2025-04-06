@@ -6,11 +6,10 @@ import { AuthService } from '@auth0/auth0-angular';
 import { states } from '../../../Shared/utilities';
 
 @Component({
-  selector: 'app-user-entry-form',
-  imports: [MaterialModule],
-  templateUrl: './user-entry-form.component.html',
-  styleUrls: ['./user-entry-form.component.css'],
-  standalone: true,
+    selector: 'app-user-entry-form',
+    imports: [MaterialModule],
+    templateUrl: './user-entry-form.component.html',
+    styleUrls: ['./user-entry-form.component.css']
 })
 export class NewEntryFormComponent {
   states = states;

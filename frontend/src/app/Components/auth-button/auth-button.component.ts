@@ -6,11 +6,10 @@ import { Router } from '@angular/router';
 import { UserService } from '../../Services/user/user.service';
 
 @Component({
-  selector: 'app-auth-button',
-  standalone: true,
-  imports: [MaterialModule],
-  templateUrl: './auth-button.component.html',
-  styleUrl: './auth-button.component.css',
+    selector: 'app-auth-button',
+    imports: [MaterialModule],
+    templateUrl: './auth-button.component.html',
+    styleUrl: './auth-button.component.css'
 })
 export class AuthButtonComponent {
   user: User

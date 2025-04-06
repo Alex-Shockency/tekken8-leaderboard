@@ -12,11 +12,10 @@ import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { Utilities } from '../../Shared/utilities';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [MaterialModule, InteractiveMapComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    imports: [MaterialModule, InteractiveMapComponent],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   filterControl = new FormControl('');

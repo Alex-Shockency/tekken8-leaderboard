@@ -6,11 +6,10 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
-  selector: 'app-search-bar',
-  standalone: true,
-  imports: [MaterialModule],
-  templateUrl: './search-bar.component.html',
-  styleUrl: './search-bar.component.css'
+    selector: 'app-search-bar',
+    imports: [MaterialModule],
+    templateUrl: './search-bar.component.html',
+    styleUrl: './search-bar.component.css'
 })
 export class SearchBarComponent {
   searchControl = new FormControl('');

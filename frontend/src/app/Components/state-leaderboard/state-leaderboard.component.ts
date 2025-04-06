@@ -9,11 +9,10 @@ import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { Utilities } from '../../Shared/utilities';
 
 @Component({
-  selector: 'app-state-leaderboard',
-  standalone: true,
-  imports: [MaterialModule, TopNavComponent, SearchBarComponent],
-  templateUrl: './state-leaderboard.component.html',
-  styleUrl: './state-leaderboard.component.css'
+    selector: 'app-state-leaderboard',
+    imports: [MaterialModule, TopNavComponent, SearchBarComponent],
+    templateUrl: './state-leaderboard.component.html',
+    styleUrl: './state-leaderboard.component.css'
 })
 export class StateLeaderboardComponent {
   myControl = new FormControl('');

@@ -6,11 +6,10 @@ import { AuthButtonComponent } from '../auth-button/auth-button.component';
 import { SearchBarComponent } from "../search-bar/search-bar.component";
 
 @Component({
-  selector: 'app-top-nav',
-  standalone: true,
-  imports: [MaterialModule, RouterModule, AuthButtonComponent, SearchBarComponent],
-  templateUrl: './top-nav.component.html',
-  styleUrl: './top-nav.component.css',
+    selector: 'app-top-nav',
+    imports: [MaterialModule, RouterModule, AuthButtonComponent, SearchBarComponent],
+    templateUrl: './top-nav.component.html',
+    styleUrl: './top-nav.component.css'
 })
 export class TopNavComponent {
   screenHeight = 0;

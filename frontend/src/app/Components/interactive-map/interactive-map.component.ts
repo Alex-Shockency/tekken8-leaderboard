@@ -6,11 +6,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
-  selector: 'app-interactive-map',
-  standalone: true,
-  imports: [TopNavComponent, HomeComponent],
-  templateUrl: './interactive-map.component.html',
-  styleUrl: './interactive-map.component.css'
+    selector: 'app-interactive-map',
+    imports: [TopNavComponent, HomeComponent],
+    templateUrl: './interactive-map.component.html',
+    styleUrl: './interactive-map.component.css'
 })
 export class InteractiveMapComponent {
   constructor(userService: UserService, public router: Router, public auth: AuthService) {

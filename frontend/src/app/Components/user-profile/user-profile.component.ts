@@ -10,11 +10,10 @@ import { PlayerData } from '../../Models/playerData';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-profile',
-  imports: [TopNavComponent, MaterialModule, NewEntryFormComponent],
-  templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.css',
-  standalone: true,
+    selector: 'app-user-profile',
+    imports: [TopNavComponent, MaterialModule, NewEntryFormComponent],
+    templateUrl: './user-profile.component.html',
+    styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
   // Authenticated User Data

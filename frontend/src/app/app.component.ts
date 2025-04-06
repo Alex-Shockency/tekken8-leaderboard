@@ -5,11 +5,10 @@ import { RankingService } from './Services/ranking.service';
 import { TopNavComponent } from "./Components/top-nav/top-nav.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, MaterialModule, TopNavComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [RouterOutlet, MaterialModule, TopNavComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'tekken8-leaderboard';

@@ -18,11 +18,10 @@ import { map, Observable, startWith } from 'rxjs';
 
 
 @Component({
-  selector: 'app-player-info',
-  standalone: true,
-  imports: [TopNavComponent, MaterialModule],
-  templateUrl: './player-info.component.html',
-  styleUrl: './player-info.component.css',
+    selector: 'app-player-info',
+    imports: [TopNavComponent, MaterialModule],
+    templateUrl: './player-info.component.html',
+    styleUrl: './player-info.component.css'
 })
 
 export class PlayerInfoComponent {
