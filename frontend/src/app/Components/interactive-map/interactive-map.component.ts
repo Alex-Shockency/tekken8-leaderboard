@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { TopNavComponent } from "../top-nav/top-nav.component";
-import { HomeComponent } from "../home/home.component";
 import { UserService } from '../../Services/user/user.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
     selector: 'app-interactive-map',
-    imports: [TopNavComponent, HomeComponent],
+    imports: [],
     templateUrl: './interactive-map.component.html',
     styleUrl: './interactive-map.component.css'
 })

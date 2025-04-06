@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { TopNavComponent } from '../top-nav/top-nav.component';
 import { MaterialModule } from '../../Shared/material.module';
 import { NewEntryFormComponent } from './user-entry-form/user-entry-form.component';
 import { UserService } from '../../Services/user/user.service';
@@ -11,7 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-user-profile',
-    imports: [TopNavComponent, MaterialModule, NewEntryFormComponent],
+    imports: [ MaterialModule, NewEntryFormComponent],
     templateUrl: './user-profile.component.html',
     styleUrl: './user-profile.component.css'
 })

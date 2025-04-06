@@ -1,5 +1,4 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
-import { TopNavComponent } from '../top-nav/top-nav.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RankingService } from '../../Services/ranking.service';
 import { MaterialModule } from '../../Shared/material.module';
@@ -19,7 +18,7 @@ import { map, Observable, startWith } from 'rxjs';
 
 @Component({
     selector: 'app-player-info',
-    imports: [TopNavComponent, MaterialModule],
+    imports: [MaterialModule],
     templateUrl: './player-info.component.html',
     styleUrl: './player-info.component.css'
 })

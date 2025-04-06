@@ -1,16 +1,14 @@
 import { Component, HostListener } from '@angular/core';
 import { MaterialModule } from '../../Shared/material.module';
 import { RankingService } from '../../Services/ranking.service';
-import { TopNavComponent } from "../top-nav/top-nav.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
-import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { Utilities } from '../../Shared/utilities';
 
 @Component({
     selector: 'app-state-leaderboard',
-    imports: [MaterialModule, TopNavComponent, SearchBarComponent],
+    imports: [MaterialModule],
     templateUrl: './state-leaderboard.component.html',
     styleUrl: './state-leaderboard.component.css'
 })

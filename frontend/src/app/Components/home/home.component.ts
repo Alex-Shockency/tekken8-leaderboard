@@ -10,6 +10,7 @@ import { InteractiveMapComponent } from "../interactive-map/interactive-map.comp
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { Utilities } from '../../Shared/utilities';
+import {forwardRef} from '@angular/core';
 
 @Component({
     selector: 'app-home',
