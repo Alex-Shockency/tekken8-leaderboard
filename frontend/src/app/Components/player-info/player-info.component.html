@@ -6,8 +6,8 @@
       @if(playerData){
       <div style="display: inline-flex; width: 100%; justify-content: space-between;">
         <div>
-            <h1>{{playerData.name}}</h1>
-          <h2>{{tekkenIdDashes}} </h2> 
+          <h1>{{playerData.name}}</h1>
+          <h2>{{tekkenIdDashes}} </h2>
         </div>
         <div>
           <h2>Total battles: {{this.totalBattleCount}}</h2>
@@ -128,92 +128,7 @@
               </div>
             </div>
             <mat-divider></mat-divider>
-            @if (battleCount > 0) {
-            <div style="color:rgba(255, 255, 255, 0.871); padding: 1rem">
-              <span>Replays Found: {{battleCount}}</span>
-            </div>
-            }
-            <div>
-              <div>
-                <table [hidden]="isReplayLoading" mat-table [dataSource]="dataSource" matSort>
-                  <ng-container matColumnDef="when">
-                    <th mat-header-cell *matHeaderCellDef> When </th>
-                    <td mat-cell *matCellDef="let element"> {{element.battle_at_date}} </td>
-                  </ng-container>
 
-                  <ng-container matColumnDef="char">
-                    <th mat-header-cell *matHeaderCellDef> Char. </th>
-                    <td mat-cell *matCellDef="let element"> {{this.tekkenId == element.p1_polaris_id ?
-                      utilities.charaIdMap.get(element.p1_chara_id) : utilities.charaIdMap.get(element.p2_chara_id)}}
-                    </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="score">
-                    <th mat-header-cell *matHeaderCellDef> Score </th>
-                    <td mat-cell *matCellDef="let element"> <span style="color: rgb(9, 186, 9);">{{this.tekkenId ==
-                        element.p1_polaris_id ? element.p1_rounds>element.p2_rounds ? "W": "":
-                        element.p2_rounds>element.p1_rounds ? "W": "" }} </span> <span
-                        style="color: rgb(243, 39, 36);">{{this.tekkenId == element.p1_polaris_id ?
-                        element.p1_rounds>element.p2_rounds ? "": "L": element.p2_rounds>element.p1_rounds ? "": "L" }}
-                      </span> {{this.tekkenId == element.p1_polaris_id ? element.p1_rounds
-                      +"-"+
-                      element.p2_rounds : element.p2_rounds+"-"+element.p1_rounds}} </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="rating">
-                    <th mat-header-cell *matHeaderCellDef> Rating </th>
-                    <td mat-cell *matCellDef="let element">
-                      @if (element.p1_rating_before) {
-                      {{this.tekkenId == element.p1_polaris_id ?
-                      element.p1_rating_before+' '+ (element.p1_rating_change > 0 ? "+" +
-                      element.p1_rating_change:element.p1_rating_change) : element.p2_rating_before+'
-                      '+(element.p2_rating_change > 0 ? "+" + element.p2_rating_change:element.p2_rating_change)}}
-                      } @else {
-                      TBD
-                      }
-                    </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="opponent">
-                    <th mat-header-cell *matHeaderCellDef> Opp. </th>
-                    <td mat-cell *matCellDef="let element"> {{this.tekkenId == element.p1_polaris_id ? element.p2_name :
-                      element.p1_name}} </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="opponentChar">
-                    <th mat-header-cell *matHeaderCellDef> Opp. Char.</th>
-                    <td mat-cell *matCellDef="let element"> {{this.tekkenId == element.p1_polaris_id ?
-                      utilities.charaIdMap.get(element.p2_chara_id) : utilities.charaIdMap.get(element.p1_chara_id)}}
-                    </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="opponentrating">
-                    <th mat-header-cell *matHeaderCellDef> Opp. Rating </th>
-                    <td mat-cell *matCellDef="let element">
-                      @if (element.p1_rating_before) {
-                      {{this.tekkenId == element.p1_polaris_id ?
-                      element.p2_rating_before
-                      +'
-                      '+(element.p2_rating_change > 0 ? "+" + element.p2_rating_change:element.p2_rating_change) :
-                      element.p1_rating_before+' '+(element.p1_rating_change > 0 ? "+" +
-                      element.p1_rating_change:element.p1_rating_change)}}
-                      } @else {
-                      TBD
-                      }
-                    </td>
-                  </ng-container>
-
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-                </table>
-              </div>
-
-              <div [hidden]="isReplayLoading">
-                <mat-paginator [length]="battleCount" (page)="onPageChange($event)" [pageSizeOptions]="[25, 50, 100]"
-                  aria-label="Select page of users"></mat-paginator>
-              </div>
-            </div>
           </div>
         </mat-tab>
         <mat-tab label="Matchups">
@@ -228,7 +143,8 @@
             <span style="color: rgba(255, 255, 255, 0.871); padding: 1rem;"> Collecting all replay data...</span>
           </div>
           } @else {
-          <h4 style="display: flex;justify-content: center;">Overall Win:<span style="padding-left: .5rem;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;"
+          <h4 style="display: flex;justify-content: center;">Overall Win:<span
+              style="padding-left: .5rem;  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;"
               [ngStyle]="{'color': this.overallWinPercent >= 50? 'green':'red'}">{{this.overallWinPercent}}%</span></h4>
           <div class="matchup-grid">
             @for (matchup of matchupMap.entries(); track $index) {
@@ -244,6 +160,94 @@
           }
         </mat-tab>
       </mat-tab-group>
+      @if (!isCharLoading) {
+        @if (battleCount > 0) {
+        <div style="color:rgba(255, 255, 255, 0.871); padding: 1rem">
+          <span>Replays Found: {{battleCount}}</span>
+        </div>
+        }
+        <div>
+          <div>
+            <table [hidden]="isReplayLoading" mat-table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="when">
+                <th mat-header-cell *matHeaderCellDef> When </th>
+                <td mat-cell *matCellDef="let element"> {{element.battle_at_date}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="char">
+                <th mat-header-cell *matHeaderCellDef> Char. </th>
+                <td mat-cell *matCellDef="let element"> {{this.tekkenId == element.p1_polaris_id ?
+                  utilities.charaIdMap.get(element.p1_chara_id) : utilities.charaIdMap.get(element.p2_chara_id)}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="score">
+                <th mat-header-cell *matHeaderCellDef> Score </th>
+                <td mat-cell *matCellDef="let element"> <span style="color: rgb(9, 186, 9);">{{this.tekkenId ==
+                    element.p1_polaris_id ? element.p1_rounds>element.p2_rounds ? "W": "":
+                    element.p2_rounds>element.p1_rounds ? "W": "" }} </span> <span
+                    style="color: rgb(243, 39, 36);">{{this.tekkenId == element.p1_polaris_id ?
+                    element.p1_rounds>element.p2_rounds ? "": "L": element.p2_rounds>element.p1_rounds ? "": "L" }}
+                  </span> {{this.tekkenId == element.p1_polaris_id ? element.p1_rounds
+                  +"-"+
+                  element.p2_rounds : element.p2_rounds+"-"+element.p1_rounds}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="rating">
+                <th mat-header-cell *matHeaderCellDef> Rating </th>
+                <td mat-cell *matCellDef="let element">
+                  @if (element.p1_rating_before) {
+                  {{this.tekkenId == element.p1_polaris_id ?
+                  element.p1_rating_before+' '+ (element.p1_rating_change > 0 ? "+" +
+                  element.p1_rating_change:element.p1_rating_change) : element.p2_rating_before+'
+                  '+(element.p2_rating_change > 0 ? "+" + element.p2_rating_change:element.p2_rating_change)}}
+                  } @else {
+                  TBD
+                  }
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="opponent">
+                <th mat-header-cell *matHeaderCellDef> Opp. </th>
+                <td mat-cell *matCellDef="let element"> {{this.tekkenId == element.p1_polaris_id ? element.p2_name :
+                  element.p1_name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="opponentChar">
+                <th mat-header-cell *matHeaderCellDef> Opp. Char.</th>
+                <td mat-cell *matCellDef="let element"> {{this.tekkenId == element.p1_polaris_id ?
+                  utilities.charaIdMap.get(element.p2_chara_id) : utilities.charaIdMap.get(element.p1_chara_id)}}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="opponentrating">
+                <th mat-header-cell *matHeaderCellDef> Opp. Rating </th>
+                <td mat-cell *matCellDef="let element">
+                  @if (element.p1_rating_before) {
+                  {{this.tekkenId == element.p1_polaris_id ?
+                  element.p2_rating_before
+                  +'
+                  '+(element.p2_rating_change > 0 ? "+" + element.p2_rating_change:element.p2_rating_change) :
+                  element.p1_rating_before+' '+(element.p1_rating_change > 0 ? "+" +
+                  element.p1_rating_change:element.p1_rating_change)}}
+                  } @else {
+                  TBD
+                  }
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+          </div>
+
+          <div [hidden]="isReplayLoading">
+            <mat-paginator [length]="battleCount" (page)="onPageChange($event)" [pageSizeOptions]="[25, 50, 100]"
+              aria-label="Select page of users"></mat-paginator>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>
