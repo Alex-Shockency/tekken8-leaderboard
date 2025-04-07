@@ -74,7 +74,7 @@ export class PlayerInfoComponent {
     private route: ActivatedRoute
   ) {
     route.params.subscribe(val => {
-      this.charArray = ['All'];
+      this.charArray = [];
       this.charControl = new FormControl('All');
       if (this.tabGroup) {
         this.selectTab(0);
@@ -157,7 +157,10 @@ export class PlayerInfoComponent {
           map(value => this._charFilter(value || ''))
         )
 
-        this.playerData = result
+        this.playerData = result;
+        this.charArray.sort();
+        this.charArray.unshift("All");
+        
         this.isPlayerLoading = false;
       });
 
