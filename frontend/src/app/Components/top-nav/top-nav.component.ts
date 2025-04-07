@@ -1,15 +1,15 @@
 import { Component, HostListener } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { RankingService } from '../../Services/ranking.service';
 import { MaterialModule } from '../../Shared/material.module';
-import { RouterModule } from '@angular/router';
 import { AuthButtonComponent } from '../auth-button/auth-button.component';
 import { SearchBarComponent } from "../search-bar/search-bar.component";
 
 @Component({
-    selector: 'app-top-nav',
-    imports: [MaterialModule, RouterModule, AuthButtonComponent, SearchBarComponent],
-    templateUrl: './top-nav.component.html',
-    styleUrl: './top-nav.component.css'
+  selector: 'app-top-nav',
+  imports: [MaterialModule, RouterModule, AuthButtonComponent, SearchBarComponent],
+  templateUrl: './top-nav.component.html',
+  styleUrl: './top-nav.component.css'
 })
 export class TopNavComponent {
   screenHeight = 0;
@@ -30,7 +30,7 @@ export class TopNavComponent {
     this.screenWidth = window.innerWidth;
   }
 
-  constructor(private rankingService: RankingService) {}
+  constructor(private rankingService: RankingService) { }
 
   ngOnInit() {
     this.screenWidth = window.innerWidth;

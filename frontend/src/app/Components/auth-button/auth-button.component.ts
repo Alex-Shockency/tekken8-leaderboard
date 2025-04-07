@@ -1,21 +1,21 @@
-import { Component, Inject } from '@angular/core';
-import { AuthService, User } from '@auth0/auth0-angular';
-import { MaterialModule } from '../../Shared/material.module';
 import { DOCUMENT } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService, User } from '@auth0/auth0-angular';
 import { UserService } from '../../Services/user/user.service';
+import { MaterialModule } from '../../Shared/material.module';
 
 @Component({
-    selector: 'app-auth-button',
-    imports: [MaterialModule],
-    templateUrl: './auth-button.component.html',
-    styleUrl: './auth-button.component.css'
+  selector: 'app-auth-button',
+  imports: [MaterialModule],
+  templateUrl: './auth-button.component.html',
+  styleUrl: './auth-button.component.css'
 })
 export class AuthButtonComponent {
   user: User
   currentUser: any
-  tekkenId : string = "";
-  tekkenIdWithDases : string = "";
+  tekkenId: string = "";
+  tekkenIdWithDases: string = "";
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
@@ -38,8 +38,8 @@ export class AuthButtonComponent {
     })
   }
 
-  navigateToPlayer(tekkenId:string) {
-    this.router.navigate(['/playerInfo/'+ tekkenId])
+  navigateToPlayer(tekkenId: string) {
+    this.router.navigate(['/playerInfo/' + tekkenId])
   }
 
   login() {

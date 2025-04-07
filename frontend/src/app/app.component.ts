@@ -1,14 +1,14 @@
 import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MaterialModule } from './Shared/material.module';
-import { RankingService } from './Services/ranking.service';
 import { TopNavComponent } from "./Components/top-nav/top-nav.component";
+import { RankingService } from './Services/ranking.service';
+import { MaterialModule } from './Shared/material.module';
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet, MaterialModule, TopNavComponent],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [RouterOutlet, MaterialModule, TopNavComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'tekken8-leaderboard';
@@ -25,13 +25,13 @@ export class AppComponent {
     minute: 'numeric',
   };
 
-    @HostListener('window:resize', ['$event'])
-    onResize() {
-      this.screenHeight = window.innerHeight;
-      this.screenWidth = window.innerWidth;
-    }
-  
-    constructor(private rankingService: RankingService) {}
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+  }
+
+  constructor(private rankingService: RankingService) { }
 
   ngOnInit() {
     this.screenWidth = window.innerWidth;

@@ -10,8 +10,8 @@ describe('PlayerInfoComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PlayerInfoComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(PlayerInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

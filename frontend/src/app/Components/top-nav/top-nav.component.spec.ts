@@ -10,8 +10,8 @@ describe('TopNavComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TopNavComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(TopNavComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

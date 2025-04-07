@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { MaterialModule } from '../../Shared/material.module';
-import { RankingService } from '../../Services/ranking.service';
-import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Router } from '@angular/router';
+import { RankingService } from '../../Services/ranking.service';
+import { MaterialModule } from '../../Shared/material.module';
 
 @Component({
-    selector: 'app-search-bar',
-    imports: [MaterialModule],
-    templateUrl: './search-bar.component.html',
-    styleUrl: './search-bar.component.css'
+  selector: 'app-search-bar',
+  imports: [MaterialModule],
+  templateUrl: './search-bar.component.html',
+  styleUrl: './search-bar.component.css'
 })
 export class SearchBarComponent {
   searchControl = new FormControl('');

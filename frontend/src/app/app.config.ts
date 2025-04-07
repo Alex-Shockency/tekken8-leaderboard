@@ -1,10 +1,10 @@
 import { ApplicationConfig } from '@angular/core';
-import { authHttpInterceptorFn, provideAuth0 } from '@auth0/auth0-angular';
 import { provideRouter } from '@angular/router';
+import { authHttpInterceptorFn, provideAuth0 } from '@auth0/auth0-angular';
 
-import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { routes } from './app.routes';
 
 import { environment } from '../environments/environment';
 

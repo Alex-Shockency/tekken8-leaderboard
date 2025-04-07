@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { UserData, ReturnedUserData } from '../../Models/user';
 import { PlayerData } from '../../Models/playerData';
+import { ReturnedUserData, UserData } from '../../Models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class UserService {
     console.log(environment.apiUrl);
   }
 
-  getUsers(token:string): Observable<{ userData: ReturnedUserData }> {
+  getUsers(token: string): Observable<{ userData: ReturnedUserData }> {
     return this.http.get<{
       userData: ReturnedUserData;
     }>(this.api + `user`, {

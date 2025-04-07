@@ -1,16 +1,16 @@
 import { Component, HostListener } from '@angular/core';
-import { MaterialModule } from '../../Shared/material.module';
-import { RankingService } from '../../Services/ranking.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, startWith } from 'rxjs';
+import { RankingService } from '../../Services/ranking.service';
+import { MaterialModule } from '../../Shared/material.module';
 import { Utilities } from '../../Shared/utilities';
 
 @Component({
-    selector: 'app-state-leaderboard',
-    imports: [MaterialModule],
-    templateUrl: './state-leaderboard.component.html',
-    styleUrl: './state-leaderboard.component.css'
+  selector: 'app-state-leaderboard',
+  imports: [MaterialModule],
+  templateUrl: './state-leaderboard.component.html',
+  styleUrl: './state-leaderboard.component.css'
 })
 export class StateLeaderboardComponent {
   myControl = new FormControl('');

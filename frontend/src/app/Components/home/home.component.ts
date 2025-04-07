@@ -1,22 +1,18 @@
 import { Component, HostListener } from '@angular/core';
-import { MaterialModule } from '../../Shared/material.module';
-import { RankingService } from '../../Services/ranking.service';
-import { TopNavComponent } from "../top-nav/top-nav.component";
-import { Router } from '@angular/router';
-import { PlayerData } from '../../Models/playerData';
 import { FormControl } from '@angular/forms';
-import { forkJoin, map, Observable, startWith } from 'rxjs';
-import { InteractiveMapComponent } from "../interactive-map/interactive-map.component";
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { SearchBarComponent } from "../search-bar/search-bar.component";
+import { Router } from '@angular/router';
+import { forkJoin, map, Observable, startWith } from 'rxjs';
+import { RankingService } from '../../Services/ranking.service';
+import { MaterialModule } from '../../Shared/material.module';
 import { Utilities } from '../../Shared/utilities';
-import {forwardRef} from '@angular/core';
+import { InteractiveMapComponent } from "../interactive-map/interactive-map.component";
 
 @Component({
-    selector: 'app-home',
-    imports: [MaterialModule, InteractiveMapComponent],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss'
+  selector: 'app-home',
+  imports: [MaterialModule, InteractiveMapComponent],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   filterControl = new FormControl('');

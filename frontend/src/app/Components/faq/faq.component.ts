@@ -3,7 +3,7 @@ import { MaterialModule } from '../../Shared/material.module';
 
 @Component({
     selector: 'app-faq',
-    imports: [ MaterialModule],
+    imports: [MaterialModule],
     templateUrl: './faq.component.html',
     styleUrl: './faq.component.css'
 })

@@ -10,8 +10,8 @@ describe('InteractiveMapComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InteractiveMapComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(InteractiveMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

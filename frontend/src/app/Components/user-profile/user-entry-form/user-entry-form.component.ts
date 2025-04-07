@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MaterialModule } from '../../../Shared/material.module';
-import { UserService } from '../../../Services/user/user.service';
 import { AuthService } from '@auth0/auth0-angular';
+import { UserService } from '../../../Services/user/user.service';
+import { MaterialModule } from '../../../Shared/material.module';
 import { states } from '../../../Shared/utilities';
 
 @Component({
-    selector: 'app-user-entry-form',
-    imports: [MaterialModule],
-    templateUrl: './user-entry-form.component.html',
-    styleUrls: ['./user-entry-form.component.css']
+  selector: 'app-user-entry-form',
+  imports: [MaterialModule],
+  templateUrl: './user-entry-form.component.html',
+  styleUrls: ['./user-entry-form.component.css']
 })
 export class NewEntryFormComponent {
   states = states;

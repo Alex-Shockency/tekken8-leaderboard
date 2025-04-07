@@ -1,26 +1,25 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
+import Chart from 'chart.js/auto';
+import { map, Observable, startWith } from 'rxjs';
+import { PlayerData } from '../../Models/playerData';
+import { Replay } from '../../Models/replay';
 import { RankingService } from '../../Services/ranking.service';
 import { MaterialModule } from '../../Shared/material.module';
 import { Utilities } from '../../Shared/utilities';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { Replay } from '../../Models/replay';
-import { MatSort } from '@angular/material/sort';
-import { PlayerData } from '../../Models/playerData';
-import Chart from 'chart.js/auto';
-import { ReplayData } from '../../Models/replayData';
-import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { map, Observable, startWith } from 'rxjs';
 
 
 
 @Component({
-    selector: 'app-player-info',
-    imports: [MaterialModule],
-    templateUrl: './player-info.component.html',
-    styleUrl: './player-info.component.css'
+  selector: 'app-player-info',
+  imports: [MaterialModule],
+  templateUrl: './player-info.component.html',
+  styleUrl: './player-info.component.css'
 })
 
 export class PlayerInfoComponent {
@@ -77,7 +76,7 @@ export class PlayerInfoComponent {
     route.params.subscribe(val => {
       this.charArray = ['All'];
       this.charControl = new FormControl('All');
-      if(this.tabGroup){
+      if (this.tabGroup) {
         this.selectTab(0);
       }
 
@@ -415,8 +414,8 @@ export class PlayerInfoComponent {
       let overallWins = 0;
       let overallLosses = 0;
       this.isMatchupLoading = true;
-     
-      this.rankingService.getReplaysByIdCharaId(this.tekkenId,charaId).subscribe((result) => {
+
+      this.rankingService.getReplaysByIdCharaId(this.tekkenId, charaId).subscribe((result) => {
         result.forEach((replay: any) => {
           if (replay.p1_polaris_id == this.tekkenId) {
             if (replay.p1_rounds > replay.p2_rounds) {

@@ -10,8 +10,8 @@ describe('StateLeaderboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [StateLeaderboardComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(StateLeaderboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

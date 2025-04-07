@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 export class Utilities {
   charaIdMap = new Map();
   charaNameMap = new Map();
-  charArray:string[] = [];
+  charArray: string[] = [];
   regionIdMap = new Map();
 
-  swap(obj:Map<number,string>){
-    return new Map(Array.from(obj, a => a.reverse() as [number,string]))
+  swap(obj: Map<number, string>) {
+    return new Map(Array.from(obj, a => a.reverse() as [number, string]))
   }
 
   constructor() {
@@ -54,7 +54,7 @@ export class Utilities {
 
     this.charaNameMap = this.swap(this.charaIdMap)
 
-    this.charArray = ['All','Alisa', 'Anna', 'Asuka', 'Azucena', 'Bryan', 'Claudio', 'Clive', 'Devil Jin', 'Dragunov', 'Eddy', 'Feng', 'Heihachi', 'Hworang', 'Jack-8', 'Jin', 'Jun', 'Kazuya', 'King', 'Kuma', 'Lars', 'Law', 'Lee', 'Leo', 'Leroy', 'Lidia', 'Lili', 'Nina', 'Panda', 'Paul', 'Raven', 'Reina', 'Shaheen', 'Steve', 'Victor', 'Xiaoyu', 'Yoshimitsu', 'Zafina']
+    this.charArray = ['All', 'Alisa', 'Anna', 'Asuka', 'Azucena', 'Bryan', 'Claudio', 'Clive', 'Devil Jin', 'Dragunov', 'Eddy', 'Feng', 'Heihachi', 'Hworang', 'Jack-8', 'Jin', 'Jun', 'Kazuya', 'King', 'Kuma', 'Lars', 'Law', 'Lee', 'Leo', 'Leroy', 'Lidia', 'Lili', 'Nina', 'Panda', 'Paul', 'Raven', 'Reina', 'Shaheen', 'Steve', 'Victor', 'Xiaoyu', 'Yoshimitsu', 'Zafina']
 
     this.regionIdMap.set(0, 'Asia');
     this.regionIdMap.set(3, 'America');

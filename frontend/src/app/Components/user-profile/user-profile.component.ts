@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-import { MaterialModule } from '../../Shared/material.module';
-import { NewEntryFormComponent } from './user-entry-form/user-entry-form.component';
-import { UserService } from '../../Services/user/user.service';
-import { ReturnedUserData, UserData } from '../../Models/user';
-import { states } from '../../Shared/utilities';
-import { PlayerData } from '../../Models/playerData';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from '@auth0/auth0-angular';
+import { PlayerData } from '../../Models/playerData';
+import { ReturnedUserData } from '../../Models/user';
+import { UserService } from '../../Services/user/user.service';
+import { MaterialModule } from '../../Shared/material.module';
+import { states } from '../../Shared/utilities';
+import { NewEntryFormComponent } from './user-entry-form/user-entry-form.component';
 
 @Component({
-    selector: 'app-user-profile',
-    imports: [ MaterialModule, NewEntryFormComponent],
-    templateUrl: './user-profile.component.html',
-    styleUrl: './user-profile.component.css'
+  selector: 'app-user-profile',
+  imports: [MaterialModule, NewEntryFormComponent],
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
   // Authenticated User Data
