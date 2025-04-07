@@ -219,10 +219,6 @@ export class PlayerInfoComponent {
   }
 
   private createChart(result: any) {
-    if (this.replayChart) {
-      this.replayChart.destroy()
-    }
-
     let colorIndex = 0;
     let prevChar = -1;
     let currChar = -1;
@@ -274,76 +270,140 @@ export class PlayerInfoComponent {
         chartData.push(rating)
     });
 
-    this.replayChart = new Chart("ratings",
-      {
-        type: 'line',
-        options: {
-          scales: {
-            x: {
-              reverse: true,
-              ticks: {
-                display: false // This hides the x-axis labels
-              }
-            },
-            y: {
-              min: Math.min(...chartData.filter(number => {
-                return !isNaN(number)
-              })) - 50,
-              max: Math.max(...chartData.filter(number => {
-                return !isNaN(number)
-              })) + 50
+    if (this.replayChart) {
+      this.replayChart.data.labels = result.map((replay: any) => {
+        if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+          return `Opponent: ${replay.p2_name} (${this.utilities.charaIdMap.get(replay.p2_chara_id)})`;
+        } else {
+          return `Opponent: ${replay.p1_name} (${this.utilities.charaIdMap.get(replay.p1_chara_id)})`;
+        }
+      });
+
+      this.replayChart.data.datasets = [
+        {
+          label: 'Your Rating',
+          pointRadius: pointRadius,
+          pointHoverRadius: pointHoverRadius,
+          data: chartData,
+          borderColor: "rgba(255, 99, 133, 0.4)",
+          backgroundColor: result.map((replay: any) => {
+            if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+              currOppColor = replay.p2_polaris_id;
+            } else {
+              currOppColor = replay.p1_polaris_id;
             }
-          },
-          plugins: {
-            legend: {
-              display: false
-            },
+
+            if (currOppColor !== prevOppColor && prevOppColor !== "") {
+              if (colorIndex >= colorArray.length - 1) {
+                colorIndex = 0;
+              } else {
+                colorIndex++;
+              }
+            }
+
+            if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+              prevOppColor = replay.p2_polaris_id;
+            } else {
+              prevOppColor = replay.p1_polaris_id;
+            }
+
+            return colorArray[colorIndex];
+          }),
+        }
+      ]
+
+      this.replayChart.options.scales = {
+        x: {
+          reverse: true,
+          ticks: {
+            display: false // This hides the x-axis labels
           }
         },
-        data: {
-          labels: result.map((replay: any) => {
-            if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
-              return `Opponent: ${replay.p2_name} (${this.utilities.charaIdMap.get(replay.p2_chara_id)})`;
-            } else {
-              return `Opponent: ${replay.p1_name} (${this.utilities.charaIdMap.get(replay.p1_chara_id)})`;
-            }
-
-          }),
-          datasets: [
-            {
-              label: 'Your Rating',
-              pointRadius: pointRadius,
-              pointHoverRadius: pointHoverRadius,
-              data: chartData,
-              borderColor: "rgba(255, 99, 133, 0.4)",
-              backgroundColor: result.map((replay: any) => {
-                if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
-                  currOppColor = replay.p2_polaris_id;
-                } else {
-                  currOppColor = replay.p1_polaris_id;
-                }
-
-                if (currOppColor !== prevOppColor && prevOppColor !== "") {
-                  if (colorIndex >= colorArray.length - 1) {
-                    colorIndex = 0;
-                  } else {
-                    colorIndex++;
-                  }
-                }
-
-                if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
-                  prevOppColor = replay.p2_polaris_id;
-                } else {
-                  prevOppColor = replay.p1_polaris_id;
-                }
-
-                return colorArray[colorIndex];
-              }),
-            }
-          ],
+        y: {
+          min: Math.min(...chartData.filter(number => {
+            return !isNaN(number)
+          })) - 50,
+          max: Math.max(...chartData.filter(number => {
+            return !isNaN(number)
+          })) + 50
         }
       }
-    );
+
+      this.replayChart.update()
+    } else{
+
+      this.replayChart = new Chart("ratings",
+        {
+          type: 'line',
+          options: {
+            scales: {
+              x: {
+                reverse: true,
+                ticks: {
+                  display: false // This hides the x-axis labels
+                }
+              },
+              y: {
+                min: Math.min(...chartData.filter(number => {
+                  return !isNaN(number)
+                })) - 50,
+                max: Math.max(...chartData.filter(number => {
+                  return !isNaN(number)
+                })) + 50
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+            }
+          },
+          data: {
+            labels: result.map((replay: any) => {
+              if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                return `Opponent: ${replay.p2_name} (${this.utilities.charaIdMap.get(replay.p2_chara_id)})`;
+              } else {
+                return `Opponent: ${replay.p1_name} (${this.utilities.charaIdMap.get(replay.p1_chara_id)})`;
+              }
+  
+            }),
+            datasets: [
+              {
+                label: 'Your Rating',
+                pointRadius: pointRadius,
+                pointHoverRadius: pointHoverRadius,
+                data: chartData,
+                borderColor: "rgba(255, 99, 133, 0.4)",
+                backgroundColor: result.map((replay: any) => {
+                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                    currOppColor = replay.p2_polaris_id;
+                  } else {
+                    currOppColor = replay.p1_polaris_id;
+                  }
+  
+                  if (currOppColor !== prevOppColor && prevOppColor !== "") {
+                    if (colorIndex >= colorArray.length - 1) {
+                      colorIndex = 0;
+                    } else {
+                      colorIndex++;
+                    }
+                  }
+  
+                  if (replay.p1_rating_before && replay.p1_polaris_id == this.tekkenId) {
+                    prevOppColor = replay.p2_polaris_id;
+                  } else {
+                    prevOppColor = replay.p1_polaris_id;
+                  }
+  
+                  return colorArray[colorIndex];
+                }),
+              }
+            ],
+          }
+        }
+      );
+    }
+
   }
 
   ngOnInit() {

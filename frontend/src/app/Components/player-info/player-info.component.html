@@ -108,7 +108,7 @@
         animationDuration="100">
         <mat-tab label="Replays">
           <div>
-            @if (isReplayLoading || isCharLoading) {
+            @if (isReplayLoading) {
             <div style="width: 100%;
                 height: 25vh;
                 display: flex;
@@ -124,7 +124,7 @@
             </div>
             }
             <div style="display: flex;justify-content: center; padding: 1rem;"
-              [ngStyle]="{'display': this.isCharLoading || this.isReplayLoading? 'none':'flex'}">
+              [ngStyle]="{'display': this.isReplayLoading? 'none':'flex'}">
               <div style="position: relative; width:80%">
                 <canvas id="ratings"></canvas>
               </div>
