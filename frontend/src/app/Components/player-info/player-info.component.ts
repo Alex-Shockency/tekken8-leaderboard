@@ -160,7 +160,7 @@ export class PlayerInfoComponent {
         this.playerData = result;
         this.charArray.sort();
         this.charArray.unshift("All");
-        
+
         this.isPlayerLoading = false;
       });
 
@@ -398,6 +398,7 @@ export class PlayerInfoComponent {
 
           return replay
         }));
+        
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
 
